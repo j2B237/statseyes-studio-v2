@@ -1,4 +1,4 @@
-package com.statseyes.studio.domain.model;
+package com.statseyes.studio.infrastructure.persistence.entity;
 
 /*
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Athlete {
+public class AthleteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
