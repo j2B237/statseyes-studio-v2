@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/22"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.statseyes.studio.presentation.login.LoginViewController"
+           stylesheets="@./login-card.css"
+           styleClass="login-root">
+    
+    <VBox alignment="CENTER" styleClass="login-card" maxWidth="480" maxHeight="780">
+        <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+        
+        <ImageView fitHeight="128" fitWidth="128" preserveRatio="true">
+            <Image url="@../assets/logo-bg.jpeg" />
+        </ImageView>
+        
+        <Label text="StatsEyes-Studio" styleClass="login-brand">
+            <VBox.margin><Insets top="12" bottom="10"/></VBox.margin>
+        </Label>
+        
+        <Label text="Connexion à votre espace" styleClass="login-subtitle">
+            <VBox.margin><Insets bottom="28"/></VBox.margin>
+        </Label>
+        
+        <VBox spacing="16">
+            <VBox spacing="6">
+                <Label text="Nom d'utilisateur" styleClass="field-label"/>
+                <TextField fx:id="usernameField" promptText="Entrez votre identifiant" styleClass="login-field"/>
+            </VBox>
+            
+            <VBox spacing="6">
+                <Label text="Mot de passe" styleClass="field-label"/>
+                <PasswordField fx:id="passwordField" promptText="Entrez votre mot de passe" styleClass="login-field"/>
+            </VBox>
+        </VBox>
+        
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false" managed="false" wrapText="true">
+            <VBox.margin><Insets top="10"/></VBox.margin>
+        </Label>
+        
+        <Button fx:id="loginButton" text="Se connecter" maxWidth="Infinity"
+                styleClass="login-button" onAction="#handleLogin">
+            <VBox.margin><Insets top="26"/></VBox.margin>
+        </Button>
+        
+        <Hyperlink text="Mot de passe oublié ?" styleClass="login-link">
+            <VBox.margin><Insets top="16"/></VBox.margin>
+        </Hyperlink>
+    </VBox>
+</StackPane>

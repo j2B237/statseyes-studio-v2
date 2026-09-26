@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.statseyes.studio.presentation.component.StatsCard?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane xmlns="http://javafx.com/javafx/22"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.statseyes.studio.presentation.dashboard.DashboardViewController"
+          hgap="14" vgap="14" style="-fx-padding: 20;">
+    
+    <StatsCard fx:id="vitesseCard" title="Vitesse instantanée"
+               iconGlyph="🏃" accentColor="#FF5A5F"
+               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    
+    <StatsCard fx:id="distanceCard" title="Distance parcourue"
+               iconGlyph="📍" accentColor="#4F8EF7"
+               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+</GridPane>
