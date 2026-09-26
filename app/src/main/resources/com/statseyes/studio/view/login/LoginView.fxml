@@ -7,14 +7,14 @@
 <StackPane xmlns="http://javafx.com/javafx/22"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.statseyes.studio.presentation.login.LoginViewController"
-           stylesheets="@./login-card.css"
+           stylesheets="@../../static/css/login/login-card.css"
            styleClass="login-root">
     
     <VBox alignment="CENTER" styleClass="login-card" maxWidth="480" maxHeight="780">
         <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
         
         <ImageView fitHeight="128" fitWidth="128" preserveRatio="true">
-            <Image url="@../assets/logo-bg.jpeg" />
+            <Image url="@../../images/assets/logo-bg.jpeg" />
         </ImageView>
         
         <Label text="StatsEyes-Studio" styleClass="login-brand">

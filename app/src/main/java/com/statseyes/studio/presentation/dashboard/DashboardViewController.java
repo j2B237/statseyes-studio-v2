@@ -14,6 +14,8 @@ public class DashboardViewController {
 
     @FXML private StatsCard vitesseCard;
     @FXML private StatsCard distanceCard;
+    @FXML private StatsCard sprintsCard;
+    @FXML private StatsCard directionCard;
 
 
 }

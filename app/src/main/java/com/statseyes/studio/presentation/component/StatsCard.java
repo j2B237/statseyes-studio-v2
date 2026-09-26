@@ -9,45 +9,53 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+
+import java.util.Objects;
 
 public class StatsCard extends VBox {
 
-    // ===================
-    // Properties
-    // ==================
+    // Hauteurs relatives simulant une petite forme d'onde (façon rythme cardiaque)
+    private static final double[] WAVEFORM_PATTERN = {
+            0.25, 0.35, 0.3, 0.55, 0.9, 0.45, 0.3, 0.6, 0.4, 0.3
+    };
 
     private final StringProperty title      = new SimpleStringProperty();
     private final StringProperty value      = new SimpleStringProperty("--");
     private final StringProperty unit       = new SimpleStringProperty("");
     private final StringProperty iconGlyph  = new SimpleStringProperty("●");
     private final ObjectProperty<Color> accentColor = new SimpleObjectProperty<>(Color.web("#4F8EF7"));
+    private final BooleanProperty dataAvailable = new SimpleBooleanProperty(true);
 
-    private final Circle iconBadge = new Circle(16);
+    private final Circle iconBadge = new Circle(18);
     private final Label iconGlyphLabel = new Label();
     private final Label titleLabel = new Label();
     private final Label valueLabel = new Label();
     private final Label unitLabel = new Label();
-    private final HBox sparkBar = new HBox(2);
-
-    // =====================
-    // Constructor for FXML
-    // =====================
+    private final HBox sparkBar = new HBox(3);
 
     public StatsCard(){
 
         getStyleClass().add("stats-card");
-        setPadding(new Insets(16));
-        setSpacing(10);
-        setPrefWidth(170);
-        setPrefHeight(150);
+        getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource(
+                                "/com/statseyes/studio/static/css/component/stats-card.css"))
+                        .toExternalForm()
+        );
 
-        iconGlyphLabel.setFont(Font.font(14));
+        setPadding(new Insets(16));
+        setSpacing(12);
+        setMaxWidth(Double.MAX_VALUE);
+        setMaxHeight(Double.MAX_VALUE);
+
+        iconGlyphLabel.setFont(Font.font(15));
         StackPane iconStack = new StackPane(iconBadge, iconGlyphLabel);
 
+        titleLabel.getStyleClass().add("stats-card-title");
         titleLabel.textProperty().bind(title);
-        titleLabel.setFont(Font.font("System", FontWeight.SEMI_BOLD, 13));
-        titleLabel.setWrapText(true);
+        titleLabel.setWrapText(false);
+        titleLabel.setMinWidth(0);
+
+        HBox.setHgrow(titleLabel, Priority.ALWAYS);
 
         HBox header = new HBox(10, iconStack, titleLabel);
         header.setAlignment(Pos.CENTER_LEFT);
@@ -55,20 +63,22 @@ public class StatsCard extends VBox {
         sparkBar.setAlignment(Pos.BOTTOM_LEFT);
         sparkBar.setPrefHeight(24);
 
+        valueLabel.getStyleClass().add("stats-card-value");
         valueLabel.textProperty().bind(value);
-        valueLabel.setFont(Font.font("System", FontWeight.BOLD, 26));
+
+        unitLabel.getStyleClass().add("stats-card-unit");
         unitLabel.textProperty().bind(unit);
-        unitLabel.setStyle("-fx-text-fill: #9AA0A6;");
 
         HBox valueRow = new HBox(valueLabel, unitLabel);
         valueRow.setAlignment(Pos.BASELINE_LEFT);
 
         getChildren().addAll(header, sparkBar, valueRow);
 
-        // Rebuild l'icône + le spark dès que la couleur ou le glyph changent
         accentColor.addListener(
                 (o, ov, nv) -> refreshVisuals());
         iconGlyph.addListener(
+                (o, ov, nv) -> refreshVisuals());
+        dataAvailable.addListener(
                 (o, ov, nv) -> refreshVisuals());
         refreshVisuals();
     }
@@ -76,43 +86,38 @@ public class StatsCard extends VBox {
     private void refreshVisuals(){
 
         Color accent = accentColor.get();
-        iconBadge.setFill(
-                accent.deriveColor(0, 1, 1, 0.15)
-        );
+        boolean hasData = dataAvailable.get();
 
+        iconBadge.setFill(accent.deriveColor(0, 1, 1, 0.15));
         iconGlyphLabel.setText(iconGlyph.get());
         iconGlyphLabel.setTextFill(accent);
 
         sparkBar.getChildren().clear();
 
-        for (int i = 0; i < 10; i++) {
-            Rectangle bar = new Rectangle(4, i == 0 ? 20 : 4);
-            bar.setArcWidth(2); bar.setArcHeight(2);
-            bar.setFill(i == 0 ? accent : Color.web("#E8E9ED"));
+        for (double relativeHeight : WAVEFORM_PATTERN) {
+            double h = hasData ? relativeHeight * 22 : 4;
+            Rectangle bar = new Rectangle(4, Math.max(3, h));
+            bar.setArcWidth(3); bar.setArcHeight(3);
+            bar.setFill(hasData ? accent : Color.web("#E4E5EA"));
             sparkBar.getChildren().add(bar);
         }
     }
 
-    // ====================
-    // SETTERS
-    // ====================
-
-    // --- Setters exploitables en FXML (title="..." iconGlyph="..." accentColor="#FF5A5F") ---
     public void setTitle(String v) { title.set(v); }
     public String getTitle() { return title.get(); }
-
     public void setIconGlyph(String v) { iconGlyph.set(v); }
     public String getIconGlyph() { return iconGlyph.get(); }
-
     public void setAccentColor(Color v) { accentColor.set(v); }
     public Color getAccentColor() { return accentColor.get(); }
-
-    public void setValue(String v) { value.set(v); }
-    public void setValue(double v, int decimals) { value.set(String.format("%." + decimals + "f", v)); }
+    public void setValue(String v) { value.set(v); dataAvailable.set(true); }
+    public void setValue(double v, int decimals) {
+        value.set(String.format("%." + decimals + "f", v));
+        dataAvailable.set(true);
+    }
     public void setUnit(String u) { unit.set(u); }
-    public void setNoData(String label) { value.set(label); unit.set(""); }
+    public void setNoData(String label) { value.set(label); unit.set(""); dataAvailable.set(false); }
 
     public StringProperty valueProperty() { return value; }
     public StringProperty unitProperty() { return unit; }
-
+    public BooleanProperty dataAvailableProperty() { return dataAvailable; }
 }

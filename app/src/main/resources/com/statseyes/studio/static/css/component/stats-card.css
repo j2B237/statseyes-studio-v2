@@ -1,0 +1,23 @@
+.stats-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.08), 14, 0, 0, 4);
+}
+
+.stats-card-title {
+    -fx-text-fill: #3A3D45;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+}
+
+.stats-card-value {
+    -fx-text-fill: #1C1E21;
+    -fx-font-weight: 700;
+    -fx-font-size: 26px;
+}
+
+.stats-card-unit {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 3 4;
+}
