@@ -1,0 +1,61 @@
+------------------------------------------------------------------
+   --  FORMAT SUR CARTE -- CONTRAT AVEC L'OUTIL PC (StatsEyes)
+   --
+   --  Toutes les valeurs multi-octets sont en LITTLE-ENDIAN (natif
+   --  x86/PC, pas de conversion cote outil).
+   --
+   --  BLOC 0 : EN-TETE (512 octets, un seul par carte)
+   --  --------------------------------------------------
+   --   Offset  Taille  Champ
+   --    0       4      Magic       = "PODL" (ASCII, sans '\0')
+   --    4       1      Version     = 2
+   --    5       3      Reserve (0)
+   --    8       4      Next_Free_Block (Unsigned_32) : premier
+   --                   bloc de donnees libre. Reste identique tant
+   --                   qu'aucune donnee n'a ete ecrite ; mis a jour
+   --                   apres chaque Flush.
+   --   12       4      Session_Count (Unsigned_32) : nombre total
+   --                   de sessions demarrees depuis le formatage.
+   --   16..511  ---    Reserve (0), libre pour extension future.
+   --
+   --  BLOCS 1..N : DONNEES
+   --  --------------------------------------------------
+   --  12 enregistrements de 40 octets par bloc (512 / 40 = 12,
+   --  reste 32 octets de bourrage a 0 en fin de bloc -- inoffensif,
+   --  l'outil PC ne lit que RECORDS_PER_BLOCK enregistrements par
+   --  bloc, jamais au-dela). Un enregistrement avec Record_Type = 0
+   --  signifie "pas de donnee" (fin du flux utile dans ce bloc) --
+   --  l'outil PC doit s'arreter des qu'il en rencontre un.
+   --
+   --  ENREGISTREMENT (40 octets) -- VERSION 2
+   --  --------------------------------------------------
+   --   Offset  Taille  Champ
+   --    0       1      Record_Type (Unsigned_8) :
+   --                      0 = vide / fin de flux utile
+   --                      1 = echantillon GPS/IMU
+   --                      2 = debut de session
+   --                      3 = fin de session
+   --    1       3      Reserve (0, alignement)
+   --    4       4      Sample_Index (Unsigned_32) : compteur
+   --                   d'echantillon global (Record_Type=1), ou
+   --                   numero de session (Record_Type=2/3).
+   --    8       4      Time_MS (Unsigned_32) : millisecondes
+   --                   depuis minuit UTC (0 .. 86_399_999).
+   --                   Cote Java : LocalTime.ofNanoOfDay(v * 1e6).
+   --   12       4      Latitude  (Integer_32) : degres * 10^7
+   --   16       4      Longitude (Integer_32) : degres * 10^7
+   --   20       4      Speed   (Integer_32) : vitesse sol, cm/s
+   --   24       2      Course  (Integer_16) : cap vrai, degres * 10
+   --                   (0 .. 3599)
+   --   26       2      Accel_X (Integer_16)
+   --   28       2      Accel_Y (Integer_16)
+   --   30       2      Accel_Z (Integer_16)
+   --   32       2      Gyro_X  (Integer_16)
+   --   34       2      Gyro_Y  (Integer_16)
+   --   36       2      Gyro_Z  (Integer_16)
+   --   38       2      Reserve (0)
+   --
+   --  Pour les enregistrements Record_Type = 2 ou 3 (marqueurs de
+   --  session), tous les champs au-dela de Sample_Index valent 0 et
+   --  n'ont pas de signification.
+   ------------------------------------------------------------------
