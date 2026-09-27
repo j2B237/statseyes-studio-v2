@@ -1,10 +1,10 @@
 package com.statseyes.studio.application.port;
 
-import com.statseyes.studio.domain.model.GpsData;
+import com.statseyes.studio.domain.model.PodSessionData;
 
 import java.nio.file.Path;
 import java.util.List;
 
 public interface PodFileImportPort {
-    List<GpsData> parse(Path binaryFilePath);
+    List<PodSessionData> parse(Path binaryFilePath);
 }
