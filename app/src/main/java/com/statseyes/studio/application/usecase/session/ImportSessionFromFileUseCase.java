@@ -11,6 +11,7 @@ import com.statseyes.studio.domain.service.SessionMetricsCalculator;
 
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -31,24 +32,23 @@ public class ImportSessionFromFileUseCase {
 
     }
 
-    public List<ImportedSession> execute(Path binaryFilePath){
-        List<PodSessionData> sessions = listSessionsInFile(binaryFilePath);
+    public List<ImportedSession> execute(InputStream binaryStream, String sourceLabel){
+        List<PodSessionData> sessions = listSessionsInFile(binaryStream);
 
         if(sessions.isEmpty()){
-            throw new PodFileFormatException("Aucune session trouvee dans ce fichier.");
+            throw new PodFileFormatException("Aucune session trouvee dans ce flux.");
         }
 
-        String fileName = binaryFilePath.getFileName().toString();
         return sessions.stream()
                 .map(session -> {
                     SessionMetrics metrics = computeMetrics(session);
-                    return importedSessionRepository.save(session, metrics, fileName);
+                    return importedSessionRepository.save(session, metrics, sourceLabel);
                 })
                 .toList();
     }
 
-    public List<PodSessionData> listSessionsInFile(Path binaryFilePath) {
-        return podFileImportPort.parse(binaryFilePath);
+    public List<PodSessionData> listSessionsInFile(InputStream binaryStream) {
+        return podFileImportPort.parse(binaryStream);
     }
 
     public SessionMetrics computeMetrics(PodSessionData session) {

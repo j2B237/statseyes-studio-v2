@@ -59,3 +59,20 @@
    --  session), tous les champs au-dela de Sample_Index valent 0 et
    --  n'ont pas de signification.
    ------------------------------------------------------------------
+
+
+
+Prochain PROMPT
+
+Voulez-vous que je mette à jour BinaryPodFileAdapter/PodFileHeader/ImportedSession pour propager
+ce podSerial jusqu'à la persistance, maintenant que la source est fiable ?
+
+
+EVOLUTION
+
+Sur l'emplacement du fichier et la règle métier pod↔session
+com/statseyes/studio/data/dump.bin en ressource classpath convient très bien pour l'instant
+(fixture de test, comme votre full-logo.jpeg existant) — mais notez que ça ne survivra pas tel quel
+à l'USB réel : un fichier produit par un vrai import devra vivre sur le disque (hors JAR, donc hors classpath),
+typiquement ~/.statseyes/imports/.
+Pas grave pour aujourd'hui, juste à garder en tête.
