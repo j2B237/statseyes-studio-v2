@@ -76,3 +76,29 @@ com/statseyes/studio/data/dump.bin en ressource classpath convient très bien po
 à l'USB réel : un fichier produit par un vrai import devra vivre sur le disque (hors JAR, donc hors classpath),
 typiquement ~/.statseyes/imports/.
 Pas grave pour aujourd'hui, juste à garder en tête.
+
+
+
+ATHLETE VIEW CONTROLLER
+
+``
+    public void importPodDump() {
+        importStatus.set("Import en cours...");
+
+        backgroundTaskRunner.run(
+            () -> {
+                try (InputStream in = getClass().getResourceAsStream("/com/statseyes/studio/data/dump.bin")) {
+                    if (in == null) {
+                        throw new PodFileFormatException("dump.bin introuvable dans les ressources");
+                    }
+                    return importPodFileUseCase.execute(in, "dump.bin");
+                }
+            },
+            importedSessions -> {
+                importStatus.set("Import termine : " + importedSessions.size() + " session(s)");
+                applyLatestMetrics(importedSessions);   // met a jour les StatsCard
+            },
+            error -> importStatus.set("Erreur d'import : " + error.getMessage())
+        );
+    }
+``

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.statseyes.studio.presentation.component.StatsCard?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.statseyes.studio.presentation.home.HomeViewController"
+            styleClass="home-root"
+            stylesheets="@../../static/css/home/home.css">
+    
+    <left>
+        <VBox styleClass="home-sidebar" spacing="18" prefWidth="64">
+            <Button styleClass="home-sidebar-icon, selected" text="▦"/>
+            <Button styleClass="home-sidebar-icon" text="👥"/>
+            <Button styleClass="home-sidebar-icon" text="👤"/>
+            <Button styleClass="home-sidebar-icon" text="⚙"/>
+            <Button styleClass="home-sidebar-icon" text="📊"/>
+        </VBox>
+    </left>
+    
+    <center>
+        <VBox spacing="20" style="-fx-padding: 24;">
+            
+            <HBox styleClass="home-topbar" spacing="16" alignment="CENTER_LEFT">
+                <TextField promptText="Rechercher un athlete, une equipe..." styleClass="home-search" HBox.hgrow="ALWAYS"/>
+                <Label text="🔔"/>
+                <VBox alignment="CENTER_RIGHT">
+                    <Label fx:id="userNameLabel" styleClass="home-username" text="Nom Utilisateur"/>
+                    <Label text="Preparateur" styleClass="home-userrole"/>
+                </VBox>
+            </HBox>
+            
+            <HBox spacing="20">
+                
+                <StackPane styleClass="hero-panel" HBox.hgrow="ALWAYS" prefHeight="360">
+                    <ImageView fx:id="clubLogoBackground" fitWidth="480" preserveRatio="true" opacity="0.9"/>
+                    <StackPane styleClass="hero-overlay"/>
+                    <VBox alignment="BOTTOM_LEFT" style="-fx-padding: 24;" spacing="10">
+                        <Label text="Centre de controle" styleClass="hero-title"/>
+                        <HBox spacing="8">
+                            <Label text="Athletes" styleClass="hero-pill"/>
+                            <Label text="Equipes" styleClass="hero-pill"/>
+                            <Label text="Seances" styleClass="hero-pill"/>
+                        </HBox>
+                    </VBox>
+                </StackPane>
+                
+                <GridPane hgap="16" vgap="16" prefWidth="360">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                    <StatsCard fx:id="athletesCountCard" title="Athletes"
+                               iconGlyph="👤" accentColor="#4F8EF7"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <StatsCard fx:id="teamsCountCard" title="Equipes"
+                               iconGlyph="👥" accentColor="#34C759"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <StatsCard fx:id="sessionsCountCard" title="Seances importees"
+                               iconGlyph="📥" accentColor="#FFB020"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <StatsCard fx:id="lastImportCard" title="Dernier import"
+                               iconGlyph="🕒" accentColor="#FF5A5F"
+                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

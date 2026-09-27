@@ -72,7 +72,7 @@ public class LoginViewController implements ViewManagerAware {
             viewModel.displayErrorMessage(Error_Type.AUTHENTICATION_FAILED.getMessage());
         }
         else{
-            viewManager.navigateTo("dashboard/DashboardView.fxml");
+            viewManager.navigateTo("home/HomeView.fxml");
         }
     }
 

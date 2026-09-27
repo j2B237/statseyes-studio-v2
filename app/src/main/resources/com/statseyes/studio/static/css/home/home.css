@@ -1,0 +1,47 @@
+.home-root {
+    -fx-background-color: #F3F4F7;
+}
+
+.home-sidebar {
+    -fx-background-color: white;
+    -fx-padding: 20 12;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 8, 0, 2, 0);
+}
+
+.home-sidebar-icon {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-font-size: 16px;
+}
+.home-sidebar-icon:hover { -fx-background-color: #F0F1F4; }
+.home-sidebar-icon.selected { -fx-background-color: #1C1E21; -fx-text-fill: white; }
+
+.home-topbar {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 20 0;
+}
+.home-search {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14;
+}
+.home-username { -fx-font-weight: 600; -fx-text-fill: #1C1E21; }
+.home-userrole { -fx-text-fill: #9AA0A6; -fx-font-size: 11px; }
+
+.hero-panel {
+    -fx-background-radius: 20;
+    -fx-background-color: #2B3240;
+}
+.hero-overlay {
+    -fx-background-color: linear-gradient(to bottom, rgba(20,25,35,0.35), rgba(15,18,26,0.85));
+    -fx-background-radius: 20;
+}
+.hero-title { -fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: 700; }
+.hero-pill {
+    -fx-background-color: rgba(255,255,255,0.15);
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+    -fx-padding: 6 14;
+    -fx-font-size: 12px;
+}
