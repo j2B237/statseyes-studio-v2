@@ -1,7 +1,7 @@
 package com.statseyes.studio.presentation.navigation;
 
 import com.statseyes.studio.domain.config.Error_Type;
-import com.statseyes.studio.infrastructure.security.SessionService;
+import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import lombok.Setter;
 
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class ViewManager{
 
     private final ConfigurableApplicationContext springContext;
-    private final SessionService sessionService;
+    private final SessionAdapter sessionAdapter;
 
     @Setter
     private Scene mainScene;
@@ -27,10 +27,10 @@ public class ViewManager{
 
     public ViewManager(
             ConfigurableApplicationContext springContext,
-           SessionService sessionService
+           SessionAdapter sessionAdapter
     ){
         this.springContext = springContext;
-        this.sessionService = sessionService;
+        this.sessionAdapter = sessionAdapter;
     }
 
     public ConfigurableApplicationContext getApplicationContext(){
@@ -45,13 +45,13 @@ public class ViewManager{
 
     // Redirection uniquement si utilisateur authentifie
     public void redirectIfAuthenticated(String viewPath){
-        if(sessionService.isAuthenticated() == Error_Type.AUTHENTICATION_SUCCESS){
+        if(sessionAdapter.isAuthenticated() == Error_Type.AUTHENTICATION_SUCCESS){
             loadView(viewPath);
         }
     }
 
     public void redirectIfNotAuthenticated(String viewPath){
-        if (sessionService.isAuthenticated() == Error_Type.AUTHENTICATION_FAILED){
+        if (sessionAdapter.isAuthenticated() == Error_Type.AUTHENTICATION_FAILED){
             loadView(viewPath);
         }
     }

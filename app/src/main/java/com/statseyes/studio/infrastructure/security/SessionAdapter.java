@@ -13,16 +13,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.springframework.stereotype.Component;
 
 /**
-* <p>SessionService is a spring component used to manage
-* user session through navigation in the app.
-* Spring already manages this as a singleton bean (default scope),
-* so no manual singleton pattern is needed here.
+* <p>SessionAdapter is a spring component that implements userSessionPort
+ *.Interface that provides methods for user's authentication use case.
+ *Spring already manages this as a singleton bean (default scope),
+ * so no manual singleton pattern is needed here.
  * </p>
 *
  */
 
 @Component
-public class SessionService implements UserSessionPort {
+public class SessionAdapter implements UserSessionPort {
 
     private final ObjectProperty<AuthenticatedUser> currentUser =
             new SimpleObjectProperty<>();

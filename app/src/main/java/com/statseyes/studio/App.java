@@ -5,7 +5,7 @@ package com.statseyes.studio;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.presentation.navigation.ViewManager;
-import com.statseyes.studio.infrastructure.security.SessionService;
+import com.statseyes.studio.infrastructure.security.SessionAdapter;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,22 +20,17 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class App extends Application{
 
     private ConfigurableApplicationContext springContext;
-    private SessionService userSession;
+    private SessionAdapter userSession;
 
     @Override
     public void init(){
 
-        // Demarrage de spring boot en mode headless
         String[] args = getParameters().getRaw().toArray(new String[0]);
         this.springContext = new SpringApplicationBuilder()
                 .sources(App.class)
                 .headless(false)
                 .run(args);
-
-        // On va chercher explicitement le bean dans le contexte,
-        // puisque App n'est pas gere par Spring et ne peut pas etre autoWire
-
-        this.userSession = this.springContext.getBean(SessionService.class);
+        this.userSession = this.springContext.getBean(SessionAdapter.class);
     }
 
     @Override
