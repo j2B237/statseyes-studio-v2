@@ -1,8 +1,7 @@
 package com.statseyes.studio.infrastructure.persistence.adapter;
 
-import com.statseyes.studio.application.port.ImportSessionRepositoryPort;
+import com.statseyes.studio.application.port.ImportedSessionRepositoryPort;
 
-import com.statseyes.studio.domain.model.GpsData;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.domain.model.PodSessionData;
 import com.statseyes.studio.domain.model.SessionMetrics;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class JpaImportedSessionRepositoryAdapter implements ImportSessionRepositoryPort{
+public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepositoryPort {
 
     private final ImportedPodSessionJpaRepository repository;
 

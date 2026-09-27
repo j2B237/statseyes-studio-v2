@@ -6,9 +6,8 @@ import com.statseyes.studio.domain.exception.AuthenticationFailedException;
 import com.statseyes.studio.domain.model.AuthenticatedUser;
 import com.statseyes.studio.infrastructure.persistence.entity.AccountEntity;
 import com.statseyes.studio.infrastructure.persistence.mapper.AccountMapper;
-import com.statseyes.studio.infrastructure.security.SecurityConfig;
 
-import com.statseyes.studio.infrastructure.persistence.service.AccountLookupService;
+import com.statseyes.studio.domain.service.AccountLookupService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

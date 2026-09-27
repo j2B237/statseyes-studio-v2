@@ -1,4 +1,4 @@
-package com.statseyes.studio.infrastructure.persistence.service;
+package com.statseyes.studio.domain.service;
 
 import com.statseyes.studio.infrastructure.persistence.entity.AccountEntity;
 import com.statseyes.studio.infrastructure.persistence.repository.AccountJpaRepository;
