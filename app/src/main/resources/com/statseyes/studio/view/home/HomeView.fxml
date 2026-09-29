@@ -38,10 +38,10 @@
                     <ImageView fx:id="clubLogoBackground" fitWidth="480" preserveRatio="true" opacity="0.9"/>
                     <StackPane styleClass="hero-overlay"/>
                     <VBox alignment="BOTTOM_LEFT" style="-fx-padding: 24;" spacing="10">
-                        <Label text="Centre de controle" styleClass="hero-title"/>
+                        <Label text="NOM Du CLUB" styleClass="hero-title"/>
                         <HBox spacing="8">
                             <Label text="Athletes" styleClass="hero-pill"/>
-                            <Label text="Equipes" styleClass="hero-pill"/>
+                            <Label text="Équipes" styleClass="hero-pill"/>
                             <Label text="Seances" styleClass="hero-pill"/>
                         </HBox>
                     </VBox>
