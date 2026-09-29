@@ -29,7 +29,8 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
     public ImportedSession save(
             PodSessionData sessionData,
             SessionMetrics metrics,
-            String sourceFileName
+            String sourceFileName,
+            Integer accountId
     ){
         ImportedPodSessionEntity entity = ImportedPodSessionEntity.builder()
                 .podSessionNumber(sessionData.sessionNumber())
@@ -40,6 +41,7 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
                 .avgSpeedKmh(metrics.avgSpeedKmh())
                 .sprintCount(metrics.sprintCount())
                 .dominantCourseDeg(metrics.dominantCourseDegrees())
+                .accountId(accountId)
                 .build();
 
         sessionData.samples().forEach(sample -> {

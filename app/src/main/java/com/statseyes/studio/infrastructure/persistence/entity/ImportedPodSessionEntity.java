@@ -36,9 +36,12 @@ public class ImportedPodSessionEntity {
     @Column(name = "sprint_count")       private Integer sprintCount;
     @Column(name = "dominant_course_deg") private Double dominantCourseDeg;
 
-    // Athlete/TrainingSession nullable pour l'instant -- assignation faite
+    // Athlete/TrainingSession nullable pour l'instant assignation faite
     // plus tard depuis l'UI, pas au moment de l'import brut.
     @Column(name = "athlete_id") private Integer athleteId;
+
+    @Column(name = "account_id")
+    private Integer accountId;
 
     @OneToMany(mappedBy = "importedSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GpsPointEntity> points = new ArrayList<>();

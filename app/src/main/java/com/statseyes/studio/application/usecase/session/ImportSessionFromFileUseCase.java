@@ -32,7 +32,11 @@ public class ImportSessionFromFileUseCase {
 
     }
 
-    public List<ImportedSession> execute(InputStream binaryStream, String sourceLabel){
+    public List<ImportedSession> execute(
+            InputStream binaryStream,
+            String sourceLabel,
+            Integer accountId
+    ){
         List<PodSessionData> sessions = listSessionsInFile(binaryStream);
 
         if(sessions.isEmpty()){
@@ -42,7 +46,7 @@ public class ImportSessionFromFileUseCase {
         return sessions.stream()
                 .map(session -> {
                     SessionMetrics metrics = computeMetrics(session);
-                    return importedSessionRepository.save(session, metrics, sourceLabel);
+                    return importedSessionRepository.save(session, metrics, sourceLabel, accountId);
                 })
                 .toList();
     }

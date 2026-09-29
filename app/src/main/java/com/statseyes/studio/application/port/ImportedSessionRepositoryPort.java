@@ -7,7 +7,8 @@ public interface ImportedSessionRepositoryPort {
     ImportedSession save(
             PodSessionData sessionData,
             SessionMetrics metrics,
-            String sourceFileName
+            String sourceFileName,
+            Integer accountId
     );
 
     List<ImportedSession> findAll();
