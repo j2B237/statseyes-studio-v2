@@ -1,0 +1,5 @@
+/* athlete-details.css */
+.athlete-details-root { -fx-background-color: #F3F4F7; }
+.athlete-name { -fx-font-size: 22px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
+.athlete-subtitle { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
+.import-status { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
