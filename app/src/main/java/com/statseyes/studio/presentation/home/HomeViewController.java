@@ -8,15 +8,19 @@ import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 
 
+import com.statseyes.studio.presentation.template.TemplateViewController;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.beans.value.ChangeListener;
 
+import javafx.scene.input.MouseEvent;
 import org.springframework.stereotype.Controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class HomeViewController implements ViewManagerAware {
@@ -26,6 +30,10 @@ public class HomeViewController implements ViewManagerAware {
     // ===================
 
     @FXML private Label userNameLabel;
+    @FXML private Label athletesLabel;
+    @FXML private Label teamsLabel;
+    @FXML private Label sessionsLabel;
+
     @FXML private ImageView clubLogoBackground;
     @FXML private StatsCard athletesCountCard;
     @FXML private StatsCard teamsCountCard;
@@ -42,6 +50,10 @@ public class HomeViewController implements ViewManagerAware {
 
     private final HomeViewModel viewModel;
     private final SessionAdapter sessionService;
+    private final TemplateViewController templateViewController;
+
+
+    private List<Label> sidebarLabels = new ArrayList<>();
 
     private ViewManager viewManager;
 
@@ -60,13 +72,21 @@ public class HomeViewController implements ViewManagerAware {
 
     public HomeViewController(
             HomeViewModel viewModel,
-            SessionAdapter sessionService
+            SessionAdapter sessionService,
+            TemplateViewController templateViewController
     ){
         this.viewModel = viewModel;
         this.sessionService = sessionService;
+        this.templateViewController = templateViewController;
     }
 
     public void initialize(){
+
+        sidebarLabels.add(athletesLabel);
+        sidebarLabels.add(teamsLabel);
+        sidebarLabels.add(sessionsLabel);
+
+
         AuthenticatedUser user = sessionService.getCurrentUser();
 
         if(user != null){
@@ -113,4 +133,37 @@ public class HomeViewController implements ViewManagerAware {
             lastImportCard.setUnit(summary.lastImportedAt().format(HOUR_FORMAT));
         }
     }
+
+
+    // =======================
+    // PROTECTED API
+    // =======================
+
+    @FXML
+    private void handleSidebarClick(MouseEvent event) {
+        Label clickedLabel = (Label) event.getSource();
+        String selectedOption = clickedLabel.getText();
+
+        // Logique de navigation ou d'action
+        System.out.println("Option sélectionnée : " + selectedOption);
+        switch (selectedOption) {
+            case "Athletes":
+                templateViewController.loadAthletesView();
+                break;
+            case "Équipes":
+                templateViewController.loadTeamsView();
+                break;
+            case "Seances":
+                templateViewController.loadSessionsView();
+                break;
+            default:
+                break;
+        }
+
+        // Mettre à jour l'apparence de l'élément sélectionné
+        //updateSelectedLabel(clickedLabel);
+    }
+
+
+
 }

@@ -3,4 +3,10 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/26" />
+<VBox xmlns="http://javafx.com/javafx/26"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="contentContainer"
+      fx:controller="com.statseyes.studio.presentation.template.TemplateViewController">
+    
+    
+</VBox>

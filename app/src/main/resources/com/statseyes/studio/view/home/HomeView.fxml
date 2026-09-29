@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/22"
+<BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.statseyes.studio.presentation.home.HomeViewController"
             styleClass="home-root"
@@ -13,10 +13,10 @@
     <left>
         <VBox styleClass="home-sidebar" spacing="18" prefWidth="64">
             <Button styleClass="home-sidebar-icon, selected" text="▦"/>
-            <Button styleClass="home-sidebar-icon" text="👥"/>
-            <Button styleClass="home-sidebar-icon" text="👤"/>
-            <Button styleClass="home-sidebar-icon" text="⚙"/>
-            <Button styleClass="home-sidebar-icon" text="📊"/>
+            <Label fx:id="teamsLabel" styleClass="home-sidebar-icon" text="👥" onMouseClicked="#handleSidebarClick"/>
+            <Label fx:id="athletesLabel" styleClass="home-sidebar-icon" text="👤" onMouseClicked="#handleSidebarClick"/>
+            <Label fx:id="sessionsLabel" styleClass="home-sidebar-icon" text="📊" onMouseClicked="#handleSidebarClick"/>
+            <Label styleClass="home-sidebar-icon" text="⚙"/>
         </VBox>
     </left>
     
@@ -28,7 +28,7 @@
                 <Label text="🔔"/>
                 <VBox alignment="CENTER_RIGHT">
                     <Label fx:id="userNameLabel" styleClass="home-username" text="Nom Utilisateur"/>
-                    <Label text="Preparateur" styleClass="home-userrole"/>
+                    <Label text="Préparateur" styleClass="home-userrole"/>
                 </VBox>
             </HBox>
             
