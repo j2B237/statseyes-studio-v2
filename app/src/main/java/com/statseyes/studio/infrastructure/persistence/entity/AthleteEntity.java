@@ -1,38 +1,23 @@
 package com.statseyes.studio.infrastructure.persistence.entity;
 
-/*
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
-@Table(name = "athletes")
+import java.time.Instant;
+import java.time.LocalDate;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
+@Table(name = "athletes")
 public class AthleteEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "firstname", nullable = false, length = 150)
@@ -44,65 +29,41 @@ public class AthleteEntity {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @Column(name = "gender", nullable = false, length = 1)
-    private char gender;
+    @Column(name = "gender", nullable = false)
+    private Character gender;
 
-    @Column(name = "height", nullable = true)
-    private Double height;
-
-    @Column(name = "weight", nullable = true)
-    private Double weight;
-
-    @Column(name = "max_speed", nullable = true)
-    private Double maxSpeed;
-
-    @Column(name = "image_url", nullable = true)
+    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private AccountEntity account;
 
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name = "position_id", nullable = false)
-    private Position position;
+    @JoinColumn(name = "position_id", nullable = false)
+    private PositionEntity position;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name = "team_id", nullable = false)
-    private Team team;
+    @JoinColumn(name = "team_id", nullable = false)
+    private TeamEntity team;
 
-    @PrePersist
-    private void onCreate() {
-        LocalDateTime now = LocalDateTime.now();
-        createdAt = now;
-        updatedAt = now;
-    }
+    @Column(name = "height")
+    private Double height;
 
-    @PreUpdate
-    private void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(name = "max_speed")
+    private Double maxSpeed;
+
+    @Column(name = "weight")
+    private Double weight;
 
 
-    @Override
-    public String toString(){
-        return String.format(
-               firstname + " " + lastname
-        );
-    }
-
-    public String getStatus() {
-        return "valide";
-    }
-
-    public String getDevice() {
-        return "pod-xxx";
-    }
 }
-*/
