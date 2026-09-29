@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="snapshotDb" value="false" />
+    <option name="snapshotDbValue" value="b0d9d9ad-53d8-45c2-aafb-0ee5eff295bc" />
+    <option name="snapshotDirValue" value="$PROJECT_DIR$" />
+    <option name="snapshotModelValue" value="statseyes-studio.app.main:entityManagerFactory" />
+    <option name="sourceModelValue" value="statseyes-studio.app.main:entityManagerFactory" />
+    <option name="targetDbValue" value="b0d9d9ad-53d8-45c2-aafb-0ee5eff295bc" />
+  </component>
+</project>
