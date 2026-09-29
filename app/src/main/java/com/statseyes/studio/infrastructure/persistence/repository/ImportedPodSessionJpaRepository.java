@@ -4,12 +4,19 @@ import com.statseyes.studio.infrastructure.persistence.entity.ImportedPodSession
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ImportedPodSessionJpaRepository extends JpaRepository<ImportedPodSessionEntity, Integer>{
 
+    long countByAccountId(Integer accountId);
     ImportedPodSessionEntity save(@NonNull ImportedPodSessionEntity entity);
     List<ImportedPodSessionEntity> findAll();
+
+    @Query("SELECT MAX(s.importedAt) FROM ImportedPodSessionEntity s WHERE s.accountId = :accountId")
+    LocalDateTime findLastImportedAt(@Param("accountId") Integer accountId);
 
 }
