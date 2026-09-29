@@ -11,10 +11,12 @@
       spacing="20" style="-fx-padding: 24;">
     
     <HBox spacing="16" alignment="CENTER_LEFT">
+        <Button text="← Retour" onAction="#onBack" styleClass="secondary-button"/>
         <VBox HBox.hgrow="ALWAYS">
             <Label fx:id="athleteNameLabel" styleClass="athlete-name" text="—"/>
             <Label fx:id="athleteSubtitleLabel" styleClass="athlete-subtitle" text="—"/>
         </VBox>
+        
         <Button fx:id="importButton" text="Importer dump.bin" onAction="#onImportDump"/>
     </HBox>
     

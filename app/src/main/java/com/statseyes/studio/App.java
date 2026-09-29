@@ -4,6 +4,7 @@
 package com.statseyes.studio;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
+import com.statseyes.studio.presentation.navigation.SectionNavigator;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 
@@ -41,6 +42,9 @@ public class App extends Application{
         ViewManager viewManager = new ViewManager(
                 this.springContext,
                 this.userSession);
+
+        // VERY IMPORTANT : Without this there is no navigation
+        springContext.getBean(SectionNavigator.class).setViewManager(viewManager);
 
         // Create javafx scene
         Scene scene = new Scene(new StackPane());

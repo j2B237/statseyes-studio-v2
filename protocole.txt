@@ -105,3 +105,89 @@ ATHLETE VIEW CONTROLLER
 
 
 en te basant sur ma vue HomeView.fxml, creer une nouvelle vue AthletesView.fxml adapte au meme design. Ensuite cree le controller, viewModel et autres. Ainsi en cliquant sur un athlete je suis rediriger sur les details d'un athlete. N'oublie pas le control de retour pour naviguer entre les vues
+
+
+
+
+// presentation/home/HomeViewController.java
+package com.statseyes.studio.presentation.home;
+
+import com.statseyes.studio.domain.model.AccountSummary;
+import com.statseyes.studio.domain.model.AuthenticatedUser;
+import com.statseyes.studio.infrastructure.security.SessionService;
+import com.statseyes.studio.presentation.component.StatsCard;
+import com.statseyes.studio.presentation.navigation.ViewManager;
+import com.statseyes.studio.presentation.navigation.ViewManagerAware;
+
+import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import org.springframework.stereotype.Controller;
+
+import java.time.format.DateTimeFormatter;
+
+@Controller
+public class HomeViewController implements ViewManagerAware {
+
+    private static final DateTimeFormatter DAY_FORMAT  = DateTimeFormatter.ofPattern("dd/MM");
+    private static final DateTimeFormatter HOUR_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
+
+    @FXML private Label userNameLabel;
+    @FXML private StatsCard athletesCountCard;
+    @FXML private StatsCard teamsCountCard;
+    @FXML private StatsCard sessionsCountCard;
+    @FXML private StatsCard lastImportCard;
+
+    private final HomeViewModel viewModel;
+    private final SessionService sessionService;
+    private ViewManager viewManager;
+
+    // Champ (et non lambda locale) : le contrôleur est un singleton Spring, donc
+    // initialize() est rappelé à chaque navigation. Avec un listener stocké, on peut
+    // le retirer avant de le rajouter et éviter l'accumulation de listeners vers
+    // d'anciennes cartes (même piège que dans AthletesViewModel).
+    private final ChangeListener<AccountSummary> summaryListener =
+            (obs, oldValue, newValue) -> render(newValue);
+
+    public HomeViewController(HomeViewModel viewModel, SessionService sessionService) {
+        this.viewModel = viewModel;
+        this.sessionService = sessionService;
+    }
+
+    @Override
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
+
+    public void initialize() {
+        AuthenticatedUser user = sessionService.getCurrentUser();
+        if (user != null) {
+            userNameLabel.setText(user.firstName() + " " + user.lastName());
+        }
+
+        athletesCountCard.setNoData("--");
+        teamsCountCard.setNoData("--");
+        sessionsCountCard.setNoData("--");
+        lastImportCard.setNoData("--");
+
+        viewModel.summaryProperty().removeListener(summaryListener);
+        viewModel.summaryProperty().addListener(summaryListener);
+
+        viewModel.load();
+    }
+
+    private void render(AccountSummary summary) {
+        if (summary == null) return;
+
+        athletesCountCard.setValue(String.valueOf(summary.athleteCount()));
+        teamsCountCard.setValue(String.valueOf(summary.teamCount()));
+        sessionsCountCard.setValue(String.valueOf(summary.importedSessionCount()));
+
+        if (summary.lastImportedAt() == null) {
+            lastImportCard.setNoData("Aucun");
+        } else {
+            lastImportCard.setValue(summary.lastImportedAt().format(DAY_FORMAT));
+            lastImportCard.setUnit(summary.lastImportedAt().format(HOUR_FORMAT));
+        }
+    }
+}

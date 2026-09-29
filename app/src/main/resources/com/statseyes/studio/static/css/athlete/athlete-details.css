@@ -3,3 +3,20 @@
 .athlete-name { -fx-font-size: 22px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
 .athlete-subtitle { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
 .import-status { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
+.secondary-button {
+    -fx-background-color: white;
+    -fx-text-fill: #1C1E21;
+    -fx-border-color: #E4E5EA;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+.secondary-button:hover {
+    -fx-background-color: #F5F6F8;
+}
+.secondary-button:pressed {
+    -fx-background-color: #ECEDF0;
+}

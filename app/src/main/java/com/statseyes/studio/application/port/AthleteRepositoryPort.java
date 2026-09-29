@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface AthleteRepositoryPort {
 
-    Athlete findById(Integer athleteId);
-
-    List<Athlete> findAllByCurrentAccount();
+    Athlete findById(Integer athleteId, Integer accountId);
+    List<Athlete> findAllByAccount(Integer accountId);
 }

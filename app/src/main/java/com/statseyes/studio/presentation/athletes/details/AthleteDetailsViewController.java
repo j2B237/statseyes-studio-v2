@@ -8,6 +8,7 @@ import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 import com.statseyes.studio.presentation.component.StatsCard;
 
+import com.statseyes.studio.presentation.template.TemplateViewController;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,6 +36,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // INSTANCE VARIABLES
     // ===================
 
+    private final TemplateViewController templateViewController;
     private final AthleteDetailsViewModel viewModel;
     private ViewManager viewManager;
     private Integer pendingAthleteId;
@@ -58,9 +60,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // ===================
 
     public AthleteDetailsViewController(
-            AthleteDetailsViewModel viewModel
+            AthleteDetailsViewModel viewModel,
+            TemplateViewController templateViewController
     ){
         this.viewModel = viewModel;
+        this.templateViewController = templateViewController;
     }
 
     @Override
@@ -132,5 +136,10 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML
     protected void onImportDump(ActionEvent event){
         viewModel.importDumpForCurrentAthlete();
+    }
+
+    @FXML
+    protected void onBack() {
+        templateViewController.loadAthletesView();
     }
 }
