@@ -35,18 +35,19 @@ public class ImportSessionFromFileUseCase {
     public List<ImportedSession> execute(
             InputStream binaryStream,
             String sourceLabel,
-            Integer accountId
+            Integer accountId,
+            Integer athleteId
     ){
         List<PodSessionData> sessions = listSessionsInFile(binaryStream);
 
         if(sessions.isEmpty()){
-            throw new PodFileFormatException("Aucune session trouvee dans ce flux.");
+            throw new PodFileFormatException("Aucune session trouvée dans ce flux.");
         }
 
         return sessions.stream()
                 .map(session -> {
                     SessionMetrics metrics = computeMetrics(session);
-                    return importedSessionRepository.save(session, metrics, sourceLabel, accountId);
+                    return importedSessionRepository.save(session, metrics, sourceLabel, accountId, athleteId);
                 })
                 .toList();
     }

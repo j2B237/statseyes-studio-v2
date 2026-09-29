@@ -8,8 +8,10 @@ public interface ImportedSessionRepositoryPort {
             PodSessionData sessionData,
             SessionMetrics metrics,
             String sourceFileName,
-            Integer accountId
+            Integer accountId,
+            Integer athleteId
     );
 
     List<ImportedSession> findAll();
+    List<ImportedSession> findByAthleteId(Integer athleteId);
 }

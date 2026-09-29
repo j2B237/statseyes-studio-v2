@@ -12,10 +12,8 @@ import java.util.List;
 
 public interface ImportedPodSessionJpaRepository extends JpaRepository<ImportedPodSessionEntity, Integer>{
 
+    List<ImportedPodSessionEntity> findByAthleteIdOrderByImportedAtDesc(Integer athleteId);
     long countByAccountId(Integer accountId);
-    ImportedPodSessionEntity save(@NonNull ImportedPodSessionEntity entity);
-    List<ImportedPodSessionEntity> findAll();
-
     @Query("SELECT MAX(s.importedAt) FROM ImportedPodSessionEntity s WHERE s.accountId = :accountId")
     LocalDateTime findLastImportedAt(@Param("accountId") Integer accountId);
 

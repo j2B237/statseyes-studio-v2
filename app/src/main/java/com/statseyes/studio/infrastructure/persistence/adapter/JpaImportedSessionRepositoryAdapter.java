@@ -5,6 +5,8 @@ import com.statseyes.studio.application.port.ImportedSessionRepositoryPort;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.domain.model.PodSessionData;
 import com.statseyes.studio.domain.model.SessionMetrics;
+import com.statseyes.studio.infrastructure.persistence.mapper.ImportedSessionMapper;
+import com.statseyes.studio.infrastructure.persistence.mapper.SessionMetricsMapper;
 import com.statseyes.studio.infrastructure.persistence.entity.GpsPointEntity;
 import com.statseyes.studio.infrastructure.persistence.entity.ImportedPodSessionEntity;
 import com.statseyes.studio.infrastructure.persistence.repository.ImportedPodSessionJpaRepository;
@@ -17,20 +19,28 @@ import java.util.List;
 @Component
 public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepositoryPort {
 
-    private final ImportedPodSessionJpaRepository repository;
+        private final ImportedPodSessionJpaRepository repository;
+    private final ImportedSessionMapper sessionMapper;
+    private final SessionMetricsMapper metricsMapper;
 
     public JpaImportedSessionRepositoryAdapter(
-            ImportedPodSessionJpaRepository repository
+            ImportedPodSessionJpaRepository repository,
+            ImportedSessionMapper sessionMapper,
+            SessionMetricsMapper metricsMapper
     ){
         this.repository = repository;
+        this.sessionMapper = sessionMapper;
+        this.metricsMapper = metricsMapper;
     }
 
     @Override
+    @Transactional
     public ImportedSession save(
             PodSessionData sessionData,
             SessionMetrics metrics,
             String sourceFileName,
-            Integer accountId
+            Integer accountId,
+            Integer athleteId
     ){
         ImportedPodSessionEntity entity = ImportedPodSessionEntity.builder()
                 .podSessionNumber(sessionData.sessionNumber())
@@ -42,6 +52,7 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
                 .sprintCount(metrics.sprintCount())
                 .dominantCourseDeg(metrics.dominantCourseDegrees())
                 .accountId(accountId)
+                .athleteId(athleteId)
                 .build();
 
         sessionData.samples().forEach(sample -> {
@@ -57,13 +68,8 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
             entity.getPoints().add(point);
         });
 
-        ImportedPodSessionEntity saved = repository.save(entity);
-
-        return new ImportedSession(
-                saved.getId(),
-                saved.getPodSessionNumber(),
-                saved.getSourceFileName(),
-                saved.getImportedAt(),
+        return sessionMapper.toDomain(
+                repository.save(entity),
                 metrics
         );
     }
@@ -73,20 +79,19 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
     public List<ImportedSession> findAll(){
         return repository.findAll().stream()
                 .map(e ->
-                    new ImportedSession(
-                            e.getId(),
-                            e.getPodSessionNumber(),
-                            e.getSourceFileName(),
-                            e.getImportedAt(),
-                            new SessionMetrics(
-                                    e.getTotalDistanceM(),
-                                    e.getMaxSpeedKmh(),
-                                    e.getAvgSpeedKmh(),
-                                    e.getSprintCount(),
-                                    e.getDominantCourseDeg()
-                            )
-                    )
-                ).toList();
+                    sessionMapper.toDomain(e, metricsMapper.metricsOf(e)))
+                .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ImportedSession> findByAthleteId(Integer athleteId){
+        return repository.findByAthleteIdOrderByImportedAtDesc(athleteId)
+                .stream()
+                .map(e -> sessionMapper.toDomain(e, metricsMapper.metricsOf(e)))
+                .toList();
+    }
+
+
 
 }
