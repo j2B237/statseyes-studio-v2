@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DatabaseMigrationSettings" lastSelectedDirectory="$PROJECT_DIR$/app/src/main/resources/db/migration" />
+  <component name="DatabaseMigrationSettings" lastSelectedDirectory="$PROJECT_DIR$/app/src/main/java/com/statseyes/studio/infrastructure/persistence/entity" />
+  <component name="JpaLiquibaseChangesConfig">
+    <exclude-change idName="teams" tagName="dropTable" />
+    <exclude-change idName="positions" tagName="dropTable" />
+    <exclude-change idName="athletes" tagName="dropTable" />
+    <exclude-change idName="address" tagName="dropTable" />
+    <exclude-change idName="account_settings" tagName="dropTable" />
+    <exclude-change idName="fk_teams_account" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="fk_athletes_positions" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="fk_athletes_account" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="address_ibfk_1" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="account_settings_ibfk_1" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="FK_ATHLETES_ON_TEAM" tagName="dropForeignKeyConstraint" />
+  </component>
 </project>

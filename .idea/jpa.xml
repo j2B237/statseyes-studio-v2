@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaBuddyIdeaProjectConfig" ddlLastScriptDirectoryPath="$PROJECT_DIR$/app/src/main/resources/db/migration" />
+  <component name="JpaBuddyIdeaProjectConfig" ddlLastScriptDirectoryPath="$PROJECT_DIR$/app/src/main/resources/db/migration">
+    <option name="reLastEntityCreationPackage" value="app/src/main/java/com/statseyes/studio/infrastructure/persistence/entity" />
+    <option name="reverseEngineeringLastDbConnectionId" value="b0d9d9ad-53d8-45c2-aafb-0ee5eff295bc" />
+  </component>
 </project>

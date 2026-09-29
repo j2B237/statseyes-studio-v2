@@ -86,7 +86,6 @@ public class HomeViewController implements ViewManagerAware {
         sidebarLabels.add(teamsLabel);
         sidebarLabels.add(sessionsLabel);
 
-
         AuthenticatedUser user = sessionService.getCurrentUser();
 
         if(user != null){

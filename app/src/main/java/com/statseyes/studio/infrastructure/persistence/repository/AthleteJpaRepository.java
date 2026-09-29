@@ -35,5 +35,7 @@ public interface AthleteJpaRepository extends JpaRepository<AthleteEntity, Integ
             Integer accountId
     );
 
+    List<AthleteEntity> findAllByAccount_Id(Integer id);
+
     long countByAccount_Id(Integer accountId);
 }

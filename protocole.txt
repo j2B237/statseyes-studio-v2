@@ -102,3 +102,6 @@ ATHLETE VIEW CONTROLLER
         );
     }
 ``
+
+
+en te basant sur ma vue HomeView.fxml, creer une nouvelle vue AthletesView.fxml adapte au meme design. Ensuite cree le controller, viewModel et autres. Ainsi en cliquant sur un athlete je suis rediriger sur les details d'un athlete. N'oublie pas le control de retour pour naviguer entre les vues

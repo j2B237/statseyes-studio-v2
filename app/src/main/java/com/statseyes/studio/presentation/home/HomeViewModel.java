@@ -25,11 +25,9 @@ public class HomeViewModel {
     private final BooleanProperty loading =
             new SimpleBooleanProperty(false);
 
-
     private final GetAccountSummaryUseCase accountSummaryUseCase;
     private final SessionAdapter sessionService;
     private final BackgroundTaskRunner backgroundTaskRunner;
-
 
     // =====================
     // PUBLIC API

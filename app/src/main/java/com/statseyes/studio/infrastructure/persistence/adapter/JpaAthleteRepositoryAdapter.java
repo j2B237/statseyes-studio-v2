@@ -45,6 +45,15 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
         return result.map(athleteMapper::toDomain).orElse(null);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Athlete> findAllByCurrentAccount(){
+        AuthenticatedUser user = requireCurrentAccount();
+        return repository.findAllByAccount_Id(user.id())
+                .stream()
+                .map(athleteMapper::toDomain)
+                .toList();
+    }
 
     // ================
     // PRIVATE API
