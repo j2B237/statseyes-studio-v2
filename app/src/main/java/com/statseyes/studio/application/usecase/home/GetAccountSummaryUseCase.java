@@ -1,11 +1,9 @@
-package com.statseyes.studio.application.usecase.dashboard;
+package com.statseyes.studio.application.usecase.home;
 
 import com.statseyes.studio.application.port.AccountSummaryPort;
 import com.statseyes.studio.domain.model.AccountSummary;
 
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 public class GetAccountSummaryUseCase {

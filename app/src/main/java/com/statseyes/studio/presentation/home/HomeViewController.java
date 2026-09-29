@@ -20,7 +20,21 @@ public class HomeViewController {
     @FXML private StatsCard sessionsCountCard;
     @FXML private StatsCard lastImportCard;
 
+
+    // ======================
+    // PUBLIC API
+    // ======================
+
     public HomeViewController(){}
 
     public void initialize(){}
+
+    // ======================
+    // PRIVATE API
+    // =====================
+
+
+    private void bindViewModel(){
+
+    }
 }

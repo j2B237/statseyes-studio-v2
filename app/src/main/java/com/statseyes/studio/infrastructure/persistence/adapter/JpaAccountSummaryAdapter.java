@@ -30,7 +30,12 @@ public class JpaAccountSummaryAdapter implements AccountSummaryPort {
     @Override
     @Transactional(readOnly = true)
     public AccountSummary load(Integer accountId){
-
+        return new AccountSummary(
+                athleteRepository.countByAccount_Id(accountId),
+                teamRepository.countByAccount_Id(accountId),
+                importedSessionRepository.countByAccountId(accountId),
+                importedSessionRepository.findLastImportedAt(accountId)
+        );
     }
 
 }
