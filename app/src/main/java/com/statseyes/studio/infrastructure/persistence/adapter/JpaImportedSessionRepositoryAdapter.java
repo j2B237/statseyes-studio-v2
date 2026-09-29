@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepositoryPort {
 
-        private final ImportedPodSessionJpaRepository repository;
+    private final ImportedPodSessionJpaRepository repository;
     private final ImportedSessionMapper sessionMapper;
     private final SessionMetricsMapper metricsMapper;
 
