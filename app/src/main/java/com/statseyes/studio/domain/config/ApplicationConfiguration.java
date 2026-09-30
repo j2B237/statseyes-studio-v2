@@ -1,8 +1,12 @@
 package com.statseyes.studio.domain.config;
 
 public enum ApplicationConfiguration {
-
+    // WINDOW PARAMS
     TITLE("Statseyes-Studio"),
+    // TIME FORMAT
+    DAY_FORMAT("dd/MM"),
+    HOUR_FORMAT("HH:mm"),
+    // FXML VIEWS PATH
     DASHBOARD_PATH("/com/statseyes/studio/view/dashboard/DashboardView.fxml"),
     ATHLETES_PATH("/com/statseyes/studio/view/athletes/AthletesView.fxml"),
     TEAMS_PATH("/com/statseyes/studio/view/teams/TeamsView.fxml"),

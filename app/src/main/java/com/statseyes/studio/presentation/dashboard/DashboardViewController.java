@@ -1,5 +1,6 @@
 package com.statseyes.studio.presentation.dashboard;
 
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.AccountSummary;
 import com.statseyes.studio.presentation.component.StatsCard;
 import com.statseyes.studio.presentation.navigation.ViewManager;
@@ -15,9 +16,6 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 public class DashboardViewController implements ViewManagerAware {
-
-    private static final DateTimeFormatter DAY_FORMAT  = DateTimeFormatter.ofPattern("dd/MM");
-    private static final DateTimeFormatter HOUR_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
     @FXML private StatsCard athletesCountCard;
     @FXML private StatsCard teamsCountCard;
@@ -76,8 +74,12 @@ public class DashboardViewController implements ViewManagerAware {
         if (summary.lastImportedAt() == null) {
             lastImportCard.setNoData("Aucun");
         } else {
-            lastImportCard.setValue(summary.lastImportedAt().format(DAY_FORMAT));
-            lastImportCard.setUnit(summary.lastImportedAt().format(HOUR_FORMAT));
+            lastImportCard.setValue(summary.lastImportedAt().format(
+                    DateTimeFormatter.ofPattern(ApplicationConfiguration.DAY_FORMAT.getValue())
+            ));
+            lastImportCard.setUnit(summary.lastImportedAt().format(
+                    DateTimeFormatter.ofPattern(ApplicationConfiguration.HOUR_FORMAT.getValue())
+            ));
         }
     }
 }

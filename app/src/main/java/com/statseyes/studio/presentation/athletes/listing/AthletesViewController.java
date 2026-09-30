@@ -47,7 +47,6 @@ public class AthletesViewController {
     public void initialize() {
 
         athleteListView.setCellFactory(list -> new AthleteRowCell());
-
         bindViewModel();
         viewModel.load();
     }
