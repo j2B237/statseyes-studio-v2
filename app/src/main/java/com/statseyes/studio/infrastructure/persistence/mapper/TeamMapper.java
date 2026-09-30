@@ -14,7 +14,7 @@ public class TeamMapper {
                 entity.getName(),
                 entity.getAbbreviation(),
                 entity.getSport(),
-                entity.getAccount(),
+                entity.getAccount().getId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

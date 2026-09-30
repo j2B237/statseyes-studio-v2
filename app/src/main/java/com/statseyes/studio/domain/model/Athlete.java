@@ -1,5 +1,6 @@
 package com.statseyes.studio.domain.model;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,8 +12,8 @@ public record Athlete(
         char gender,
         String imageUrl,
         Integer accountId,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
+        Instant createdAt,
+        Instant updatedAt,
         Integer positionId,
         String positionName,
         Integer teamId,

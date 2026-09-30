@@ -9,7 +9,7 @@ public record Team(
         String name,
         String abbreviation,
         String sport,
-        AccountEntity account,
+        Integer accountId,
         Instant created_at,
         Instant updated_at
 ) {
