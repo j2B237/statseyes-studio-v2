@@ -62,7 +62,6 @@ public class AthletesViewController {
     // ===============
 
     private void bindViewModel(){
-
         //viewModel.athletesProperty().removeListener(athletesListener);
         //viewModel.athletesProperty().addListener(athletesListener);
         athleteListView.setItems(viewModel.athletesProperty());
