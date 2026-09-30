@@ -27,9 +27,9 @@ public class AthletesViewController {
 
     // Champ, pas lambda locale : controleur singleton, initialize() rappele
     // a chaque retour sur cette vue -- meme precaution qu'ailleurs.
-    private final ChangeListener<List<Athlete>> athletesListener =
+    /*private final ChangeListener<List<Athlete>> athletesListener =
             (obs, oldValue, newValue) ->
-                    athleteListView.setItems(FXCollections.observableArrayList(newValue));
+                    athleteListView.setItems(FXCollections.observableArrayList(newValue));*/
 
     private final ChangeListener<String> errorListener = (obs, oldValue, newValue) -> {
         boolean hasError = newValue != null && !newValue.isBlank();
@@ -48,18 +48,26 @@ public class AthletesViewController {
 
         athleteListView.setCellFactory(list -> new AthleteRowCell());
 
-        viewModel.athletesProperty().removeListener(athletesListener);
-        viewModel.athletesProperty().addListener(athletesListener);
-
-        viewModel.errorMessageProperty().removeListener(errorListener);
-        viewModel.errorMessageProperty().addListener(errorListener);
-
+        bindViewModel();
         viewModel.load();
     }
 
     @FXML
     protected void onAddAthlete() {
         // TODO : formulaire d'ajout, pas encore construit
+    }
+
+    // ===============
+    // PRIVATE API
+    // ===============
+
+    private void bindViewModel(){
+
+        //viewModel.athletesProperty().removeListener(athletesListener);
+        //viewModel.athletesProperty().addListener(athletesListener);
+        athleteListView.setItems(viewModel.athletesProperty());
+        viewModel.errorMessageProperty().removeListener(errorListener);
+        viewModel.errorMessageProperty().addListener(errorListener);
     }
 
     private final class AthleteRowCell extends ListCell<Athlete> {

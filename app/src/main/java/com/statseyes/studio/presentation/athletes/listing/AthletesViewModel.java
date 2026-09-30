@@ -6,13 +6,16 @@ import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
 public class AthletesViewModel {
 
-    private final ObjectProperty<List<Athlete>> athletes = new SimpleObjectProperty<>(List.of());
+    private final ObservableList<Athlete> athletes =
+            FXCollections.observableArrayList();
     private final StringProperty errorMessage = new SimpleStringProperty();
 
     private final ListAthletesUseCase listAthletesUseCase;
@@ -37,12 +40,12 @@ public class AthletesViewModel {
 
         backgroundTaskRunner.run(
                 () -> listAthletesUseCase.execute(accountId),
-                athletes::set,
+                athletes::setAll,
                 error -> errorMessage.set(error.getMessage())
         );
     }
 
-    public ObjectProperty<List<Athlete>> athletesProperty() { return athletes; }
+    public ObservableList<Athlete> athletesProperty() { return athletes; }
     public StringProperty errorMessageProperty() { return errorMessage; }
 
 

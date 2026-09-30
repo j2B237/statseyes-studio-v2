@@ -7,6 +7,5 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:id="contentContainer"
       fx:controller="com.statseyes.studio.presentation.template.TemplateViewController">
-    
-    
+    <!-- INJECTION DE CONTENU DE MANIÈRE DYNAMIQUE ICI-->
 </VBox>

@@ -8,6 +8,7 @@ import com.statseyes.studio.presentation.template.TemplateViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -20,9 +21,13 @@ public class HomeViewController implements ViewManagerAware {
 
     private final SessionAdapter sessionAdapter;
     private final TemplateViewController templateViewController;
+
     private ViewManager viewManager;
 
-    public HomeViewController(SessionAdapter sessionAdapter, TemplateViewController templateViewController) {
+    public HomeViewController(
+            SessionAdapter sessionAdapter,
+            TemplateViewController templateViewController
+    ) {
         this.sessionAdapter = sessionAdapter;
         this.templateViewController = templateViewController;
     }
@@ -37,6 +42,18 @@ public class HomeViewController implements ViewManagerAware {
         }
     }
 
+    // ================
+    // PRIVATE API
+    // ================
+
+    private void bindViewModel(){
+
+    }
+
+
+    // ================
+    // PROTECTED API
+    // ================
     @FXML
     protected void onDashboardClicked() {
         templateViewController.loadDashboardView();

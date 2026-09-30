@@ -17,13 +17,14 @@ public class DashboardViewModel {
     // INSTANCE VARIABLES
     // ========================
 
-    private final SimpleObjectProperty<AccountSummary> summary =
+    private final ObjectProperty<AccountSummary> summary =
             new SimpleObjectProperty<>();
 
-    private final SimpleStringProperty errorMessage =
+    private final StringProperty errorMessage =
             new SimpleStringProperty();
     private final BooleanProperty loading =
             new SimpleBooleanProperty(false);
+    private final StringProperty athleteCount = new SimpleStringProperty();
 
     private final GetAccountSummaryUseCase accountSummaryUseCase;
     private final SessionAdapter sessionService;
@@ -63,6 +64,7 @@ public class DashboardViewModel {
                 result -> {
                     summary.set(result);
                     loading.set(false);
+                    System.out.println("From load summary: " + summary.get().athleteCount() + " elements");
                 },
                 error -> {
                     errorMessage.set(error.getMessage());
@@ -70,7 +72,6 @@ public class DashboardViewModel {
                 }
         );
     }
-
 
     public ObjectProperty<AccountSummary> summaryProperty() { return summary; }
     public StringProperty errorMessageProperty() { return errorMessage; }

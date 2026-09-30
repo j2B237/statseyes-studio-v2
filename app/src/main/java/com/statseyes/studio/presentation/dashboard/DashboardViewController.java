@@ -7,6 +7,8 @@ import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import org.springframework.stereotype.Controller;
 
 import java.time.format.DateTimeFormatter;
@@ -21,6 +23,8 @@ public class DashboardViewController implements ViewManagerAware {
     @FXML private StatsCard teamsCountCard;
     @FXML private StatsCard sessionsCountCard;
     @FXML private StatsCard lastImportCard;
+    @FXML private ImageView clubLogoBackground;
+    @FXML private Label clubNameLabel;
 
     private final DashboardViewModel viewModel;
     private ViewManager viewManager;
@@ -28,7 +32,9 @@ public class DashboardViewController implements ViewManagerAware {
     private final ChangeListener<AccountSummary> summaryListener =
             (obs, oldValue, newValue) -> render(newValue);
 
-    public DashboardViewController(DashboardViewModel viewModel) {
+    public DashboardViewController(
+            DashboardViewModel viewModel
+    ) {
         this.viewModel = viewModel;
     }
 
@@ -38,18 +44,29 @@ public class DashboardViewController implements ViewManagerAware {
     }
 
     public void initialize() {
+
         athletesCountCard.setNoData("--");
         teamsCountCard.setNoData("--");
         sessionsCountCard.setNoData("--");
         lastImportCard.setNoData("--");
 
+        bindViewModel();
+        viewModel.load();
+        render(viewModel.summaryProperty().get());
+    }
+
+    // ==============
+    // PRIVATE API
+    // ==============
+
+    private void bindViewModel(){
+
         viewModel.summaryProperty().removeListener(summaryListener);
         viewModel.summaryProperty().addListener(summaryListener);
-
-        viewModel.load();
     }
 
     private void render(AccountSummary summary) {
+
         if (summary == null) return;
 
         athletesCountCard.setValue(String.valueOf(summary.athleteCount()));
