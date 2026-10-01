@@ -1,7 +1,8 @@
-// infrastructure/pod/BinaryPodFileAdapter.java
 package com.statseyes.studio.infrastructure.pod;
 
 import com.statseyes.studio.application.port.PodFileImportPort;
+import com.statseyes.studio.domain.config.PodImportConfig;
+import com.statseyes.studio.domain.config.RecordType;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
 import com.statseyes.studio.domain.model.GpsData;
 import com.statseyes.studio.domain.model.PodSessionData;
@@ -20,18 +21,14 @@ import java.util.List;
 public class BinaryPodFileAdapter implements PodFileImportPort {
 
     private static final String MAGIC = "PODL";
-    private static final int HEADER_SIZE = 512;
-    private static final int BLOCK_SIZE = 512;
-    private static final int RECORD_SIZE = 40;
-    private static final int RECORDS_PER_BLOCK = BLOCK_SIZE / RECORD_SIZE;
+
+    private static final int RECORDS_PER_BLOCK =
+            PodImportConfig.BLOCK_SIZE.getValue() / PodImportConfig.RECORD_SIZE.getValue();
 
     private static final int RECORD_TYPE_EMPTY = 0;
     private static final int RECORD_TYPE_SAMPLE = 1;
     private static final int RECORD_TYPE_SESSION_START = 2;
     private static final int RECORD_TYPE_SESSION_END = 3;
-
-    private static final int MAX_LATITUDE_E7  = 900_000_000;
-    private static final int MAX_LONGITUDE_E7 = 1_800_000_000;
 
     @Override
     public List<PodSessionData> parse(InputStream binaryStream) {
@@ -44,8 +41,8 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
     }
 
     private long readHeader(InputStream in) throws IOException {
-        byte[] raw = in.readNBytes(HEADER_SIZE);
-        if (raw.length < HEADER_SIZE) {
+        byte[] raw = in.readNBytes(PodImportConfig.HEADER_SIZE.getValue());
+        if (raw.length < PodImportConfig.HEADER_SIZE.getValue()) {
             throw new PodFileFormatException("Flux tronque : en-tete incomplet");
         }
         ByteBuffer buffer = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
@@ -68,14 +65,14 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
         long currentSessionNumber = -1;
 
         for (long blockIndex = 1; blockIndex < nextFreeBlock; blockIndex++) {
-            byte[] raw = in.readNBytes(BLOCK_SIZE);
-            if (raw.length < BLOCK_SIZE) break; // flux coupe avant la fin annoncee -- ici, arret global legitime
+            byte[] raw = in.readNBytes(PodImportConfig.BLOCK_SIZE.getValue());
+            if (raw.length < PodImportConfig.HEADER_SIZE.getValue()) break; // flux coupe avant la fin annoncee -- ici, arret global legitime
 
             ByteBuffer block = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
 
             for (int i = 0; i < RECORDS_PER_BLOCK; i++) {
-                int offset = i * RECORD_SIZE;
-                int recordType = block.get(offset) & 0xFF;
+                int offset = i * PodImportConfig.RECORD_SIZE.getValue();
+                int recordType =  block.get(offset) & 0xFF;
 
                 switch (recordType) {
                     case RECORD_TYPE_EMPTY -> {
@@ -125,7 +122,9 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
         int speed     = block.getInt(offset + 20);
         int course    = block.getShort(offset + 24);
 
-        boolean sane = Math.abs(latitude) <= MAX_LATITUDE_E7 && Math.abs(longitude) <= MAX_LONGITUDE_E7;
+        boolean sane =
+                Math.abs(latitude) <= PodImportConfig.MAX_LATITUDE_E7.getValue()
+                        && Math.abs(longitude) <= PodImportConfig.MAX_LONGITUDE_E7.getValue();
         return new GpsData(latitude, longitude, speed, timeMs, course, sane);
     }
 }
