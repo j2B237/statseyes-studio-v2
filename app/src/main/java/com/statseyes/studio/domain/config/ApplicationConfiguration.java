@@ -13,6 +13,8 @@ public enum ApplicationConfiguration {
     // FILE SYSTEM PATH
     USER_HOME("user.home"),
     UPLOAD_SUBDIR(".statseyes/uploads/clubs"),
+    // CSS PATH
+    CSS_PATH("/com/statseyes/studio/static/css/"),
     // FXML VIEWS PATH
     HOME_PATH("/com/statseyes/studio/view/home/HomeView.fxml"),
     LOGIN_PATH("/com/statseyes/studio/view/login/LoginView.fxml"),

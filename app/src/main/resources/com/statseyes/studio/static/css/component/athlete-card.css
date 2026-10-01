@@ -1,0 +1,32 @@
+/* static/css/components/athlete-card.css */
+.athlete-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.07), 10, 0, 0, 3);
+}
+
+.athlete-card-photo-placeholder {
+    -fx-background-color: linear-gradient(
+            from 0px 0px to 14px 14px, repeat,
+            #2B3240 0%, #2B3240 50%,
+            #3A4150 50%, #3A4150 100%
+    );
+}
+
+.athlete-card-initials {
+    -fx-font-weight: 700;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 3, 0, 0, 1);
+}
+
+.athlete-card-name     { -fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
+.athlete-card-team     { -fx-font-size: 13px; -fx-font-weight: 600; -fx-fill: #3A3D45; }
+.athlete-card-subtitle { -fx-font-size: 13px; -fx-fill: #9AA0A6; }
+
+.primary-button:hover {
+    -fx-background-color: #D9534F;
+}
+.primary-button:pressed {
+    -fx-background-color: #D9534F;
+}

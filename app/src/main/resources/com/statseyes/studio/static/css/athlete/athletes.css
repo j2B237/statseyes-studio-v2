@@ -4,15 +4,16 @@
     -fx-background-color: #1C1E21; -fx-text-fill: white;
     -fx-background-radius: 8; -fx-padding: 8 16;
 }
-.athlete-list { -fx-background-color: transparent; }
 .athlete-row {
     -fx-background-color: white; -fx-background-radius: 12;
     -fx-padding: 14 16; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 8, 0, 0, 2);
 }
-/* static/css/athletes/athletes.css — completer primary-button existant */
-.primary-button:hover {
-    -fx-background-color: #33353A;
+
+.athlete-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 12 0;
 }
-.primary-button:pressed {
-    -fx-background-color: #000000;
+.athlete-list .list-cell:filled:hover,
+.athlete-list .list-cell:filled:selected {
+    -fx-background-color: transparent;
 }

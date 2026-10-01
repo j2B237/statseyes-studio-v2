@@ -1,10 +1,10 @@
 package com.statseyes.studio.presentation.athletes.listing;
 
 import com.statseyes.studio.domain.model.Athlete;
+import com.statseyes.studio.presentation.component.AthleteCard;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,12 +25,6 @@ public class AthletesViewController {
     private final AthletesViewModel viewModel;
     private final TemplateViewController templateViewController;
 
-    // Champ, pas lambda locale : controleur singleton, initialize() rappele
-    // a chaque retour sur cette vue -- meme precaution qu'ailleurs.
-    /*private final ChangeListener<List<Athlete>> athletesListener =
-            (obs, oldValue, newValue) ->
-                    athleteListView.setItems(FXCollections.observableArrayList(newValue));*/
-
     private final ChangeListener<String> errorListener = (obs, oldValue, newValue) -> {
         boolean hasError = newValue != null && !newValue.isBlank();
         errorLabel.setText(newValue);
@@ -46,7 +40,32 @@ public class AthletesViewController {
 
     public void initialize() {
 
-        athleteListView.setCellFactory(list -> new AthleteRowCell());
+        athleteListView.setCellFactory(list -> new ListCell<>() {
+            private final AthleteCard card = new AthleteCard();
+
+            {
+                card.setOnViewDetails(() -> {
+                    Athlete athlete = getItem();
+                    if (athlete != null) {
+                        templateViewController.loadAthleteDetailsView(athlete.id());
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Athlete athlete, boolean empty) {
+                super.updateItem(athlete, empty);
+                if (empty || athlete == null) { setGraphic(null); return; }
+
+                card.setAthleteName(athlete.firstname() + " " + athlete.lastname());
+                card.setTeamName(athlete.teamName());
+                card.setPositionName(athlete.positionName());
+                card.setPhotoUrl(athlete.imageUrl());
+
+                setGraphic(card);
+            }
+        });
+
         bindViewModel();
         viewModel.load();
     }
@@ -68,7 +87,7 @@ public class AthletesViewController {
         viewModel.errorMessageProperty().addListener(errorListener);
     }
 
-    private final class AthleteRowCell extends ListCell<Athlete> {
+    /*private final class AthleteRowCell extends ListCell<Athlete> {
         private final Label nameLabel = new Label();
         private final Button viewButton = new Button("Voir");
         private final HBox content = new HBox(12, nameLabel, viewButton);
@@ -93,5 +112,5 @@ public class AthletesViewController {
             nameLabel.setText(athlete.firstname() + " " + athlete.lastname());
             setGraphic(content);
         }
-    }
+    }*/
 }

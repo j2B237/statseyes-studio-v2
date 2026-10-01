@@ -2,7 +2,6 @@ package com.statseyes.studio.infrastructure.pod;
 
 import com.statseyes.studio.application.port.PodFileImportPort;
 import com.statseyes.studio.domain.config.PodImportConfig;
-import com.statseyes.studio.domain.config.RecordType;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
 import com.statseyes.studio.domain.model.GpsData;
 import com.statseyes.studio.domain.model.PodSessionData;

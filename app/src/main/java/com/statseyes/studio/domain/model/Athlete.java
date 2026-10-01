@@ -2,7 +2,6 @@ package com.statseyes.studio.domain.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public record Athlete(
         Integer id,
