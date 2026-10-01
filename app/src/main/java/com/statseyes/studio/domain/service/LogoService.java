@@ -9,19 +9,19 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LogoService {
 
-    private static final String UPLOAD_SUBDIR = ".statseyes/uploads/clubs";
-
     public Path getUploadDirectory() {
-        Path uploadDir = Paths.get(System.getProperty("user.home"), UPLOAD_SUBDIR);
+        Path uploadDir = Paths.get(System.getProperty("user.home"),
+                ApplicationConfiguration.UPLOAD_SUBDIR.getValue());
         try {
             Files.createDirectories(uploadDir);
         } catch (IOException e) {
-            throw new IllegalStateException("Impossible de créer le dossier d’upload des logos", e);
+            throw new IllegalStateException("Impossible de créer le dossier upload des logos", e);
         }
         return uploadDir;
     }
@@ -35,7 +35,7 @@ public class LogoService {
                     .filter(p -> p.getFileName().toString().startsWith(prefix))
                     .findFirst();
         } catch (IOException e) {
-            throw new IllegalStateException("Impossible de lister le dossier d'upload des logos", e);
+            throw new IllegalStateException("Impossible de lister le dossier upload des logos", e);
         }
     }
 

@@ -10,6 +10,8 @@ public enum ApplicationConfiguration {
     DISTANCE_UNIT("km"),
     SPEED_UNIT("km/h"),
     DIRECTION_UNIT("°"),
+    // FILE SYSTEM PATH
+    UPLOAD_SUBDIR(".statseyes/uploads/clubs"),
     // FXML VIEWS PATH
     HOME_PATH("/com/statseyes/studio/view/home/HomeView.fxml"),
     LOGIN_PATH("/com/statseyes/studio/view/login/LoginView.fxml"),
