@@ -43,23 +43,10 @@ public class DashboardViewController implements ViewManagerAware {
     }
 
     public void initialize() {
-        System.out.println(("Dashboard view Controller, initialize call"));
         athletesCountCard.setNoData("--");
         teamsCountCard.setNoData("--");
         sessionsCountCard.setNoData("--");
         lastImportCard.setNoData("--");
-
-        viewModel.clubLogoUrlProperty().addListener(
-                (obs, oldValue, newValue) -> {
-                    if(newValue != null){
-                        System.out.println(("Loaded club logo"));
-                        //clubLogoBackground.setImage(new Image(newValue, true));
-                    }
-                    else{
-                        System.out.println(("Impossible to load club logo"));
-                    }
-                }
-        );
 
         bindViewModel();
         viewModel.load();
@@ -80,6 +67,9 @@ public class DashboardViewController implements ViewManagerAware {
         viewModel.summaryProperty().addListener(summaryListener);
         clubLogoBackground.imageProperty().bindBidirectional(
                 viewModel.clubLogoProperty()
+        );
+        clubNameLabel.textProperty().bindBidirectional(
+                viewModel.clubNameProperty()
         );
     }
 

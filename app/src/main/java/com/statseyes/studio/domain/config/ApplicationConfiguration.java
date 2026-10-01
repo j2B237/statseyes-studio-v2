@@ -11,6 +11,7 @@ public enum ApplicationConfiguration {
     SPEED_UNIT("km/h"),
     DIRECTION_UNIT("°"),
     // FILE SYSTEM PATH
+    USER_HOME("user.home"),
     UPLOAD_SUBDIR(".statseyes/uploads/clubs"),
     // FXML VIEWS PATH
     HOME_PATH("/com/statseyes/studio/view/home/HomeView.fxml"),

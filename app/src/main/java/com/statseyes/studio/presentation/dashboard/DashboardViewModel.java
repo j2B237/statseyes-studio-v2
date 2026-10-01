@@ -1,6 +1,6 @@
 package com.statseyes.studio.presentation.dashboard;
 
-import com.statseyes.studio.application.usecase.club.GetClubLogoUseCase;
+import com.statseyes.studio.application.usecase.club.*;
 import com.statseyes.studio.application.usecase.home.GetAccountSummaryUseCase;
 import com.statseyes.studio.domain.model.AccountSummary;
 import com.statseyes.studio.domain.model.AuthenticatedUser;
@@ -31,9 +31,10 @@ public class DashboardViewModel {
 
     private final StringProperty clubLogoUrl = new SimpleStringProperty();
     private final SimpleObjectProperty<Image> clubLogo = new SimpleObjectProperty<>();
+    private final StringProperty clubName = new SimpleStringProperty();
 
     private final GetClubLogoUseCase logoUseCase;
-
+    private final GetClubInfoUseCase infoUseCase;
     private final GetAccountSummaryUseCase accountSummaryUseCase;
     private final SessionAdapter sessionService;
     private final BackgroundTaskRunner backgroundTaskRunner;
@@ -43,11 +44,13 @@ public class DashboardViewModel {
     // =====================
 
     public DashboardViewModel(
+            GetClubInfoUseCase infoUseCase,
             GetClubLogoUseCase logoUseCase,
             GetAccountSummaryUseCase accountSummaryUseCase,
             SessionAdapter sessionService,
             BackgroundTaskRunner backgroundTaskRunner
     ){
+        this.infoUseCase = infoUseCase;
         this.logoUseCase = logoUseCase;
         this.accountSummaryUseCase = accountSummaryUseCase;
         this.sessionService = sessionService;
@@ -63,10 +66,18 @@ public class DashboardViewModel {
         backgroundTaskRunner.run(
                 () -> Objects.requireNonNull(logoUseCase.execute(accountId).orElse(null)),
                 url -> {
-                    clubLogoUrl.set(url);clubLogo.set(new Image(
-                    Objects.requireNonNull(clubLogoUrl.get()), true));
+                    clubLogoUrl.set(url);
+                    clubLogo.set(new Image(
+                            Objects.requireNonNull(clubLogoUrl.get()),
+                                    true));
                     },
                 error -> {/* Pas grave, on remplace par un fond noir*/}
+        );
+
+        backgroundTaskRunner.run(
+                () -> Objects.requireNonNull(infoUseCase.execute(accountId).orElse(null)),
+                clubName::set,
+                error -> clubName.set("NOM DU CLUB")
         );
     }
 
@@ -102,4 +113,5 @@ public class DashboardViewModel {
     public BooleanProperty loadingProperty() { return loading; }
     public StringProperty clubLogoUrlProperty() { return clubLogoUrl; }
     public ObjectProperty<Image> clubLogoProperty(){return clubLogo;}
+    public StringProperty clubNameProperty(){return clubName;}
 }

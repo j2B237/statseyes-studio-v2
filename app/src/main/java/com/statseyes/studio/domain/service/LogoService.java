@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 public class LogoService {
 
     public Path getUploadDirectory() {
-        Path uploadDir = Paths.get(System.getProperty("user.home"),
+        Path uploadDir = Paths.get(System.getProperty(
+                ApplicationConfiguration.USER_HOME.getValue()),
                 ApplicationConfiguration.UPLOAD_SUBDIR.getValue());
         try {
             Files.createDirectories(uploadDir);
