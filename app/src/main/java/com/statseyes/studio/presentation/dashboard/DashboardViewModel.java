@@ -73,12 +73,6 @@ public class DashboardViewModel {
                     },
                 error -> {/* Pas grave, on remplace par un fond noir*/}
         );
-
-        backgroundTaskRunner.run(
-                () -> Objects.requireNonNull(infoUseCase.execute(accountId).orElse(null)),
-                clubName::set,
-                error -> clubName.set("NOM DU CLUB")
-        );
     }
 
     public void load(){
@@ -105,6 +99,12 @@ public class DashboardViewModel {
                     errorMessage.set(error.getMessage());
                     loading.set(false);
                 }
+        );
+
+        backgroundTaskRunner.run(
+                () -> Objects.requireNonNull(infoUseCase.execute(accountId).orElse(null)),
+                clubName::set,
+                error -> clubName.set("NOM DU CLUB")
         );
     }
 

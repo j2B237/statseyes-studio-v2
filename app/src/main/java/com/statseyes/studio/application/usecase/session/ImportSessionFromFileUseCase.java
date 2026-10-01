@@ -40,11 +40,15 @@ public class ImportSessionFromFileUseCase {
     ){
         List<PodSessionData> sessions = listSessionsInFile(binaryStream);
 
-        if(sessions.isEmpty()){
+        List<PodSessionData> meaningFulSessions = sessions.stream()
+                .filter(s -> s.samples().size() >= 2)  // sous 2 points, aucune metrique calculable
+                .toList();
+
+        if(meaningFulSessions.isEmpty()){
             throw new PodFileFormatException("Aucune session trouvée dans ce flux.");
         }
 
-        return sessions.stream()
+        return meaningFulSessions.stream()
                 .map(session -> {
                     SessionMetrics metrics = computeMetrics(session);
                     return importedSessionRepository.save(session, metrics, sourceLabel, accountId, athleteId);

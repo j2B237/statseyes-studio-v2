@@ -82,6 +82,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         if (pendingAthleteId != null) {
             viewModel.loadAthlete(pendingAthleteId);
         }
+
+        renderAthlete(viewModel.athleteProperty().get());
+        renderSession(viewModel.latestSessionProperty().get());
     }
 
 

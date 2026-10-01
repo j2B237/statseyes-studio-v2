@@ -86,7 +86,7 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
     @Override
     @Transactional(readOnly = true)
     public List<ImportedSession> findByAthleteId(Integer athleteId){
-        return repository.findByAthleteIdOrderByImportedAtDesc(athleteId)
+        return repository.findByAthleteIdOrderByIdDesc(athleteId)
                 .stream()
                 .map(e -> sessionMapper.toDomain(e, metricsMapper.metricsOf(e)))
                 .toList();

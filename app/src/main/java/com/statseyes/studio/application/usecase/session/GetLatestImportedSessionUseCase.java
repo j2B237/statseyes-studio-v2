@@ -21,7 +21,7 @@ public class GetLatestImportedSessionUseCase {
     public ImportedSession execute(Integer athleteId){
         return repository.findByAthleteId(athleteId)
                 .stream()
-                .max(Comparator.comparing(ImportedSession::importedAt))
+                .findFirst()
                 .orElse(null);
     }
 }
