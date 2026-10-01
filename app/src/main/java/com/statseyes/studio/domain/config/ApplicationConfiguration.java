@@ -2,11 +2,17 @@ package com.statseyes.studio.domain.config;
 
 public enum ApplicationConfiguration {
     // WINDOW PARAMS
-    TITLE("Statseyes-Studio"),
+    TITLE("StatsEyes-Studio"),
     // TIME FORMAT
     DAY_FORMAT("dd/MM"),
     HOUR_FORMAT("HH:mm"),
+    // METRICS UNIT
+    DISTANCE_UNIT("km"),
+    SPEED_UNIT("km/h"),
+    DIRECTION_UNIT("°"),
     // FXML VIEWS PATH
+    HOME_PATH("/com/statseyes/studio/view/home/HomeView.fxml"),
+    LOGIN_PATH("/com/statseyes/studio/view/login/LoginView.fxml"),
     DASHBOARD_PATH("/com/statseyes/studio/view/dashboard/DashboardView.fxml"),
     ATHLETES_PATH("/com/statseyes/studio/view/athletes/AthletesView.fxml"),
     TEAMS_PATH("/com/statseyes/studio/view/teams/TeamsView.fxml"),

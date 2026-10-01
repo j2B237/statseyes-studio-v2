@@ -58,8 +58,7 @@ public class ViewManager{
 
     private void loadView(String fxmlPath){
         try{
-            String VIEWS_PATH = "/com/statseyes/studio/view/";
-            Parent root = load(VIEWS_PATH + fxmlPath, controller -> {});
+            Parent root = load(fxmlPath, controller -> {});
             mainScene.setRoot(root);
 
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.statseyes.studio.presentation.athletes.details;
 
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.domain.model.SessionMetrics;
@@ -89,6 +90,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // ===================
 
     private void resetCards() {
+
         distanceCard.setNoData("--");
         vitesseCard.setNoData("--");
         sprintsCard.setNoData("--");
@@ -102,16 +104,20 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     }
 
     private void renderSession(ImportedSession session) {
+
         if (session == null) { resetCards(); return; }
 
         SessionMetrics metrics = session.metrics();
+
         distanceCard.setValue(metrics.totalDistanceMeters() / 1000.0, 2);
-        distanceCard.setUnit("km");
+        distanceCard.setUnit(ApplicationConfiguration.DISTANCE_UNIT.getValue());
+
         vitesseCard.setValue(metrics.maxSpeedKmh(), 1);
-        vitesseCard.setUnit("km/h");
+        vitesseCard.setUnit(ApplicationConfiguration.SPEED_UNIT.getValue());
+
         sprintsCard.setValue(String.valueOf(metrics.sprintCount()));
         directionCard.setValue(metrics.dominantCourseDegrees(), 0);
-        directionCard.setUnit("°");
+        directionCard.setUnit(ApplicationConfiguration.DIRECTION_UNIT.getValue());
     }
 
     private void bindViewModel(){

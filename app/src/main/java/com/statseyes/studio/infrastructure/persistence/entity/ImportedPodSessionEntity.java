@@ -43,6 +43,7 @@ public class ImportedPodSessionEntity {
     @Column(name = "account_id")
     private Integer accountId;
 
+    @Builder.Default
     @OneToMany(mappedBy = "importedSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GpsPointEntity> points = new ArrayList<>();
 }

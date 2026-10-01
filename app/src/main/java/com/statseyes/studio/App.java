@@ -51,7 +51,7 @@ public class App extends Application{
         viewManager.setMainScene(scene);
 
         // Load login view at startup
-        viewManager.navigateTo("login/LoginView.fxml");
+        viewManager.navigateTo(ApplicationConfiguration.LOGIN_PATH.getValue());
 
         // Define title for native window and attach a scene graph to it
         primaryStage.setTitle(

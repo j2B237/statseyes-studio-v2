@@ -1,5 +1,6 @@
 package com.statseyes.studio.presentation.login;
 
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.config.Error_Type;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
@@ -72,7 +73,7 @@ public class LoginViewController implements ViewManagerAware {
             viewModel.displayErrorMessage(Error_Type.AUTHENTICATION_FAILED.getMessage());
         }
         else{
-            viewManager.navigateTo("home/HomeView.fxml");
+            viewManager.navigateTo(ApplicationConfiguration.HOME_PATH.getValue());
         }
     }
 

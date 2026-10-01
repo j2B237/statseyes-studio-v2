@@ -98,7 +98,7 @@ public class AthleteDetailsViewModel {
                     importing.set(false);
                     importStatus.set(sessions.size() + " session(s) importee(s)");
                     if (!sessions.isEmpty()) {
-                        latestSession.set(sessions.get(sessions.size() - 1));
+                        latestSession.set(sessions.getLast());
                     }
                 },
                 error -> {

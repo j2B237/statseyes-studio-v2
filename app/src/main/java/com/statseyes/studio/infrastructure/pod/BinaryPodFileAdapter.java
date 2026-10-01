@@ -62,17 +62,14 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
     }
 
     private List<PodSessionData> readSessions(InputStream in, long nextFreeBlock) throws IOException {
+
         List<PodSessionData> sessions = new ArrayList<>();
         List<GpsData> currentSamples = null;
         long currentSessionNumber = -1;
 
-        // On a deja consomme le bloc 0 (en-tete) via readHeader -- on lit
-        // maintenant les blocs 1..nextFreeBlock-1 dans l'ordre du flux.
-        blockLoop:
         for (long blockIndex = 1; blockIndex < nextFreeBlock; blockIndex++) {
-
             byte[] raw = in.readNBytes(BLOCK_SIZE);
-            if (raw.length < BLOCK_SIZE) break; // flux coupe avant la fin annoncee
+            if (raw.length < BLOCK_SIZE) break; // flux coupe avant la fin annoncee -- ici, arret global legitime
 
             ByteBuffer block = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
 
@@ -81,7 +78,12 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
                 int recordType = block.get(offset) & 0xFF;
 
                 switch (recordType) {
-                    case RECORD_TYPE_EMPTY -> { break blockLoop; }
+                    case RECORD_TYPE_EMPTY -> {
+                        // Fin du flux utile DANS CE BLOC uniquement (voir protocole.txt) --
+                        // on passe au bloc suivant, on n'arrete pas tout le fichier :
+                        // une session peut se terminer en milieu de bloc pendant qu'une
+                        // autre redemarre proprement au bloc suivant.
+                    }
 
                     case RECORD_TYPE_SESSION_START -> {
                         currentSessionNumber = Integer.toUnsignedLong(block.getInt(offset + 4));
@@ -105,6 +107,8 @@ public class BinaryPodFileAdapter implements PodFileImportPort {
                             "Record_Type inconnu (" + recordType + ") -- flux corrompu ou version non geree."
                     );
                 }
+
+                if (recordType == RECORD_TYPE_EMPTY) break; // sort de la boucle des enregistrements, pas des blocs
             }
         }
 

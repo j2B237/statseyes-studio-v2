@@ -50,6 +50,9 @@ public class DashboardViewController implements ViewManagerAware {
 
         bindViewModel();
         viewModel.load();
+
+        // After each screen navigation, dashboard card data need to
+        // be refresh.
         render(viewModel.summaryProperty().get());
     }
 
