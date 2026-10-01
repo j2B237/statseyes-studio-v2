@@ -9,6 +9,7 @@ import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.stereotype.Controller;
 
@@ -42,17 +43,30 @@ public class DashboardViewController implements ViewManagerAware {
     }
 
     public void initialize() {
-
+        System.out.println(("Dashboard view Controller, initialize call"));
         athletesCountCard.setNoData("--");
         teamsCountCard.setNoData("--");
         sessionsCountCard.setNoData("--");
         lastImportCard.setNoData("--");
 
+        viewModel.clubLogoUrlProperty().addListener(
+                (obs, oldValue, newValue) -> {
+                    if(newValue != null){
+                        System.out.println(("Loaded club logo"));
+                        //clubLogoBackground.setImage(new Image(newValue, true));
+                    }
+                    else{
+                        System.out.println(("Impossible to load club logo"));
+                    }
+                }
+        );
+
         bindViewModel();
         viewModel.load();
+        viewModel.loadClubLogo();
 
         // After each screen navigation, dashboard card data need to
-        // be refresh.
+        // be refreshed.
         render(viewModel.summaryProperty().get());
     }
 
@@ -64,6 +78,9 @@ public class DashboardViewController implements ViewManagerAware {
 
         viewModel.summaryProperty().removeListener(summaryListener);
         viewModel.summaryProperty().addListener(summaryListener);
+        clubLogoBackground.imageProperty().bindBidirectional(
+                viewModel.clubLogoProperty()
+        );
     }
 
     private void render(AccountSummary summary) {

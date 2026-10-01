@@ -1,5 +1,6 @@
 package com.statseyes.studio.presentation.dashboard;
 
+import com.statseyes.studio.application.usecase.club.GetClubLogoUseCase;
 import com.statseyes.studio.application.usecase.home.GetAccountSummaryUseCase;
 import com.statseyes.studio.domain.model.AccountSummary;
 import com.statseyes.studio.domain.model.AuthenticatedUser;
@@ -7,8 +8,11 @@ import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
 
 
+import javafx.scene.image.Image;
 import org.springframework.stereotype.Component;
 import javafx.beans.property.*;
+
+import java.util.Objects;
 
 @Component
 public class DashboardViewModel {
@@ -19,12 +23,16 @@ public class DashboardViewModel {
 
     private final ObjectProperty<AccountSummary> summary =
             new SimpleObjectProperty<>();
-
     private final StringProperty errorMessage =
             new SimpleStringProperty();
     private final BooleanProperty loading =
             new SimpleBooleanProperty(false);
     private final StringProperty athleteCount = new SimpleStringProperty();
+
+    private final StringProperty clubLogoUrl = new SimpleStringProperty();
+    private final SimpleObjectProperty<Image> clubLogo = new SimpleObjectProperty<>();
+
+    private final GetClubLogoUseCase logoUseCase;
 
     private final GetAccountSummaryUseCase accountSummaryUseCase;
     private final SessionAdapter sessionService;
@@ -35,15 +43,32 @@ public class DashboardViewModel {
     // =====================
 
     public DashboardViewModel(
+            GetClubLogoUseCase logoUseCase,
             GetAccountSummaryUseCase accountSummaryUseCase,
             SessionAdapter sessionService,
             BackgroundTaskRunner backgroundTaskRunner
     ){
+        this.logoUseCase = logoUseCase;
         this.accountSummaryUseCase = accountSummaryUseCase;
         this.sessionService = sessionService;
         this.backgroundTaskRunner = backgroundTaskRunner;
     }
 
+    public void loadClubLogo(){
+        AuthenticatedUser user = sessionService.getCurrentUser();
+        if(user == null)return;
+
+        Integer accountId = user.id();
+
+        backgroundTaskRunner.run(
+                () -> Objects.requireNonNull(logoUseCase.execute(accountId).orElse(null)),
+                url -> {
+                    clubLogoUrl.set(url);clubLogo.set(new Image(
+                    Objects.requireNonNull(clubLogoUrl.get()), true));
+                    },
+                error -> {/* Pas grave, on remplace par un fond noir*/}
+        );
+    }
 
     public void load(){
         // Lu sur le thread FX
@@ -64,7 +89,6 @@ public class DashboardViewModel {
                 result -> {
                     summary.set(result);
                     loading.set(false);
-                    System.out.println("From load summary: " + summary.get().athleteCount() + " elements");
                 },
                 error -> {
                     errorMessage.set(error.getMessage());
@@ -76,5 +100,6 @@ public class DashboardViewModel {
     public ObjectProperty<AccountSummary> summaryProperty() { return summary; }
     public StringProperty errorMessageProperty() { return errorMessage; }
     public BooleanProperty loadingProperty() { return loading; }
-
+    public StringProperty clubLogoUrlProperty() { return clubLogoUrl; }
+    public ObjectProperty<Image> clubLogoProperty(){return clubLogo;}
 }

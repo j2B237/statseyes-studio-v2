@@ -21,13 +21,16 @@ public class HomeViewController implements ViewManagerAware {
 
     private final SessionAdapter sessionAdapter;
     private final TemplateViewController templateViewController;
+    private final HomeViewModel viewModel;
 
     private ViewManager viewManager;
 
     public HomeViewController(
+            HomeViewModel viewModel,
             SessionAdapter sessionAdapter,
             TemplateViewController templateViewController
     ) {
+        this.viewModel = viewModel;
         this.sessionAdapter = sessionAdapter;
         this.templateViewController = templateViewController;
     }
