@@ -36,9 +36,6 @@ public class AthleteCard extends HBox {
     private final Label nameLabel = new Label();
     private final Text teamText = new Text();
     private final Text positionText = new Text();
-    private final TextFlow subtitleFlow = new TextFlow(teamText, new Text(" · "), positionText);
-
-    private final Button detailsButton = new Button("Voir détails  ›");
 
     private Runnable onViewDetails;
 
@@ -65,10 +62,13 @@ public class AthleteCard extends HBox {
         buildPhoto();
         buildText();
 
+        Button detailsButton = new Button("Voir détails  ›");
         detailsButton.getStyleClass().add("primary-button");
         detailsButton.setOnAction(e -> { if (onViewDetails != null) onViewDetails.run(); });
 
+        TextFlow subtitleFlow = new TextFlow(teamText, new Text(" · "), positionText);
         VBox textArea = new VBox(4, nameLabel, subtitleFlow);
+
         textArea.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(textArea, Priority.ALWAYS);
 
@@ -124,8 +124,10 @@ public class AthleteCard extends HBox {
 
         boolean hasPhoto = photoUrl.get() != null && !photoUrl.get().isBlank();
         photoView.setVisible(hasPhoto);
+
         stripedBackground.setVisible(!hasPhoto);
         initialsLabel.setVisible(!hasPhoto);
+
         if (hasPhoto) {
             photoView.setImage(
                     new Image(
@@ -141,13 +143,17 @@ public class AthleteCard extends HBox {
     }
 
     private void refreshInitials() {
+
         String name = athleteName.get();
         if (name == null || name.isBlank()) { initialsLabel.setText(""); return; }
+
         StringBuilder initials = new StringBuilder();
         for (String part : name.trim().split("\\s+")) {
+
             if (!part.isEmpty()) initials.append(Character.toUpperCase(part.charAt(0)));
             if (initials.length() >= 2) break;
         }
+
         initialsLabel.setText(initials.toString());
     }
 }

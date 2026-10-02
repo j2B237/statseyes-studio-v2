@@ -6,15 +6,13 @@ import com.statseyes.studio.presentation.template.TemplateViewController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+
 
 import org.springframework.stereotype.Controller;
-import java.util.List;
 
 @Controller
 public class AthletesViewController {
@@ -80,37 +78,10 @@ public class AthletesViewController {
     // ===============
 
     private void bindViewModel(){
-        //viewModel.athletesProperty().removeListener(athletesListener);
-        //viewModel.athletesProperty().addListener(athletesListener);
+        
         athleteListView.setItems(viewModel.athletesProperty());
         viewModel.errorMessageProperty().removeListener(errorListener);
         viewModel.errorMessageProperty().addListener(errorListener);
     }
-
-    /*private final class AthleteRowCell extends ListCell<Athlete> {
-        private final Label nameLabel = new Label();
-        private final Button viewButton = new Button("Voir");
-        private final HBox content = new HBox(12, nameLabel, viewButton);
-
-        private AthleteRowCell() {
-            content.getStyleClass().add("athlete-row");
-            HBox.setHgrow(nameLabel, Priority.ALWAYS);
-
-            viewButton.setOnAction(e -> {
-                Athlete athlete = getItem();
-                if (athlete != null) {
-                    templateViewController.loadAthleteDetailsView(athlete.id());
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(Athlete athlete, boolean empty) {
-            super.updateItem(athlete, empty);
-
-            if (empty || athlete == null) { setGraphic(null); return; }
-            nameLabel.setText(athlete.firstname() + " " + athlete.lastname());
-            setGraphic(content);
-        }
-    }*/
+    
 }
