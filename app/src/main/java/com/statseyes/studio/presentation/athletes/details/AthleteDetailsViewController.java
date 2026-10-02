@@ -4,12 +4,14 @@ import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.domain.model.SessionMetrics;
+import com.statseyes.studio.infrastructure.cache.CacheType;
 import com.statseyes.studio.presentation.navigation.Navigable;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 import com.statseyes.studio.presentation.component.StatsCard;
-
 import com.statseyes.studio.presentation.template.TemplateViewController;
+import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
+
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,13 +41,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
     private final TemplateViewController templateViewController;
     private final AthleteDetailsViewModel viewModel;
+    private final CacheStatsManager cacheStatsManager;
+
     private ViewManager viewManager;
     private Integer pendingAthleteId;
 
-    // Listeners stockes en champs (pas en lambdas locales) : le contrôleur est
-    // un singleton Spring, initialize() est rappelé a chaque navigation vers
-    // cet écran -- sans remove avant add, les listeners s'accumulent a chaque
-    // visite (meme piège que AthletesViewModel corrige plus tot).
     private final ChangeListener<Athlete> athleteListener =
             (o, ov, nv) -> renderAthlete(nv);
     private final ChangeListener<ImportedSession> sessionListener =
@@ -62,10 +62,12 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
     public AthleteDetailsViewController(
             AthleteDetailsViewModel viewModel,
-            TemplateViewController templateViewController
+            TemplateViewController templateViewController,
+            CacheStatsManager cacheStatsManager
     ){
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
+        this.cacheStatsManager = cacheStatsManager;
     }
 
     @Override
@@ -85,6 +87,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         renderAthlete(viewModel.athleteProperty().get());
         renderSession(viewModel.latestSessionProperty().get());
+
+        cacheStatsManager.printStats(CacheType.IMPORTED_SESSIONS);
+        System.out.println();
     }
 
 

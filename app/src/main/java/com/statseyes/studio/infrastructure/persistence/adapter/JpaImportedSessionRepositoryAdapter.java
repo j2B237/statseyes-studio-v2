@@ -10,8 +10,11 @@ import com.statseyes.studio.infrastructure.persistence.mapper.SessionMetricsMapp
 import com.statseyes.studio.infrastructure.persistence.entity.GpsPointEntity;
 import com.statseyes.studio.infrastructure.persistence.entity.ImportedPodSessionEntity;
 import com.statseyes.studio.infrastructure.persistence.repository.ImportedPodSessionJpaRepository;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +37,10 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
     }
 
     @Override
+    @CacheEvict(
+            value = "imported_sessions",
+            allEntries = true
+    )
     @Transactional
     public ImportedSession save(
             PodSessionData sessionData,
@@ -84,6 +91,10 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
     }
 
     @Override
+    @Cacheable(
+            value = "imported_sessions",
+            key = "'athlete:' + #athleteId"
+    )
     @Transactional(readOnly = true)
     public List<ImportedSession> findByAthleteId(Integer athleteId){
         return repository.findByAthleteIdOrderByIdDesc(athleteId)
@@ -91,7 +102,6 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
                 .map(e -> sessionMapper.toDomain(e, metricsMapper.metricsOf(e)))
                 .toList();
     }
-
 
 
 }

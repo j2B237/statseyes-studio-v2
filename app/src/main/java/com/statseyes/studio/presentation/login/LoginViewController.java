@@ -2,17 +2,19 @@ package com.statseyes.studio.presentation.login;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.config.Error_Type;
+import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
+
+import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.springframework.context.ConfigurableApplicationContext;
+
 import org.springframework.stereotype.Controller;
 
-import javafx.fxml.FXML;
 
 @Controller
 public class LoginViewController implements ViewManagerAware {
@@ -33,10 +35,15 @@ public class LoginViewController implements ViewManagerAware {
 
     private final LoginViewModel viewModel;
     private ViewManager viewManager;
+    private final CacheStatsManager cacheStatsManager;
 
 
-    public LoginViewController(LoginViewModel viewModel){
+    public LoginViewController(
+            LoginViewModel viewModel,
+            CacheStatsManager cacheStatsManager
+    ){
         this.viewModel = viewModel;
+        this.cacheStatsManager = cacheStatsManager;
     }
 
     public void initialize(){

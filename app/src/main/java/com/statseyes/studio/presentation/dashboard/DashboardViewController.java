@@ -2,6 +2,8 @@ package com.statseyes.studio.presentation.dashboard;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.AccountSummary;
+import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
+import com.statseyes.studio.infrastructure.cache.CacheType;
 import com.statseyes.studio.presentation.component.StatsCard;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
@@ -26,15 +28,18 @@ public class DashboardViewController implements ViewManagerAware {
     @FXML private Label clubNameLabel;
 
     private final DashboardViewModel viewModel;
+    private final CacheStatsManager cacheStatsManager;
     private ViewManager viewManager;
 
     private final ChangeListener<AccountSummary> summaryListener =
             (obs, oldValue, newValue) -> render(newValue);
 
     public DashboardViewController(
-            DashboardViewModel viewModel
+            DashboardViewModel viewModel,
+            CacheStatsManager cacheStatsManager
     ) {
         this.viewModel = viewModel;
+        this.cacheStatsManager = cacheStatsManager;
     }
 
     @Override
@@ -43,6 +48,7 @@ public class DashboardViewController implements ViewManagerAware {
     }
 
     public void initialize() {
+
         athletesCountCard.setNoData("--");
         teamsCountCard.setNoData("--");
         sessionsCountCard.setNoData("--");
@@ -55,6 +61,10 @@ public class DashboardViewController implements ViewManagerAware {
         // After each screen navigation, dashboard card data need to
         // be refreshed.
         render(viewModel.summaryProperty().get());
+
+        cacheStatsManager.printStats(CacheType.ACCOUNT_SUMMARY);
+        System.out.println();
+
     }
 
     // ==============

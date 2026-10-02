@@ -1,8 +1,10 @@
 package com.statseyes.studio.presentation.athletes.listing;
 
 import com.statseyes.studio.domain.model.Athlete;
+import com.statseyes.studio.infrastructure.cache.CacheType;
 import com.statseyes.studio.presentation.component.AthleteCard;
 import com.statseyes.studio.presentation.template.TemplateViewController;
+import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ public class AthletesViewController {
 
     private final AthletesViewModel viewModel;
     private final TemplateViewController templateViewController;
+    private final CacheStatsManager cacheStatsManager;
 
     private final ChangeListener<String> errorListener = (obs, oldValue, newValue) -> {
         boolean hasError = newValue != null && !newValue.isBlank();
@@ -31,9 +34,14 @@ public class AthletesViewController {
     };
 
 
-    public AthletesViewController(AthletesViewModel viewModel, TemplateViewController templateViewController) {
+    public AthletesViewController(
+            AthletesViewModel viewModel,
+            TemplateViewController templateViewController,
+            CacheStatsManager cacheStatsManager
+    ) {
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
+        this.cacheStatsManager = cacheStatsManager;
     }
 
     public void initialize() {
@@ -66,6 +74,8 @@ public class AthletesViewController {
 
         bindViewModel();
         viewModel.load();
+
+        cacheStatsManager.printStats(CacheType.ATHLETES);
     }
 
     @FXML

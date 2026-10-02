@@ -34,6 +34,15 @@ public class CacheConfig {
 
         caches.add(
             buildCache(
+                    CacheType.ACCOUNT_SUMMARY.getName(),
+                    1,
+                    TimeUnit.HOURS,
+                    5
+            )
+        );
+
+        caches.add(
+            buildCache(
                 CacheType.ACCOUNT_SETTING.getName(), 
                 15, 
                 TimeUnit.MINUTES, 
@@ -52,6 +61,15 @@ public class CacheConfig {
 
         caches.add(
             buildCache(
+                    CacheType.CLUB_SUMMARY.getName(),
+                    1,
+                    TimeUnit.HOURS,
+                    5
+            )
+        );
+
+        caches.add(
+            buildCache(
                 CacheType.TEAM.getName(), 
                 1, 
                 TimeUnit.HOURS,
@@ -61,10 +79,10 @@ public class CacheConfig {
 
         caches.add(
             buildCache(
-                CacheType.ATHLETE.getName(), 
-                1, 
-                TimeUnit.HOURS,
-                500
+                    CacheType.ATHLETES.getName(),
+                    1,
+                    TimeUnit.HOURS,
+                    500
             )
         );
 
@@ -74,6 +92,15 @@ public class CacheConfig {
                 1, 
                 TimeUnit.HOURS, 
                 100
+            )
+        );
+
+        caches.add(
+            buildCache(
+                CacheType.IMPORTED_SESSIONS.getName(),
+                    2,
+                    TimeUnit.HOURS,
+                    100
             )
         );
         

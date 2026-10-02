@@ -4,11 +4,14 @@ package com.statseyes.studio.infrastructure.cache;
 public enum CacheType {
     
     ACCOUNT("accounts"),
+    ACCOUNT_SUMMARY("account_summary"),
     ACCOUNT_SETTING("account_settings"),
     CLUB("clubs"),
+    CLUB_SUMMARY("club_summary"),
     TEAM("teams"),
-    ATHLETE("athletes"),
-    POSITION("positions");
+    ATHLETES("athletes"),
+    POSITION("positions"),
+    IMPORTED_SESSIONS("imported_sessions");
 
     private final String name;
 

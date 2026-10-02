@@ -26,11 +26,14 @@ public class CacheStatsManager {
 
         String cachename = switch (type){
             case ACCOUNT -> type.getName();
+            case ACCOUNT_SUMMARY -> type.getName();
             case ACCOUNT_SETTING -> type.getName();
             case CLUB -> type.getName();
+            case CLUB_SUMMARY -> type.getName();
             case TEAM -> type.getName();
-            case ATHLETE -> type.getName();
+            case ATHLETES -> type.getName();
             case POSITION -> type.getName();
+            case IMPORTED_SESSIONS -> type.getName();
         };
 
         CaffeineCache cache = 

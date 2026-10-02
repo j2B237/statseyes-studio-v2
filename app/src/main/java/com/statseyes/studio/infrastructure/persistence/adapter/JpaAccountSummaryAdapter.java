@@ -6,6 +6,7 @@ import com.statseyes.studio.infrastructure.persistence.repository.*;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 
 @Component
 public class JpaAccountSummaryAdapter implements AccountSummaryPort {
@@ -28,6 +29,7 @@ public class JpaAccountSummaryAdapter implements AccountSummaryPort {
 
 
     @Override
+    @Cacheable(value = "account_summary", key = "'account:' + #accountId")
     @Transactional(readOnly = true)
     public AccountSummary load(Integer accountId){
         return new AccountSummary(
