@@ -20,3 +20,38 @@
 .secondary-button:pressed {
     -fx-background-color: #ECEDF0;
 }
+
+/* ajout a athlete-details.css */
+.session-history-list { -fx-background-color: transparent; }
+.session-history-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 10 0;
+}
+.session-history-list .list-cell:filled:hover,
+.session-history-list .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+.session-history-row {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 12 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 6, 0, 0, 2);
+}
+.session-history-row:hover { -fx-background-color: #F7F8FA; }
+.session-history-date  { -fx-font-weight: 700; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
+.session-history-stat  { -fx-text-fill: #6B6F76; -fx-font-size: 12px; -fx-min-width: 90; }
+
+/* ajout a athlete-details.css */
+.comparison-row {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 12 16;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 6, 0, 0, 2);
+}
+.comparison-metric-name { -fx-font-weight: 600; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
+.comparison-value { -fx-text-fill: #3A3D45; -fx-min-width: 70; -fx-alignment: center; }
+.delta-up   { -fx-text-fill: #34C759; -fx-font-weight: 700; }
+.delta-down { -fx-text-fill: #FF5A5F; -fx-font-weight: 700; }
+.delta-flat { -fx-text-fill: #9AA0A6; }

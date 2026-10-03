@@ -13,4 +13,5 @@ public interface GpsPointJpaRepository extends JpaRepository<GpsPointEntity, Int
 
     List<GpsPointEntity> findAllByImportedSession_Id(Integer importedSessionId);
     Optional<GpsPointEntity> findByIdAndImportedSession_Id(Integer gpsPointId, Integer importedSessionId);
+
 }

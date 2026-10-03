@@ -37,5 +37,4 @@ public class JpaSessionGpsPointsAdapter implements SessionGpsPointsPort {
                 .map(mapper::toDomain)
                 .toList();
     }
-
 }

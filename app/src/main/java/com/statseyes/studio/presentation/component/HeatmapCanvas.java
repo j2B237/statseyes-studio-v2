@@ -15,6 +15,7 @@ public class HeatmapCanvas extends Canvas {
 
     private static final int GRID_COLS = 10;
     private static final int GRID_ROWS = 6;
+    private final GraphicsContext gc = getGraphicsContext2D();
 
     // ====================
     // PUBLIC API
@@ -26,8 +27,6 @@ public class HeatmapCanvas extends Canvas {
     }
 
     public void render(List<GpsPoint> points){
-
-        GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
 
         drawPitch(gc);
@@ -60,6 +59,11 @@ public class HeatmapCanvas extends Canvas {
                 gc.fillRect(c * cellW, r * cellH, cellW, cellH);
             }
         }
+    }
+
+    public void clear(){
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        drawPitch(gc);
 
     }
 

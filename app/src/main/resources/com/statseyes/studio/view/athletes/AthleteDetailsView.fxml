@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.statseyes.studio.presentation.component.StatsCard?>
+<?import com.statseyes.studio.presentation.component.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/22"
+<VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.statseyes.studio.presentation.athletes.details.AthleteDetailsViewController"
       styleClass="athlete-details-root"
@@ -16,7 +16,6 @@
             <Label fx:id="athleteNameLabel" styleClass="athlete-name" text="—"/>
             <Label fx:id="athleteSubtitleLabel" styleClass="athlete-subtitle" text="—"/>
         </VBox>
-        
         <Button fx:id="importButton" text="Importer dump.bin" onAction="#onImportDump"/>
     </HBox>
     
@@ -24,20 +23,33 @@
     
     <GridPane hgap="16" vgap="16">
         <columnConstraints>
-            <ColumnConstraints percentWidth="50"/>
-            <ColumnConstraints percentWidth="50"/>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
         </columnConstraints>
-        <StatsCard fx:id="distanceCard" title="Distance parcourue"
-                   iconGlyph="📍" accentColor="#4F8EF7"
-                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <StatsCard fx:id="vitesseCard" title="Vitesse max"
-                   iconGlyph="🏃" accentColor="#FF5A5F"
-                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <StatsCard fx:id="sprintsCard" title="Sprints"
-                   iconGlyph="⚡" accentColor="#FFB020"
-                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <StatsCard fx:id="directionCard" title="Direction dominante"
-                   iconGlyph="🧭" accentColor="#34C759"
-                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <StatsCard fx:id="distanceCard" title="Distance" iconGlyph="📍" accentColor="#4F8EF7" GridPane.columnIndex="0"/>
+        <StatsCard fx:id="vitesseCard" title="Vitesse max" iconGlyph="🏃" accentColor="#FF5A5F" GridPane.columnIndex="1"/>
+        <StatsCard fx:id="sprintsCard" title="Sprints" iconGlyph="⚡" accentColor="#FFB020" GridPane.columnIndex="2"/>
+        <StatsCard fx:id="directionCard" title="Direction" iconGlyph="🧭" accentColor="#34C759" GridPane.columnIndex="3"/>
     </GridPane>
+    
+    <TabPane styleClass="athlete-tabs" VBox.vgrow="ALWAYS">
+        <Tab text="Carte de chaleur" closable="false">
+            <VBox alignment="CENTER" style="-fx-padding: 16;">
+                <HeatmapCanvas fx:id="heatmapCanvas"/>
+                <Label text="Vert = peu de temps passé  ·  Rouge = beaucoup de temps passé" styleClass="heatmap-legend"/>
+            </VBox>
+        </Tab>
+        <Tab text="Historique des séances" closable="false">
+            <ListView fx:id="sessionHistoryListView" styleClass="session-history-list"/>
+        </Tab>
+        <Tab text="Profil" closable="false">
+            <VBox spacing="10" style="-fx-padding: 16;">
+                <Label fx:id="profileTeamLabel" styleClass="profile-line"/>
+                <Label fx:id="profilePositionLabel" styleClass="profile-line"/>
+                <Label fx:id="profileAgeLabel" styleClass="profile-line"/>
+            </VBox>
+        </Tab>
+    </TabPane>
 </VBox>

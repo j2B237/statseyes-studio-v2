@@ -2,9 +2,12 @@ package com.statseyes.studio.presentation.athletes.details;
 
 import com.statseyes.studio.application.usecase.athlete.LoadAthleteDetailsUseCase;
 import com.statseyes.studio.application.usecase.session.GetLatestImportedSessionUseCase;
+import com.statseyes.studio.application.usecase.session.GetSessionHeatmapPointsUseCase;
 import com.statseyes.studio.application.usecase.session.ImportSessionFromFileUseCase;
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
 import com.statseyes.studio.domain.model.Athlete;
+import com.statseyes.studio.domain.model.GpsPoint;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
@@ -12,6 +15,7 @@ import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
 import javafx.beans.property.*;
 import java.io.InputStream;
 
+import javafx.collections.FXCollections;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,6 +29,8 @@ public class AthleteDetailsViewModel {
     private final ObjectProperty<ImportedSession> latestSession = new SimpleObjectProperty<>();
     private final StringProperty importStatus = new SimpleStringProperty();
     private final BooleanProperty importing = new SimpleBooleanProperty(false);
+    private final ListProperty<GpsPoint> heatMapPoints =
+            new SimpleListProperty<>(FXCollections.observableArrayList());
 
     // =======================
     // INSTANCE VARIABLES
@@ -32,9 +38,9 @@ public class AthleteDetailsViewModel {
     private final LoadAthleteDetailsUseCase loadAthleteDetailsUseCase;
     private final GetLatestImportedSessionUseCase getLatestImportedSessionUseCase;
     private final ImportSessionFromFileUseCase importPodFileUseCase;
+    private final GetSessionHeatmapPointsUseCase sessionHeatmapPointsUseCase;
     private final SessionAdapter sessionService;
     private final BackgroundTaskRunner backgroundTaskRunner;
-    private static final String DUMP_RESOURCE_PATH = "/com/statseyes/studio/data/dump.bin";
 
     // ===================
     // PUBLIC API
@@ -43,12 +49,14 @@ public class AthleteDetailsViewModel {
     public AthleteDetailsViewModel(
             LoadAthleteDetailsUseCase loadAthleteDetailsUseCase,
             GetLatestImportedSessionUseCase getLatestImportedSessionUseCase,
+            GetSessionHeatmapPointsUseCase sessionHeatmapPointsUseCase,
             ImportSessionFromFileUseCase importPodFileUseCase,
             SessionAdapter sessionService,
             BackgroundTaskRunner backgroundTaskRunner
     ) {
         this.loadAthleteDetailsUseCase = loadAthleteDetailsUseCase;
         this.getLatestImportedSessionUseCase = getLatestImportedSessionUseCase;
+        this.sessionHeatmapPointsUseCase = sessionHeatmapPointsUseCase;
         this.importPodFileUseCase = importPodFileUseCase;
         this.sessionService = sessionService;
         this.backgroundTaskRunner = backgroundTaskRunner;
@@ -56,23 +64,23 @@ public class AthleteDetailsViewModel {
 
     public void loadAthlete(Integer athleteId){
         backgroundTaskRunner.run(
-                () -> loadAthleteDetailsUseCase.execute(athleteId),
-                result ->{
-                    athlete.set(result); loadLatestSession(athleteId);
-                },
-                error ->{
-                    importStatus.set("Erreur : " + error.getMessage());
-                }
+            () -> loadAthleteDetailsUseCase.execute(athleteId),
+            result ->{
+                athlete.set(result); loadLatestSession(athleteId);
+            },
+            error ->{
+                importStatus.set("Erreur : " + error.getMessage());
+            }
         );
     }
 
-
-    public ObjectProperty<Athlete> athleteProperty() { return athlete; }
-    public ObjectProperty<ImportedSession> latestSessionProperty() { return latestSession; }
-    public StringProperty importStatusProperty() { return importStatus; }
-    public BooleanProperty importingProperty() { return importing; }
-
-
+    public void loadHeatmapPoints(Integer importedSessionId){
+        backgroundTaskRunner.run(
+            () -> sessionHeatmapPointsUseCase.execute(importedSessionId),
+            heatMapPoints::setAll,
+            error -> importStatus.set("Erreur :" + error.getMessage())
+        );
+    }
     public void importDumpForCurrentAthlete(){
         Athlete current = athlete.get();
 
@@ -86,7 +94,9 @@ public class AthleteDetailsViewModel {
 
         backgroundTaskRunner.run(
                 () -> {
-                    try(InputStream in = getClass().getResourceAsStream(DUMP_RESOURCE_PATH)){
+                    try(InputStream in = getClass().getResourceAsStream(
+                            ApplicationConfiguration.DUMP_RESOURCE_PATH.getValue()
+                    )){
 
                         if (in == null){
                             throw new PodFileFormatException("dump.bin introuvable dans les ressources");
@@ -108,6 +118,11 @@ public class AthleteDetailsViewModel {
         );
     }
 
+    public ObjectProperty<Athlete> athleteProperty() { return athlete; }
+    public ObjectProperty<ImportedSession> latestSessionProperty() { return latestSession; }
+    public StringProperty importStatusProperty() { return importStatus; }
+    public BooleanProperty importingProperty() { return importing; }
+    public ListProperty<GpsPoint> heatMapPointsProperty(){return heatMapPoints;}
 
     // ======================
     // PRIVATE API
@@ -115,8 +130,8 @@ public class AthleteDetailsViewModel {
 
     private void loadLatestSession(Integer athleteId){
         backgroundTaskRunner.run(
-                () -> getLatestImportedSessionUseCase.execute(athleteId), latestSession::set,
-                error -> importStatus.set("Erreur : " + error.getMessage())
+            () -> getLatestImportedSessionUseCase.execute(athleteId), latestSession::set,
+            error -> importStatus.set("Erreur : " + error.getMessage())
         );
     }
 
