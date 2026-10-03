@@ -5,6 +5,7 @@ import com.statseyes.studio.infrastructure.persistence.mapper.GpsPointMapper;
 import com.statseyes.studio.application.port.SessionGpsPointsPort;
 import com.statseyes.studio.infrastructure.persistence.repository.GpsPointJpaRepository;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +43,5 @@ public class JpaSessionGpsPointsAdapter implements SessionGpsPointsPort {
                 .map(mapper::toDomain)
                 .toList();
     }
+
 }

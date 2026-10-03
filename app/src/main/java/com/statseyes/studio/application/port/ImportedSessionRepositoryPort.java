@@ -14,4 +14,6 @@ public interface ImportedSessionRepositoryPort {
 
     List<ImportedSession> findAll();
     List<ImportedSession> findByAthleteId(Integer athleteId);
+
+    void deleteById(Integer importedSessionId);
 }

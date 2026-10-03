@@ -103,5 +103,14 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
                 .toList();
     }
 
+    @Override
+    @Transactional
+    @CacheEvict(
+            value = "gp-points",
+            key = "#importedSessionId"
+    )
+    public void deleteById(Integer importedSessionId){
+        repository.deleteById(importedSessionId);
+    }
 
 }
