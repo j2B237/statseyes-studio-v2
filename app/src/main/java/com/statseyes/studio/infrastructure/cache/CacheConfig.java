@@ -103,6 +103,12 @@ public class CacheConfig {
                     100
             )
         );
+
+        caches.add(
+            buildWeightedCache(
+                    CacheType.GPS_POINTS.getName(),
+                    50_000)
+        );
         
         manager.setCaches(caches);
 
@@ -122,5 +128,20 @@ public class CacheConfig {
                     .maximumSize(maxSize)               // taille max -> éviction LRU si dépassée
                     .recordStats()                      // active les statistiques (hit/miss)
                     .build());
+    }
+
+    private CaffeineCache buildWeightedCache(String name, long maxTotalWeight) {
+        Caffeine<Object, Object> builder = Caffeine.newBuilder();
+
+        return new CaffeineCache(name, builder
+                .maximumWeight(maxTotalWeight)
+                .weigher((Object key, Object value) -> {
+                    if (value instanceof List<?> list) {
+                        return Math.max(1, list.size());
+                    }
+                    return 1;
+                })
+                .recordStats()
+                .build());
     }
 }

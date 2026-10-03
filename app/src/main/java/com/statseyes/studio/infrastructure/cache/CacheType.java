@@ -11,7 +11,8 @@ public enum CacheType {
     TEAM("teams"),
     ATHLETES("athletes"),
     POSITION("positions"),
-    IMPORTED_SESSIONS("imported_sessions");
+    IMPORTED_SESSIONS("imported_sessions"),
+    GPS_POINTS("gps-points");
 
     private final String name;
 

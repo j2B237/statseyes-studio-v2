@@ -5,6 +5,7 @@ import com.statseyes.studio.infrastructure.persistence.mapper.GpsPointMapper;
 import com.statseyes.studio.application.port.SessionGpsPointsPort;
 import com.statseyes.studio.infrastructure.persistence.repository.GpsPointJpaRepository;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,10 @@ public class JpaSessionGpsPointsAdapter implements SessionGpsPointsPort {
 
 
     @Override
+    @Cacheable(
+        value = "gps-points",
+        key = "#importSessionId"
+    )
     @Transactional(readOnly = true)
     public List<GpsPoint> findBySessionId(Integer importSessionId){
         return repository.findAllByImportedSession_Id(importSessionId)

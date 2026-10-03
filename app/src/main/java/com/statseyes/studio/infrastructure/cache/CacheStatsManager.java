@@ -34,6 +34,7 @@ public class CacheStatsManager {
             case ATHLETES -> type.getName();
             case POSITION -> type.getName();
             case IMPORTED_SESSIONS -> type.getName();
+            case GPS_POINTS -> type.getName();
         };
 
         CaffeineCache cache = 

@@ -102,12 +102,14 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             NOTE :
             Éviter d'utiliser synchroniquement des propriétés
             dont la valeur est chargee de manière asynchrone.
-            Cela provoque des widgets figes avec les mauvaises
+            Cela provoque des widgets figés avec les mauvaises
             valeurs.
             renderSession(viewModel.latestSessionProperty().get());
             renderHeatmap(viewModel.heatMapPointsProperty().get());
         */
         cacheStatsManager.printStats(CacheType.IMPORTED_SESSIONS);
+        System.out.println();
+        cacheStatsManager.printStats(CacheType.GPS_POINTS);
         System.out.println();
     }
 
