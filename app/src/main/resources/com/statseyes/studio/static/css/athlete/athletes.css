@@ -8,7 +8,6 @@
     -fx-background-color: white; -fx-background-radius: 12;
     -fx-padding: 14 16; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 8, 0, 0, 2);
 }
-
 .athlete-list .list-cell {
     -fx-background-color: transparent;
     -fx-padding: 0 0 12 0;

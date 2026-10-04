@@ -1,19 +1,19 @@
 package com.statseyes.studio.presentation.athletes.details;
 
 import com.statseyes.studio.application.usecase.athlete.LoadAthleteDetailsUseCase;
-import com.statseyes.studio.application.usecase.session.GetLatestImportedSessionUseCase;
-import com.statseyes.studio.application.usecase.session.GetSessionHeatmapPointsUseCase;
-import com.statseyes.studio.application.usecase.session.ImportSessionFromFileUseCase;
+import com.statseyes.studio.application.usecase.session.*;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
 import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.domain.model.GpsPoint;
 import com.statseyes.studio.domain.model.ImportedSession;
+import com.statseyes.studio.domain.model.SessionComparison;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
 
 import javafx.beans.property.*;
 import java.io.InputStream;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,10 @@ public class AthleteDetailsViewModel {
     private final BooleanProperty importing = new SimpleBooleanProperty(false);
     private final ListProperty<GpsPoint> heatMapPoints =
             new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ObjectProperty<List<ImportedSession>> sessionHistory =
+            new SimpleObjectProperty<>(List.of());
+    private final ObjectProperty<SessionComparison> comparison =
+            new SimpleObjectProperty<>();
 
     // =======================
     // INSTANCE VARIABLES
@@ -39,6 +43,8 @@ public class AthleteDetailsViewModel {
     private final GetLatestImportedSessionUseCase getLatestImportedSessionUseCase;
     private final ImportSessionFromFileUseCase importPodFileUseCase;
     private final GetSessionHeatmapPointsUseCase sessionHeatmapPointsUseCase;
+    private final ListSessionsForAthleteUseCase listSessionsForAthleteUseCase;
+    private final CompareSessionsUseCase compareSessionsUseCase;
     private final SessionAdapter sessionService;
     private final BackgroundTaskRunner backgroundTaskRunner;
 
@@ -50,12 +56,16 @@ public class AthleteDetailsViewModel {
             LoadAthleteDetailsUseCase loadAthleteDetailsUseCase,
             GetLatestImportedSessionUseCase getLatestImportedSessionUseCase,
             GetSessionHeatmapPointsUseCase sessionHeatmapPointsUseCase,
+            ListSessionsForAthleteUseCase listSessionsForAthleteUseCase,
+            CompareSessionsUseCase compareSessionsUseCase,
             ImportSessionFromFileUseCase importPodFileUseCase,
             SessionAdapter sessionService,
             BackgroundTaskRunner backgroundTaskRunner
     ) {
         this.loadAthleteDetailsUseCase = loadAthleteDetailsUseCase;
         this.getLatestImportedSessionUseCase = getLatestImportedSessionUseCase;
+        this.listSessionsForAthleteUseCase = listSessionsForAthleteUseCase;
+        this.compareSessionsUseCase = compareSessionsUseCase;
         this.sessionHeatmapPointsUseCase = sessionHeatmapPointsUseCase;
         this.importPodFileUseCase = importPodFileUseCase;
         this.sessionService = sessionService;
@@ -81,6 +91,25 @@ public class AthleteDetailsViewModel {
             error -> importStatus.set("Erreur :" + error.getMessage())
         );
     }
+
+    public void loadSessionHistory(Integer athleteId){
+        backgroundTaskRunner.run(
+                () -> listSessionsForAthleteUseCase.execute(athleteId),
+                sessionHistory::set,
+                error -> importStatus.set("Erreur : " + error.getMessage())
+        );
+    }
+
+    public void selectSession(ImportedSession session) {
+        latestSession.set(session);
+        loadHeatmapPoints(session.id());
+    }
+
+    // Calcul pur, pas d'I/O -- pas besoin de BackgroundTaskRunner
+    public void compare(ImportedSession a, ImportedSession b) {
+        comparison.set(compareSessionsUseCase.execute(a, b));
+    }
+
     public void importDumpForCurrentAthlete(){
         Athlete current = athlete.get();
 
@@ -123,6 +152,12 @@ public class AthleteDetailsViewModel {
     public StringProperty importStatusProperty() { return importStatus; }
     public BooleanProperty importingProperty() { return importing; }
     public ListProperty<GpsPoint> heatMapPointsProperty(){return heatMapPoints;}
+    public ObjectProperty<List<ImportedSession>> sessionHistoryProperty(){
+        return sessionHistory;
+    }
+    public ObjectProperty<SessionComparison> comparisonProperty(){
+        return comparison;
+    }
 
     // ======================
     // PRIVATE API

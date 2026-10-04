@@ -13,6 +13,7 @@ public enum ApplicationConfiguration {
     // =============
     DAY_FORMAT("dd/MM"),
     HOUR_FORMAT("HH:mm"),
+    SESSION_LABEL_FORMAT("dd/MM/yyyy HH:mm"),
     // ==============
     // METRICS UNIT
     // ==============

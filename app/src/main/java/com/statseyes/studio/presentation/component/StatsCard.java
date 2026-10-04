@@ -14,10 +14,9 @@ import java.util.Objects;
 
 public class StatsCard extends VBox {
 
-    // Hauteurs relatives simulant une petite forme d'onde (façon rythme cardiaque)
-    private static final double[] WAVEFORM_PATTERN = {
-            0.25, 0.35, 0.3, 0.55, 0.9, 0.45, 0.3, 0.6, 0.4, 0.3
-    };
+    // ==============
+    // PROPERTIES
+    // ==============
 
     private final StringProperty title      = new SimpleStringProperty();
     private final StringProperty value      = new SimpleStringProperty("--");
@@ -26,12 +25,25 @@ public class StatsCard extends VBox {
     private final ObjectProperty<Color> accentColor = new SimpleObjectProperty<>(Color.web("#4F8EF7"));
     private final BooleanProperty dataAvailable = new SimpleBooleanProperty(true);
 
+
+    // ==================
+    // INSTANCE VARIABLES
+    // ==================
+
+    private static final double[] WAVEFORM_PATTERN = {
+            0.25, 0.35, 0.3, 0.55, 0.9, 0.45, 0.3, 0.6, 0.4, 0.3
+    };
     private final Circle iconBadge = new Circle(18);
     private final Label iconGlyphLabel = new Label();
     private final Label titleLabel = new Label();
     private final Label valueLabel = new Label();
     private final Label unitLabel = new Label();
+    private final Label deltaLabel = new Label();
     private final HBox sparkBar = new HBox(3);
+
+    // =================
+    // PUBLIC API
+    // =================
 
     public StatsCard(){
 
@@ -57,22 +69,22 @@ public class StatsCard extends VBox {
 
         HBox.setHgrow(titleLabel, Priority.ALWAYS);
 
-        HBox header = new HBox(10, iconStack, titleLabel);
+        HBox header = new HBox(10, iconStack, titleLabel, spacer(), sparkBar);
         header.setAlignment(Pos.CENTER_LEFT);
-
-        sparkBar.setAlignment(Pos.BOTTOM_LEFT);
-        sparkBar.setPrefHeight(24);
-
-        valueLabel.getStyleClass().add("stats-card-value");
-        valueLabel.textProperty().bind(value);
-
-        unitLabel.getStyleClass().add("stats-card-unit");
-        unitLabel.textProperty().bind(unit);
 
         HBox valueRow = new HBox(valueLabel, unitLabel);
         valueRow.setAlignment(Pos.BASELINE_LEFT);
 
-        getChildren().addAll(header, sparkBar, valueRow);
+        valueLabel.getStyleClass().add("stats-card-value");   // <- manquait aussi : jamais stylé
+        valueLabel.textProperty().bind(value);
+        unitLabel.getStyleClass().add("stats-card-unit");      // <- idem
+        unitLabel.textProperty().bind(unit);
+
+        deltaLabel.getStyleClass().add("stats-card-delta");
+        deltaLabel.setManaged(false);
+        deltaLabel.setVisible(false);
+
+        getChildren().setAll(header, valueRow, deltaLabel);
 
         accentColor.addListener(
                 (o, ov, nv) -> refreshVisuals());
@@ -83,24 +95,15 @@ public class StatsCard extends VBox {
         refreshVisuals();
     }
 
-    private void refreshVisuals(){
+    public void setDelta(double percent) {
 
-        Color accent = accentColor.get();
-        boolean hasData = dataAvailable.get();
+        deltaLabel.setManaged(true);
+        deltaLabel.setVisible(true);
+        deltaLabel.getStyleClass().removeAll("delta-up", "delta-down");
 
-        iconBadge.setFill(accent.deriveColor(0, 1, 1, 0.15));
-        iconGlyphLabel.setText(iconGlyph.get());
-        iconGlyphLabel.setTextFill(accent);
-
-        sparkBar.getChildren().clear();
-
-        for (double relativeHeight : WAVEFORM_PATTERN) {
-            double h = hasData ? relativeHeight * 22 : 4;
-            Rectangle bar = new Rectangle(4, Math.max(3, h));
-            bar.setArcWidth(3); bar.setArcHeight(3);
-            bar.setFill(hasData ? accent : Color.web("#E4E5EA"));
-            sparkBar.getChildren().add(bar);
-        }
+        String arrow = percent >= 0 ? "↑" : "↓";
+        deltaLabel.setText(arrow + " " + String.format("%+.0f", percent) + "% vs. moyenne");
+        deltaLabel.getStyleClass().add(percent >= 0 ? "delta-up" : "delta-down");
     }
 
     public void setTitle(String v) { title.set(v); }
@@ -120,4 +123,36 @@ public class StatsCard extends VBox {
     public StringProperty valueProperty() { return value; }
     public StringProperty unitProperty() { return unit; }
     public BooleanProperty dataAvailableProperty() { return dataAvailable; }
+
+    // ================
+    // PRIVATE API
+    // ================
+
+    private Region spacer() {
+        Region r = new Region();
+        HBox.setHgrow(r, Priority.ALWAYS);
+        return r;
+    }
+
+    private void refreshVisuals(){
+
+        Color accent = accentColor.get();
+        boolean hasData = dataAvailable.get();
+
+        iconBadge.setFill(accent.deriveColor(0, 1, 1, 0.15));
+        iconGlyphLabel.setText(iconGlyph.get());
+        iconGlyphLabel.setTextFill(accent);
+
+        sparkBar.getChildren().clear();
+
+        for (double relativeHeight : WAVEFORM_PATTERN) {
+
+            double h = hasData ? relativeHeight * 22 : 4;
+            Rectangle bar = new Rectangle(4, Math.max(3, h));
+            bar.setArcWidth(3); bar.setArcHeight(3);
+            bar.setFill(hasData ? accent : Color.web("#E4E5EA"));
+            sparkBar.getChildren().add(bar);
+        }
+    }
+
 }

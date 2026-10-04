@@ -9,12 +9,20 @@
             stylesheets="@../../static/css/home/home.css">
     
     <left>
-        <VBox styleClass="home-sidebar" spacing="18" prefWidth="64">
-            <Button styleClass="home-sidebar-icon, selected" text="▦" onAction="#onDashboardClicked"/>
-            <Label fx:id="teamsLabel" styleClass="home-sidebar-icon" text="👥" onMouseClicked="#handleSidebarClick"/>
-            <Label fx:id="athletesLabel" styleClass="home-sidebar-icon" text="👤" onMouseClicked="#handleSidebarClick"/>
-            <Label fx:id="sessionsLabel" styleClass="home-sidebar-icon" text="📊" onMouseClicked="#handleSidebarClick"/>
-            <Label styleClass="home-sidebar-icon" text="⚙"/>
+        <VBox styleClass="home-sidebar" spacing="4" prefWidth="220">
+            <HBox styleClass="brand-row" spacing="10" alignment="CENTER_LEFT">
+                <Label text="👁" styleClass="brand-icon"/>
+                <VBox>
+                    <Label text="StatsEyes" styleClass="brand-name"/>
+                    <Label text="Studio" styleClass="brand-subtitle"/>
+                </VBox>
+            </HBox>
+            
+            <Button styleClass="nav-item, selected" text="🏠  Accueil" onAction="#onDashboardClicked"/>
+            <Label fx:id="clubsLabel" styleClass="nav-item" text="🏢  Clubs" onMouseClicked="#handleSidebarClick"/>
+            <Label fx:id="teamsLabel" styleClass="nav-item" text="👥  Équipes" onMouseClicked="#handleSidebarClick"/>
+            <Label fx:id="athletesLabel" styleClass="nav-item" text="👤  Joueurs" onMouseClicked="#handleSidebarClick"/>
+            <Label fx:id="sessionsLabel" styleClass="nav-item" text="📊  Analytiques" onMouseClicked="#handleSidebarClick"/>
         </VBox>
     </left>
     

@@ -3,6 +3,11 @@
 .athlete-name { -fx-font-size: 22px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
 .athlete-subtitle { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
 .import-status { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
+
+.primary-button {
+    -fx-background-color: #1C1E21; -fx-text-fill: white;
+    -fx-background-radius: 8; -fx-padding: 8 16;
+}
 .secondary-button {
     -fx-background-color: white;
     -fx-text-fill: #1C1E21;
@@ -21,7 +26,11 @@
     -fx-background-color: #ECEDF0;
 }
 
-/* ajout a athlete-details.css */
+.heatmap-legend-gradient {
+    -fx-background-radius: 7;
+    -fx-background-color: linear-gradient(to bottom, #DC3545, #FFC107, #34C759);
+}
+
 .session-history-list { -fx-background-color: transparent; }
 .session-history-list .list-cell {
     -fx-background-color: transparent;
@@ -43,18 +52,12 @@
 .session-history-date  { -fx-font-weight: 700; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
 .session-history-stat  { -fx-text-fill: #6B6F76; -fx-font-size: 12px; -fx-min-width: 90; }
 
-/* ajout a athlete-details.css */
-.comparison-row {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-padding: 12 16;
-    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 6, 0, 0, 2);
+.session-history-row:selected-session {
+    -fx-border-color: #4F8EF7;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-color: #EEF4FF;
 }
-.comparison-metric-name { -fx-font-weight: 600; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
-.comparison-value { -fx-text-fill: #3A3D45; -fx-min-width: 70; -fx-alignment: center; }
-.delta-up   { -fx-text-fill: #34C759; -fx-font-weight: 700; }
-.delta-down { -fx-text-fill: #FF5A5F; -fx-font-weight: 700; }
-.delta-flat { -fx-text-fill: #9AA0A6; }
 
 .comparison-row {
     -fx-background-color: white;
@@ -67,3 +70,58 @@
 .delta-up   { -fx-text-fill: #34C759; -fx-font-weight: 700; }
 .delta-down { -fx-text-fill: #FF5A5F; -fx-font-weight: 700; }
 .delta-flat { -fx-text-fill: #9AA0A6; }
+
+.side-panel { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 18; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3); }
+.side-panel-title { -fx-font-weight: 700; -fx-font-size: 14px; -fx-text-fill: #1C1E21; }
+.side-panel-label { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
+.side-panel-value { -fx-text-fill: #1C1E21; -fx-font-weight: 600; -fx-font-size: 13px; }
+
+.pod-status-card { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 18; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3); }
+.pod-status-title { -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
+.pod-status-label { -fx-text-fill: #9AA0A6; -fx-font-size: 11px; }
+.pod-status-value { -fx-text-fill: #1C1E21; -fx-font-weight: 600; }
+.pod-status-value-link { -fx-text-fill: #4F8EF7; -fx-font-weight: 600; }
+.pod-status-link { -fx-cursor: hand; }
+.status-dot-active { -fx-fill: #34C759; }
+
+.side-panel-row {
+    -fx-padding: 4 0;
+}
+
+.profile-line {
+    -fx-font-size: 14px;
+    -fx-text-fill: #3A3D45;
+}
+
+.heatmap-legend-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9AA0A6;
+    -fx-font-weight: 600;
+}
+
+.session-banner {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3);
+}
+
+.session-banner-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1C1E21;
+}
+
+.session-banner-location {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9AA0A6;
+}
+
+.session-type-badge {
+    -fx-background-color: #EEF4FF;
+    -fx-text-fill: #4F8EF7;
+    -fx-background-radius: 12;
+    -fx-padding: 4 12;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}

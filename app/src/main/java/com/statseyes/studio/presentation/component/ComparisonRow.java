@@ -31,7 +31,7 @@ public class ComparisonRow extends HBox{
         deltaLabel.getStyleClass().add("comparison-delta");
 
         HBox.setHgrow(metricLabel, Priority.ALWAYS);
-        getChildren().addAll(metricLabel, valueALabel, deltaLabel, valueALabel);
+        getChildren().addAll(metricLabel, valueALabel, deltaLabel, valueBLabel);
     }
 
     public void set(
