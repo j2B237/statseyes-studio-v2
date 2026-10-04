@@ -1,5 +1,6 @@
 package com.statseyes.studio.presentation.home;
 
+import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
@@ -68,5 +69,11 @@ public class HomeViewController implements ViewManagerAware {
         if (clicked == athletesLabel)      templateViewController.loadAthletesView();
         else if (clicked == teamsLabel)    templateViewController.loadTeamsView();
         else if (clicked == sessionsLabel) templateViewController.loadSessionsView();
+    }
+
+    @FXML
+    protected void onLogout() {
+        sessionAdapter.clear();   // confirmez le nom exact de la methode sur votre SessionAdapter
+        viewManager.navigateTo(ApplicationConfiguration.LOGIN_PATH.getValue());
     }
 }

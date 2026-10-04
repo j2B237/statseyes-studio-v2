@@ -50,3 +50,9 @@
     -fx-padding: 6 14;
     -fx-font-size: 12px;
 }
+
+.user-menu-button, .user-menu-button:hover, .user-menu-button:focused, .user-menu-button:showing {
+    -fx-background-color: transparent; -fx-border-width: 0; -fx-padding: 4 8;
+}
+.user-menu-button .arrow { -fx-background-color: #9AA0A6; }
+.user-avatar-circle { -fx-fill: #4F8EF7; }

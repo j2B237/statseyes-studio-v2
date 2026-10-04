@@ -2,6 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Circle?>
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.statseyes.studio.presentation.home.HomeViewController"
@@ -32,10 +33,23 @@
             <HBox styleClass="home-topbar" spacing="16" alignment="CENTER_LEFT">
                 <TextField promptText="Rechercher un athlete, une equipe..." styleClass="home-search" HBox.hgrow="ALWAYS"/>
                 <Label text="🔔"/>
-                <VBox alignment="CENTER_RIGHT">
-                    <Label fx:id="userNameLabel" styleClass="home-username" text="Nom Utilisateur"/>
-                    <Label text="Préparateur" styleClass="home-userrole"/>
-                </VBox>
+                
+                <MenuButton fx:id="userMenuButton" styleClass="user-menu-button">
+                    <graphic>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Circle radius="14" styleClass="user-avatar-circle"/>
+                            <VBox>
+                                <Label fx:id="userNameLabel" styleClass="home-username" text="Nom Utilisateur"/>
+                                <Label text="Préparateur" styleClass="home-userrole"/>
+                            </VBox>
+                        </HBox>
+                    </graphic>
+                    <items>
+                        <MenuItem text="Mon compte" disable="true"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Déconnexion" onAction="#onLogout"/>
+                    </items>
+                </MenuButton>
             </HBox>
             
             <fx:include source="../template/TemplateView.fxml"/>
