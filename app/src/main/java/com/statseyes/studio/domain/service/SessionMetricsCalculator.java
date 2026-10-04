@@ -14,7 +14,15 @@ public class SessionMetricsCalculator {
         List<GpsData> valid = samples.stream().filter(GpsData::Valid).toList();
 
         if(valid.size() < 2){
-            return new SessionMetrics(0, 0, 0, 0, 0);
+            return new SessionMetrics(0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,0);
         }
 
         double totalDistanceM = 0;
@@ -63,8 +71,13 @@ public class SessionMetricsCalculator {
         double avgSpeedKmh = speedSumKmh / valid.size();
         double dominantCourseDeg = (Math.toDegrees(Math.atan2(sumSin, sumCos)) + 360) % 360;
 
+        long durationSeconds = Math.max(0,
+                (valid.getLast().Time_MS() - valid.get(0).Time_MS()) / 1000);
+
         return new SessionMetrics(
-                totalDistanceM, maxSpeedKmh, avgSpeedKmh, sprintCount, dominantCourseDeg);
+                totalDistanceM, maxSpeedKmh, avgSpeedKmh, sprintCount, dominantCourseDeg,
+                durationSeconds, 0, 0, 0, 0
+        );
     }
 
     private long deltaMillis(int previousTimeMs, int currentTimeMs) {

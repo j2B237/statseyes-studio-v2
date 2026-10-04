@@ -66,6 +66,10 @@
     <Label fx:id="importStatusLabel" styleClass="import-status"/>
     
     <HBox styleClass="session-banner" spacing="16" alignment="CENTER_LEFT">
+        <Label text="Durée" styleClass="side-panel-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="sessionDurationLabel" styleClass="side-panel-value"/>
+        
         <Label fx:id="sessionDateLabel" styleClass="session-banner-title"/>
         <Label text="Entraînement" styleClass="session-type-badge"/>
         <Region HBox.hgrow="ALWAYS"/>
@@ -85,47 +89,45 @@
         <StatsCard fx:id="directionCard" title="Direction" iconGlyph="🧭" accentColor="#34C759" GridPane.columnIndex="3"/>
     </GridPane>
     
-    <HBox spacing="10" HBox.hgrow="ALWAYS">
-        <VBox alignment="CENTER_LEFT">
-            <TabPane styleClass="athlete-tabs" VBox.vgrow="ALWAYS">
-                <Tab text="Carte de chaleur" closable="false">
-                    <VBox alignment="CENTER" style="-fx-padding: 16;">
-                        <HBox spacing="20">
-                            <HeatmapCanvas fx:id="heatmapCanvas"/>
-                            <VBox alignment="CENTER" spacing="4">
-                                <Label text="Intensité élevée" styleClass="heatmap-legend-label"/>
-                                <Region styleClass="heatmap-legend-gradient" prefWidth="14" prefHeight="300"/>
-                                <Label text="Intensité faible" styleClass="heatmap-legend-label"/>
-                            </VBox>
-                        </HBox>
-                    </VBox>
-                </Tab>
-                <Tab text="Historique des séances" closable="false" >
-                    <ListView fx:id="sessionHistoryListView" styleClass="session-history-list"/>
-                </Tab>
-                <Tab text="Profil" closable="false">
-                    <VBox spacing="10" style="-fx-padding: 16;">
-                        <Label fx:id="profileTeamLabel" styleClass="profile-line"/>
-                        <Label fx:id="profilePositionLabel" styleClass="profile-line"/>
-                        <Label fx:id="profileAgeLabel" styleClass="profile-line"/>
-                    </VBox>
-                </Tab>
-                <Tab text="Comparer" closable="false">
-                    <VBox spacing="16" style="-fx-padding: 16;">
-                        <HBox spacing="12" alignment="CENTER_LEFT">
-                            <ChoiceBox fx:id="sessionAChoice" prefWidth="200"/>
-                            <Label text="vs"/>
-                            <ChoiceBox fx:id="sessionBChoice" prefWidth="200"/>
-                            <Button text="Comparer" onAction="#onCompare" styleClass="primary-button"/>
-                        </HBox>
-                        <VBox fx:id="comparisonRowsContainer" spacing="8"/>
-                    </VBox>
-                </Tab>
-            </TabPane>
-        </VBox>
-       
+    
+    <HBox spacing="20" alignment="TOP_LEFT">
+        <TabPane styleClass="athlete-tabs" HBox.hgrow="ALWAYS">
+            <Tab text="Carte de chaleur" closable="false">
+                <VBox alignment="TOP_LEFT" style="-fx-padding: 16;">
+                    <HBox spacing="20">
+                        <HeatmapCanvas fx:id="heatmapCanvas"/>
+                        <VBox alignment="CENTER" spacing="4">
+                            <Label text="Intensité élevée" styleClass="heatmap-legend-label"/>
+                            <Region styleClass="heatmap-legend-gradient" prefWidth="14" prefHeight="300"/>
+                            <Label text="Intensité faible" styleClass="heatmap-legend-label"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab text="Historique des séances" closable="false" >
+                <ListView fx:id="sessionHistoryListView" styleClass="session-history-list"/>
+            </Tab>
+            <Tab text="Profil" closable="false">
+                <VBox spacing="10" style="-fx-padding: 16;">
+                    <Label fx:id="profileTeamLabel" styleClass="profile-line"/>
+                    <Label fx:id="profilePositionLabel" styleClass="profile-line"/>
+                    <Label fx:id="profileAgeLabel" styleClass="profile-line"/>
+                </VBox>
+            </Tab>
+            <Tab text="Comparer" closable="false">
+                <VBox spacing="16" style="-fx-padding: 16;">
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <ChoiceBox fx:id="sessionAChoice" prefWidth="200"/>
+                        <Label text="vs"/>
+                        <ChoiceBox fx:id="sessionBChoice" prefWidth="200"/>
+                        <Button text="Comparer" onAction="#onCompare" styleClass="primary-button"/>
+                    </HBox>
+                    <VBox fx:id="comparisonRowsContainer" spacing="8"/>
+                </VBox>
+            </Tab>
+        </TabPane>
         
-        <VBox spacing="20" alignment="CENTER_RIGHT">
+        <VBox spacing="20" prefWidth="280" minWidth="280">
             <VBox styleClass="side-panel" spacing="12">
                 <Label text="Informations de la séance" styleClass="side-panel-title"/>
                 <HBox styleClass="side-panel-row"><Label text="Date" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="sessionInfoDateLabel" styleClass="side-panel-value"/></HBox>
@@ -133,8 +135,7 @@
                 <HBox styleClass="side-panel-row"><Label text="Type" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="—" styleClass="side-panel-value"/></HBox>
                 <HBox styleClass="side-panel-row"><Label text="Lieu" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="—" styleClass="side-panel-value"/></HBox>
             </VBox>
-            
-            <VBox styleClass="side-panel" spacing="12" alignment="CENTER_RIGHT">
+            <VBox styleClass="side-panel" spacing="12">
                 <Label text="statistiques complémentaires" styleClass="side-panel-title"/>
                 <HBox styleClass="side-panel-row"><Label text="Distance/min" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0 m/min" styleClass="side-panel-value"/></HBox>
                 <HBox styleClass="side-panel-row"><Label text="Accélérations" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0" styleClass="side-panel-value"/></HBox>

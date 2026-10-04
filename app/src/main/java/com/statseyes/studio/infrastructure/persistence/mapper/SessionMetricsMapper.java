@@ -14,7 +14,12 @@ public class SessionMetricsMapper {
                 entity.getMaxSpeedKmh(),
                 entity.getAvgSpeedKmh(),
                 entity.getSprintCount(),
-                entity.getDominantCourseDeg()
+                entity.getDominantCourseDeg(),
+                0,
+                0,
+                0,
+                0,
+                0
         );
     }
 }

@@ -5,6 +5,11 @@ public record SessionMetrics(
         double maxSpeedKmh,
         double avgSpeedKmh,
         int sprintCount,
-        double dominantCourseDegrees
+        double dominantCourseDegrees,
+        long durationSeconds,          // <- cette seule ligne cree automatiquement durationSeconds()
+        double distancePerMinuteM,
+        int accelerationCount,
+        int decelerationCount,
+        int directionChangeCount
 ) {
 }

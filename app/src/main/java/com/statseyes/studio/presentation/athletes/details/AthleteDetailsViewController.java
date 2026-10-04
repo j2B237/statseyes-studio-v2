@@ -64,6 +64,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label athleteAgeLabel;
     @FXML private Label athleteHeightLabel;
     @FXML private Label athleteWeightLabel;
+    @FXML private Label sessionInfoDateLabel;
+    @FXML private Label sessionDurationLabel;
     @FXML private ChoiceBox<ImportedSession> sessionAChoice;
     @FXML private ChoiceBox<ImportedSession> sessionBChoice;
     @FXML private VBox comparisonRowsContainer;
@@ -254,6 +256,10 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         directionCard.setValue(metrics.dominantCourseDegrees(), 0);
         directionCard.setUnit(ApplicationConfiguration.DIRECTION_UNIT.getValue());
 
+        sessionInfoDateLabel.setText(session.importedAt().format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)));
+        sessionDurationLabel.setText(formatDuration(session.metrics().durationSeconds()));
+
+
         viewModel.loadHeatmapPoints(session.id());
     }
 
@@ -302,6 +308,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             sessionComparison.sprintCountDelta(),
             ""
         );
+    }
+
+    private String formatDuration(long totalSeconds) {
+        long h = totalSeconds / 3600, m = (totalSeconds % 3600) / 60;
+        return h > 0 ? h + "h " + m + "m" : m + "m";
     }
 
     private void addRow(String label, double valueA, double valueB, double delta, String unit) {
