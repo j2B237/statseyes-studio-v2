@@ -125,3 +125,62 @@
     -fx-font-size: 12px;
     -fx-font-weight: 600;
 }
+
+.athlete-tabs {
+    -fx-background-color: transparent;
+    -fx-tab-min-height: 40px;
+}
+
+/* La barre d'onglets elle-meme */
+.athlete-tabs .tab-header-area {
+    -fx-padding: 0 0 8 0;
+}
+.athlete-tabs .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+/* Chaque onglet, etat par defaut */
+.athlete-tabs .tab {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 8 16;
+    -fx-border-color: transparent transparent #E4E5EA transparent;
+    -fx-border-width: 0 0 2 0;
+}
+.athlete-tabs .tab .tab-label {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+/* Survol d'un onglet non selectionne */
+.athlete-tabs .tab:hover .tab-label {
+    -fx-text-fill: #3A3D45;
+}
+
+/* Onglet actif -- soulignement bleu plutot que fond colore,
+   plus proche du style "underline tabs" de la maquette */
+.athlete-tabs .tab:selected {
+    -fx-border-color: transparent transparent #4F8EF7 transparent;
+}
+.athlete-tabs .tab:selected .tab-label {
+    -fx-text-fill: #1C1E21;
+}
+
+/* Supprime le focus ring bleu epais que JavaFX dessine par defaut
+   autour de l'onglet actif -- redondant avec le soulignement ci-dessus */
+.athlete-tabs .tab:selected .focus-indicator {
+    -fx-border-width: 0;
+}
+
+/* Contenu de chaque onglet */
+.athlete-tabs .tab-content-area {
+    -fx-background-color: transparent;
+}
+
+/* Masque le petit bouton menu "▾" qui apparait si les onglets
+   debordent de la largeur disponible */
+.athlete-tabs > .tab-header-area > .control-buttons-tab {
+    -fx-background-color: transparent;
+}
