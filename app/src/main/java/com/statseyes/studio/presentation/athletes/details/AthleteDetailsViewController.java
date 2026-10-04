@@ -20,14 +20,19 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class AthleteDetailsViewController implements ViewManagerAware, Navigable<Integer> {
@@ -49,6 +54,16 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label profileTeamLabel;
     @FXML private Label profilePositionLabel;
     @FXML private Label profileAgeLabel;
+    @FXML private ImageView athletePhotoView;
+    @FXML private Label athleteStatusBadge;
+    @FXML private Label athleteFlagLabel;
+    @FXML private Label athleteNationalityLabel;
+    @FXML private Label athletePositionLabel;
+    @FXML private Label athleteTeamLabel;
+    @FXML private Label athleteJerseyLabel;
+    @FXML private Label athleteAgeLabel;
+    @FXML private Label athleteHeightLabel;
+    @FXML private Label athleteWeightLabel;
     @FXML private ChoiceBox<ImportedSession> sessionAChoice;
     @FXML private ChoiceBox<ImportedSession> sessionBChoice;
     @FXML private VBox comparisonRowsContainer;
@@ -177,10 +192,50 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     private void resetHeatmap(){
 
     }
+
+    private String flagEmoji(String isoCode) {
+        if (isoCode == null || isoCode.length() != 2) return "";
+        int base = 0x1F1E6 - 'A';
+        return new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(0))))
+                + new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(1))));
+    }
+
     private void renderAthlete(Athlete athlete) {
         if (athlete == null) return;
         athleteNameLabel.setText(athlete.firstname() + " " + athlete.lastname());
-        athleteSubtitleLabel.setText("Fiche athlete");
+
+        athleteStatusBadge.setText(athlete.active() ? "● Actif" : "● Inactif");
+        athleteStatusBadge.getStyleClass().setAll(
+                athlete.active() ? "status-badge-active" : "status-badge-inactive"
+        );
+
+        athleteFlagLabel.setText(flagEmoji(athlete.nationalityCode()));
+        athleteNationalityLabel.setText(athlete.nationalityCode() != null
+                ? new Locale("", athlete.nationalityCode()).getDisplayCountry(Locale.FRENCH) : "—");
+
+        athletePositionLabel.setText(athlete.positionName() != null ? athlete.positionName() : "—");
+        athleteTeamLabel.setText(athlete.teamName() != null ? athlete.teamName() : "—");
+        athleteJerseyLabel.setText(athlete.jerseyNumber() != null ? "N° " + athlete.jerseyNumber() : "—");
+
+        long age = Period.between(athlete.birthday(), LocalDate.now()).getYears();
+        athleteAgeLabel.setText(
+                age + " ans (" + athlete.birthday().format(
+                        DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)
+                ) + ")"
+        );
+
+        athleteHeightLabel.setText(athlete.height() != null ? String.format("%.2f m", athlete.height()) : "—");
+        athleteWeightLabel.setText(athlete.weight() != null ? String.format("%.0f kg", athlete.weight()) : "—");
+
+        if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {
+            athletePhotoView.setImage(
+                    new Image(
+                            athlete.imageUrl(),
+                            110, 110,
+                            false, true,
+                            true)
+            );
+        }
     }
 
     private void renderSession(ImportedSession session) {

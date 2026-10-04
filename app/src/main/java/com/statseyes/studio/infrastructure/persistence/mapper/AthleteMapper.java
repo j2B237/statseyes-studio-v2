@@ -28,7 +28,10 @@ public class AthleteMapper {
                 entity.getTeam()     != null ? entity.getTeam().getName()     : null,
                 entity.getHeight(),
                 entity.getWeight(),
-                entity.getMaxSpeed()
+                entity.getMaxSpeed(),
+                entity.getNationalityCode(),
+                entity.getJerseyNumber(),
+                entity.isActive()
         );
     }
 

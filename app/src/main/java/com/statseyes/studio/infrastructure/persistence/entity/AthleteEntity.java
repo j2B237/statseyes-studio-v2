@@ -65,5 +65,13 @@ public class AthleteEntity {
     @Column(name = "weight")
     private Double weight;
 
+    @Column(name = "nationality_code", length = 2)
+    private String nationalityCode;
+
+    @Column(name = "jersey_number")
+    private Integer jerseyNumber;
+
+    @Column(name = "active", nullable = false)
+    private boolean active = true;
 
 }

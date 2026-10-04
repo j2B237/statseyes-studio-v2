@@ -4,6 +4,13 @@
 .athlete-subtitle { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
 .import-status { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
 
+.athlete-photo-placeholder { -fx-fill: #2B3240; -fx-arc-width: 14; -fx-arc-height: 14; }
+.athlete-meta     { -fx-text-fill: #3A3D45; -fx-font-size: 13px; -fx-font-weight: 600; }
+.athlete-meta-icon{ -fx-font-size: 13px; }
+.athlete-meta-sub { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
+.status-badge-active   { -fx-text-fill: #34C759; -fx-background-color: #E8F8EC; -fx-background-radius: 10; -fx-padding: 2 10; -fx-font-size: 11px; -fx-font-weight: 700; }
+.status-badge-inactive { -fx-text-fill: #9AA0A6; -fx-background-color: #F0F1F3; -fx-background-radius: 10; -fx-padding: 2 10; -fx-font-size: 11px; -fx-font-weight: 700; }
+
 .primary-button {
     -fx-background-color: #1C1E21; -fx-text-fill: white;
     -fx-background-radius: 8; -fx-padding: 8 16;

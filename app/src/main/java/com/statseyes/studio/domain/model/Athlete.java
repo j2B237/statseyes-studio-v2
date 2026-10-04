@@ -19,5 +19,8 @@ public record Athlete(
         String teamName,
         Double height,
         Double weight,
-        Double maxSpeed
+        Double maxSpeed,
+        String nationalityCode,
+        Integer jerseyNumber,
+        boolean active
 ) {}

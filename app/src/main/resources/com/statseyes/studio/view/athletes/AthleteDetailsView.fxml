@@ -5,6 +5,8 @@
 
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.shape.Rectangle?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.statseyes.studio.presentation.athletes.details.AthleteDetailsViewController"
@@ -16,11 +18,38 @@
     
     <HBox spacing="16" alignment="CENTER_LEFT">
         
-        <VBox HBox.hgrow="ALWAYS">
-            <ImageView/>
-            <Label fx:id="athleteNameLabel" styleClass="athlete-name" text="—"/>
-            <Label fx:id="athleteSubtitleLabel" styleClass="athlete-subtitle" text="—"/>
+        <StackPane>
+            <Rectangle width="110" height="110" styleClass="athlete-photo-placeholder"/>
+            <ImageView fx:id="athletePhotoView" fitWidth="110" fitHeight="110" preserveRatio="false"/>
+        </StackPane>
+        
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label fx:id="athleteNameLabel" styleClass="athlete-name" text="—"/>
+                <Label fx:id="athleteStatusBadge" styleClass="status-badge-active" text="● Actif"/>
+            </HBox>
+            
+            <HBox spacing="18" alignment="CENTER_LEFT">
+                <Label fx:id="athleteFlagLabel" styleClass="athlete-meta"/>
+                <Label fx:id="athleteNationalityLabel" styleClass="athlete-meta"/>
+                <Label text="🏃" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athletePositionLabel" styleClass="athlete-meta"/>
+                <Label text="🛡" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athleteTeamLabel" styleClass="athlete-meta"/>
+                <Label text="👕" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athleteJerseyLabel" styleClass="athlete-meta"/>
+            </HBox>
+            <HBox spacing="18" alignment="CENTER_LEFT">
+                <Label text="📅" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athleteAgeLabel" styleClass="athlete-meta-sub"/>
+                <Label text="📏" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athleteHeightLabel" styleClass="athlete-meta-sub"/>
+                <Label text="⚖" styleClass="athlete-meta-icon"/>
+                <Label fx:id="athleteWeightLabel" styleClass="athlete-meta-sub"/>
+            </HBox>
         </VBox>
+        
         
         <VBox styleClass="pod-status-card" spacing="8">
             <HBox spacing="8" alignment="CENTER_LEFT">
@@ -30,6 +59,7 @@
             <Label fx:id="lastImportDateLabel" styleClass="pod-status-value"/>
             <Label fx:id="importedSessionsCountLabel" styleClass="pod-status-subtitle"/>
         </VBox>
+        
         <Button fx:id="importButton" text="Importer dump.bin" onAction="#onImportDump"/>
     </HBox>
     
