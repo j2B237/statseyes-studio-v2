@@ -69,9 +69,15 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label athleteHeightLabel;
     @FXML private Label athleteWeightLabel;
 
-    // Informations visibles sur le bandeau au dessus des stats-cards
+    // Informations concernant le Pod
+    @FXML private Label lastImportDateLabel;
+    @FXML private Label importedSessionsCountLabel;
+
+    // Informations visibles sur le bandeau au-dessus des stats cards
     @FXML private Label sessionInfoDateLabel;
     @FXML private Label sessionDurationLabel;
+    @FXML private Label sessionDateLabel;
+    @FXML private Label sessionLocationLabel;
 
     // Choices box pour la comparaison de sessions
     @FXML private ChoiceBox<ImportedSession> sessionAChoice;
@@ -111,6 +117,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             (o, ov, nv) -> {
                 sessionHistoryListView.setItems(FXCollections.observableArrayList(nv));
                 setComparisonChoices(nv);
+                renderPodStatus(nv);
     };
     private final ChangeListener<SessionComparison> sessionComparisonListener =
             (o, ov, nv) -> renderComparison(nv);
@@ -206,7 +213,22 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         profilePositionLabel.setText("Poste : —");
         profileAgeLabel.setText("Âge : —");
     }
+    private void renderPodStatus(List<ImportedSession> sessions){
+        if( sessions == null || sessions.isEmpty()){
+            lastImportDateLabel.setText("Aucun import");
+            importedSessionsCountLabel.setText("0 séance");
+            return;
+        }
 
+        ImportedSession latest = sessions.getLast();
+        lastImportDateLabel.setText(
+                latest.importedAt().format(
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm"))
+        );
+        importedSessionsCountLabel.setText(
+                sessions.size() + " seance" + (sessions.size() > 1 ? "s" : "")
+        );
+    }
     private void renderAthlete(Athlete athlete) {
         if (athlete == null) return;
         athleteNameLabel.setText(athlete.firstname() + " " + athlete.lastname());

@@ -28,8 +28,6 @@ public class AthleteDetailsViewModel {
     private final ObjectProperty<Athlete> athlete = new SimpleObjectProperty<>();
     private final ObjectProperty<ImportedSession> latestSession = new SimpleObjectProperty<>();
     private final StringProperty importStatus = new SimpleStringProperty();
-    private final StringProperty statDistancePerMin = new SimpleStringProperty();
-
     private final BooleanProperty importing = new SimpleBooleanProperty(false);
     private final ListProperty<GpsPoint> heatMapPoints =
             new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -155,7 +153,6 @@ public class AthleteDetailsViewModel {
     public ObjectProperty<Athlete> athleteProperty() { return athlete; }
     public ObjectProperty<ImportedSession> latestSessionProperty() { return latestSession; }
     public StringProperty importStatusProperty() { return importStatus; }
-    public StringProperty statDistancePerMinProperty(){return statDistancePerMin;}
     public BooleanProperty importingProperty() { return importing; }
     public ListProperty<GpsPoint> heatMapPointsProperty(){return heatMapPoints;}
     public ObjectProperty<List<ImportedSession>> sessionHistoryProperty(){

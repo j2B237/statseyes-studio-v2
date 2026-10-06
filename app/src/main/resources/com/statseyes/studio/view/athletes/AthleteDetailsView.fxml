@@ -51,20 +51,28 @@
         </VBox>
         
         
-        <VBox styleClass="pod-status-card" spacing="8">
-            <HBox spacing="8" alignment="CENTER_LEFT">
-                <Circle radius="4" styleClass="status-dot-active"/>
-                <Label text="Dernier import" styleClass="pod-status-title"/>
-            </HBox>
-            <Label fx:id="lastImportDateLabel" styleClass="pod-status-value"/>
-            <Label fx:id="importedSessionsCountLabel" styleClass="pod-status-subtitle"/>
+        <VBox styleClass="pod-status-card" spacing="12">
+            <VBox spacing="8" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <HBox spacing="8" alignment="CENTER">
+                    <Circle radius="4" styleClass="status-dot-active"/>
+                    <Label text="StatsEyes Pod " styleClass="pod-status-title"/>
+                </HBox>
+                <Label text="Dernière synchronisation" styleClass="pod-status-subtitle"/>
+                <Label fx:id="lastImportDateLabel" styleClass="pod-status-value"/>
+            </VBox>
+            <VBox spacing="8" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <Label text="Donnees disponibles" styleClass="pod-status-subtitle"/>
+                <Label fx:id="importedSessionsCountLabel" styleClass="pod-import-subtitle"/>
+            </VBox>
+            
+            <Button styleClass="primary-button" fx:id="importButton" text="Importer dump.bin" onAction="#onImportDump"/>
+            
         </VBox>
-        
-        <Button fx:id="importButton" text="Importer dump.bin" onAction="#onImportDump"/>
     </HBox>
     
     <Label fx:id="importStatusLabel" styleClass="import-status"/>
     
+    <!-- SESSION BANNER -->
     <HBox styleClass="session-banner" spacing="16" alignment="CENTER_LEFT">
         <Label text="Durée" styleClass="side-panel-label"/>
         <Region HBox.hgrow="ALWAYS"/>
@@ -76,6 +84,7 @@
         <Label fx:id="sessionLocationLabel" styleClass="session-banner-location"/>
     </HBox>
     
+    <!-- STATS CARD -->
     <GridPane hgap="16" vgap="16">
         <columnConstraints>
             <ColumnConstraints percentWidth="25"/>
@@ -89,7 +98,7 @@
         <StatsCard fx:id="directionCard" title="Direction" iconGlyph="🧭" accentColor="#34C759" GridPane.columnIndex="3"/>
     </GridPane>
     
-    
+    <!-- ONGLETS ET PANNEAUX LATÉRAUX -->
     <HBox spacing="20">
         <TabPane styleClass="athlete-tabs" HBox.hgrow="ALWAYS">
             <Tab text="Carte de chaleur" closable="false">
