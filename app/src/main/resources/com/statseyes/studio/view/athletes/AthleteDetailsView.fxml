@@ -90,15 +90,15 @@
     </GridPane>
     
     
-    <HBox spacing="20" alignment="TOP_LEFT">
+    <HBox spacing="20">
         <TabPane styleClass="athlete-tabs" HBox.hgrow="ALWAYS">
             <Tab text="Carte de chaleur" closable="false">
-                <VBox alignment="TOP_LEFT" style="-fx-padding: 16;">
+                <VBox style="-fx-padding: 16;">
                     <HBox spacing="20">
                         <HeatmapCanvas fx:id="heatmapCanvas"/>
                         <VBox alignment="CENTER" spacing="4">
                             <Label text="Intensité élevée" styleClass="heatmap-legend-label"/>
-                            <Region styleClass="heatmap-legend-gradient" prefWidth="14" prefHeight="300"/>
+                            <Region styleClass="heatmap-legend-gradient" prefWidth="12" prefHeight="300"/>
                             <Label text="Intensité faible" styleClass="heatmap-legend-label"/>
                         </VBox>
                     </HBox>
@@ -128,19 +128,54 @@
         </TabPane>
         
         <VBox spacing="20" prefWidth="280" minWidth="280">
+            <!-- Informations de la séance -->
             <VBox styleClass="side-panel" spacing="12">
                 <Label text="Informations de la séance" styleClass="side-panel-title"/>
-                <HBox styleClass="side-panel-row"><Label text="Date" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="sessionInfoDateLabel" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Durée" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="—" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Type" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="—" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Lieu" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="—" styleClass="side-panel-value"/></HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Date" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="sessionInfoDateLabel" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Durée" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statDurationLabel" text="—" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Type" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Entrainement" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Lieu" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Dakar" styleClass="side-panel-value"/>
+                </HBox>
             </VBox>
+            
+            <!-- statistiques complémentaires -->
             <VBox styleClass="side-panel" spacing="12">
                 <Label text="statistiques complémentaires" styleClass="side-panel-title"/>
-                <HBox styleClass="side-panel-row"><Label text="Distance/min" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0 m/min" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Accélérations" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Décélérations" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0" styleClass="side-panel-value"/></HBox>
-                <HBox styleClass="side-panel-row"><Label text="Changements de direction" styleClass="side-panel-label"/><Region HBox.hgrow="ALWAYS"/><Label text="0" styleClass="side-panel-value"/></HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Distance/min" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statDistancePerMinLabel" text="0 m/min" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Accélérations" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statAccelLabel" text="0" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Décélérations" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statDecelLabel" text="0" styleClass="side-panel-value"/>
+                </HBox>
+                <HBox styleClass="side-panel-row">
+                    <Label text="Changements de direction" styleClass="side-panel-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statDirectionChangesLabel" text="0" styleClass="side-panel-value"/>
+                </HBox>
             </VBox>
         </VBox>
     </HBox>

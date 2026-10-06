@@ -45,12 +45,16 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label athleteSubtitleLabel;
     @FXML private Label importStatusLabel;
     @FXML private Button importButton;
+
+    // Stats-cards
     @FXML private StatsCard distanceCard;
     @FXML private StatsCard vitesseCard;
     @FXML private StatsCard sprintsCard;
     @FXML private StatsCard directionCard;
     @FXML private HeatmapCanvas heatmapCanvas;
     @FXML private ListView<ImportedSession> sessionHistoryListView;
+
+    // Informations visibles sur la carte du joueur
     @FXML private Label profileTeamLabel;
     @FXML private Label profilePositionLabel;
     @FXML private Label profileAgeLabel;
@@ -64,11 +68,22 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label athleteAgeLabel;
     @FXML private Label athleteHeightLabel;
     @FXML private Label athleteWeightLabel;
+
+    // Informations visibles sur le bandeau au dessus des stats-cards
     @FXML private Label sessionInfoDateLabel;
     @FXML private Label sessionDurationLabel;
+
+    // Choices box pour la comparaison de sessions
     @FXML private ChoiceBox<ImportedSession> sessionAChoice;
     @FXML private ChoiceBox<ImportedSession> sessionBChoice;
     @FXML private VBox comparisonRowsContainer;
+
+    // statistiques visibles sur le panneau laterals
+    @FXML private Label statDistancePerMinLabel;
+    @FXML private Label statAccelLabel;
+    @FXML private Label statDecelLabel;
+    @FXML private Label statDirectionChangesLabel;
+    @FXML private Label statDurationLabel;
 
     // ====================
     // INSTANCE VARIABLES
@@ -101,6 +116,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             (o, ov, nv) -> renderComparison(nv);
     private final ChangeListener<ImportedSession> selectionRefreshListener =
             (o, ov, nv) -> sessionHistoryListView.refresh();
+
     // ===================
     // PUBLIC API
     // ===================
@@ -191,17 +207,6 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         profileAgeLabel.setText("Âge : —");
     }
 
-    private void resetHeatmap(){
-
-    }
-
-    private String flagEmoji(String isoCode) {
-        if (isoCode == null || isoCode.length() != 2) return "";
-        int base = 0x1F1E6 - 'A';
-        return new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(0))))
-                + new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(1))));
-    }
-
     private void renderAthlete(Athlete athlete) {
         if (athlete == null) return;
         athleteNameLabel.setText(athlete.firstname() + " " + athlete.lastname());
@@ -256,9 +261,19 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         directionCard.setValue(metrics.dominantCourseDegrees(), 0);
         directionCard.setUnit(ApplicationConfiguration.DIRECTION_UNIT.getValue());
 
-        sessionInfoDateLabel.setText(session.importedAt().format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)));
+        sessionInfoDateLabel.setText(session.importedAt().format(
+                DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)));
         sessionDurationLabel.setText(formatDuration(session.metrics().durationSeconds()));
 
+        // Affichage Informations complementaires
+        statDurationLabel.setText(
+                formatDuration(session.metrics().durationSeconds())
+        );
+        // Affichage des statistiques
+        statDistancePerMinLabel.setText(String.format("%.0f m/min", metrics.distancePerMinuteM()));
+        statAccelLabel.setText(String.valueOf(metrics.accelerationCount()));
+        statDecelLabel.setText(String.valueOf(metrics.decelerationCount()));
+        statDirectionChangesLabel.setText(String.valueOf(metrics.directionChangeCount()));
 
         viewModel.loadHeatmapPoints(session.id());
     }
@@ -308,6 +323,12 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             sessionComparison.sprintCountDelta(),
             ""
         );
+    }
+    private String flagEmoji(String isoCode) {
+        if (isoCode == null || isoCode.length() != 2) return "";
+        int base = 0x1F1E6 - 'A';
+        return new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(0))))
+                + new String(Character.toChars(base + Character.toUpperCase(isoCode.charAt(1))));
     }
 
     private String formatDuration(long totalSeconds) {
@@ -370,6 +391,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         viewModel.latestSessionProperty().removeListener(selectionRefreshListener);
         viewModel.latestSessionProperty().addListener(selectionRefreshListener);
+
+        /*statDistancePerMinLabel.textProperty().bindBidirectional(
+                viewModel.statDistancePerMinProperty()
+        );*/
+
     }
 
 
