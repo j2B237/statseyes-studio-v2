@@ -54,12 +54,12 @@
             <Region HBox.hgrow="ALWAYS"/>
             
             <VBox styleClass="pod-status-card" spacing="10">
-                <VBox spacing="8" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <VBox spacing="10" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                     <HBox spacing="8" alignment="CENTER">
                         <Circle radius="4" styleClass="status-dot-active"/>
                         <Label text="StatsEyes Pod " styleClass="pod-status-title"/>
                     </HBox>
-                    <VBox spacing="2">
+                    <VBox spacing="8">
                         <Label text="Dernière synchronisation" styleClass="pod-status-subtitle"/>
                         <Label fx:id="lastImportDateLabel" styleClass="pod-status-value"/>
                     </VBox>
@@ -97,10 +97,10 @@
                 <ColumnConstraints percentWidth="25"/>
                 <ColumnConstraints percentWidth="25"/>
             </columnConstraints>
-            <StatsCard fx:id="distanceCard" title="Distance" iconGlyph="📍" accentColor="#4F8EF7" GridPane.columnIndex="0"/>
-            <StatsCard fx:id="vitesseCard" title="Vitesse max" iconGlyph="🏃" accentColor="#FF5A5F" GridPane.columnIndex="1"/>
-            <StatsCard fx:id="sprintsCard" title="Sprints" iconGlyph="⚡" accentColor="#FFB020" GridPane.columnIndex="2"/>
-            <StatsCard fx:id="directionCard" title="Direction" iconGlyph="🧭" accentColor="#34C759" GridPane.columnIndex="3"/>
+            <StatsCard fx:id="distanceCard" title="Distance" iconGlyph="fas-map-marker-alt" accentColor="#4F8EF7" GridPane.columnIndex="0"/>
+            <StatsCard fx:id="vitesseCard" title="Vitesse max" iconGlyph="fas-running" accentColor="#FF5A5F" GridPane.columnIndex="1"/>
+            <StatsCard fx:id="sprintsCard" title="Sprints" iconGlyph="fas-bolt" accentColor="#FFB020" GridPane.columnIndex="2"/>
+            <StatsCard fx:id="directionCard" title="Direction" iconGlyph="fas-compass" accentColor="#34C759" GridPane.columnIndex="3"/>
         </GridPane>
         
         <!-- ONGLETS ET PANNEAUX LATÉRAUX -->

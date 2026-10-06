@@ -17,7 +17,7 @@ public class HeatmapCanvas extends Canvas {
     private static final int GRID_COLS = 70;
     private static final int GRID_ROWS = 44;
 
-    // Ecart-type du noyau gaussien, en cellules de grille -- plus grand =
+    // Écart-type du noyau gaussien, en cellules de grille -- plus grand =
     // taches plus douces/etalees, plus petit = taches plus ponctuelles.
     private static final double SIGMA = 2.4;
     private static final int KERNEL_RADIUS = (int) Math.ceil(SIGMA * 3);

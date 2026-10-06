@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 import java.util.Objects;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class StatsCard extends VBox {
 
@@ -21,7 +22,7 @@ public class StatsCard extends VBox {
     private final StringProperty title      = new SimpleStringProperty();
     private final StringProperty value      = new SimpleStringProperty("--");
     private final StringProperty unit       = new SimpleStringProperty("");
-    private final StringProperty iconGlyph  = new SimpleStringProperty("●");
+    private final StringProperty iconGlyph  = new SimpleStringProperty();
     private final ObjectProperty<Color> accentColor = new SimpleObjectProperty<>(Color.web("#4F8EF7"));
     private final BooleanProperty dataAvailable = new SimpleBooleanProperty(true);
 
@@ -34,7 +35,7 @@ public class StatsCard extends VBox {
             0.25, 0.35, 0.3, 0.55, 0.9, 0.45, 0.3, 0.6, 0.4, 0.3
     };
     private final Circle iconBadge = new Circle(18);
-    private final Label iconGlyphLabel = new Label();
+    private final FontIcon iconNode = new FontIcon();
     private final Label titleLabel = new Label();
     private final Label valueLabel = new Label();
     private final Label unitLabel = new Label();
@@ -59,8 +60,8 @@ public class StatsCard extends VBox {
         setMaxWidth(Double.MAX_VALUE);
         setMaxHeight(Double.MAX_VALUE);
 
-        iconGlyphLabel.setFont(Font.font(15));
-        StackPane iconStack = new StackPane(iconBadge, iconGlyphLabel);
+        iconNode.setIconSize(16);
+        StackPane iconStack = new StackPane(iconBadge, iconNode);
 
         titleLabel.getStyleClass().add("stats-card-title");
         titleLabel.textProperty().bind(title);
@@ -136,12 +137,22 @@ public class StatsCard extends VBox {
     private void refreshVisuals(){
 
         Color accent = accentColor.get();
-        boolean hasData = dataAvailable.get();
-
         iconBadge.setFill(accent.deriveColor(0, 1, 1, 0.15));
-        iconGlyphLabel.setText(iconGlyph.get());
-        iconGlyphLabel.setTextFill(accent);
 
+        String glyph = iconGlyph.get();
+        if (glyph != null && !glyph.isBlank()) {
+            try {
+                iconNode.setIconLiteral(glyph);
+                iconNode.setIconColor(accent);
+            } catch (Exception e) {
+                // Litteral invalide/pas encore pose par le FXML -- on ignore
+                // silencieusement plutot que de faire planter la construction
+                // du composant. refreshVisuals() sera rappele correctement des
+                // que setIconGlyph(...) recevra la vraie valeur.
+            }
+        }
+
+        boolean hasData = dataAvailable.get();
         sparkBar.getChildren().clear();
 
         for (double relativeHeight : WAVEFORM_PATTERN) {

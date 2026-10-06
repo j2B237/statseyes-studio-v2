@@ -200,6 +200,11 @@
 }
 
 .pod-status-link { -fx-cursor: hand; }
+
+.pod-status-chevron{
+    -fx-font-size: 10px;
+}
+
 .status-dot-active { -fx-fill: #34C759; }
 
 .side-panel-row {
