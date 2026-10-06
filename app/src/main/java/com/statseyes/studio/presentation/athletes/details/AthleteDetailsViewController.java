@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -95,18 +96,25 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // INSTANCE VARIABLES
     // ===================
 
+    private static final DateTimeFormatter BANNER_DATE_FORMAT =
+            DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH);
     private final TemplateViewController templateViewController;
     private final AthleteDetailsViewModel viewModel;
     private final CacheStatsManager cacheStatsManager;
-
     private ViewManager viewManager;
     private Integer pendingAthleteId;
 
+    // Event listeners
     private final ChangeListener<Athlete> athleteListener =
-            (o, ov, nv) ->
-            {renderAthlete(nv); renderProfile(nv);};
+            (o, ov, nv) -> {
+        renderAthlete(nv);
+        renderProfile(nv);
+    };
     private final ChangeListener<ImportedSession> sessionListener =
-            (o, ov, nv) -> renderSession(nv);
+            (o, ov, nv) -> {
+        renderSession(nv);
+        applyDeltas();
+    };
     private final ChangeListener<String> statusListener =
             (o, ov, nv) -> importStatusLabel.setText(nv == null ? "" : nv);
     private final ChangeListener<Boolean> importingListener =
@@ -123,6 +131,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             (o, ov, nv) -> renderComparison(nv);
     private final ChangeListener<ImportedSession> selectionRefreshListener =
             (o, ov, nv) -> sessionHistoryListView.refresh();
+
+    private final ChangeListener<TeamAverageMetrics> teamAverageListener =
+            (o, ov, nv) -> applyDeltas();
 
     // ===================
     // PUBLIC API
@@ -194,6 +205,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         if(a == null || b == null)return;
         viewModel.compare(a, b);
+    }
+
+    @FXML
+    protected void onViewAnalytics(MouseEvent event){
+        templateViewController.loadAnalyticsView();
     }
 
     // ===================
@@ -287,10 +303,18 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
                 DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)));
         sessionDurationLabel.setText(formatDuration(session.metrics().durationSeconds()));
 
+        // Session banner
+        sessionDateLabel.setText(
+                "Seance du " + session.importedAt().format(BANNER_DATE_FORMAT)
+        );
+        sessionLocationLabel.setText("Terrain principal");
+
+
         // Affichage Informations complementaires
         statDurationLabel.setText(
                 formatDuration(session.metrics().durationSeconds())
         );
+
         // Affichage des statistiques
         statDistancePerMinLabel.setText(String.format("%.0f m/min", metrics.distancePerMinuteM()));
         statAccelLabel.setText(String.valueOf(metrics.accelerationCount()));
@@ -346,6 +370,21 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             ""
         );
     }
+    private void applyDeltas(){
+        ImportedSession session = viewModel.latestSessionProperty().get();
+        TeamAverageMetrics avg = viewModel.teamAverageProperty().get();
+        if (session == null || avg == null) return;
+
+        SessionMetrics m = session.metrics();
+        distanceCard.setDelta(percentDelta(m.totalDistanceMeters(), avg.avgDistanceM()));
+        vitesseCard.setDelta(percentDelta(m.maxSpeedKmh(), avg.avgMaxSpeedKmh()));
+        sprintsCard.setDelta(percentDelta(m.sprintCount(), avg.avgSprintCount()));
+    }
+    private double percentDelta(double value, double average) {
+        if (average == 0) return 0;
+        return ((value - average) / average) * 100.0;
+    }
+
     private String flagEmoji(String isoCode) {
         if (isoCode == null || isoCode.length() != 2) return "";
         int base = 0x1F1E6 - 'A';
@@ -414,10 +453,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         viewModel.latestSessionProperty().removeListener(selectionRefreshListener);
         viewModel.latestSessionProperty().addListener(selectionRefreshListener);
 
-        /*statDistancePerMinLabel.textProperty().bindBidirectional(
-                viewModel.statDistancePerMinProperty()
-        );*/
-
+        viewModel.teamAverageProperty().removeListener(teamAverageListener);
+        viewModel.teamAverageProperty().addListener(teamAverageListener);
     }
 
 

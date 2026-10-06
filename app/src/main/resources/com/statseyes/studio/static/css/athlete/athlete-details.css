@@ -1,15 +1,53 @@
 /* athlete-details.css */
-.athlete-details-root { -fx-background-color: #F3F4F7; }
-.athlete-name { -fx-font-size: 22px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
-.athlete-subtitle { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
-.import-status { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
+.athlete-details-root { -fx-background-color: #EDEBE4; }
+.athlete-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1C1E21;
+}
+.athlete-subtitle {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 13px;
+}
+.import-status {
+    -fx-text-fill: #6B6F76;
+    -fx-font-size: 12px;
+}
 
-.athlete-photo-placeholder { -fx-fill: #2B3240; -fx-arc-width: 14; -fx-arc-height: 14; }
-.athlete-meta     { -fx-text-fill: #3A3D45; -fx-font-size: 13px; -fx-font-weight: 600; }
+.athlete-photo-placeholder {
+    -fx-fill: #2B3240;
+    -fx-arc-width: 14;
+    -fx-arc-height: 14;
+}
+.athlete-meta {
+    -fx-text-fill: #3A3D45;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
 .athlete-meta-icon{ -fx-font-size: 13px; }
-.athlete-meta-sub { -fx-text-fill: #6B6F76; -fx-font-size: 12px; }
-.status-badge-active   { -fx-text-fill: #34C759; -fx-background-color: #E8F8EC; -fx-background-radius: 10; -fx-padding: 2 10; -fx-font-size: 11px; -fx-font-weight: 700; }
-.status-badge-inactive { -fx-text-fill: #9AA0A6; -fx-background-color: #F0F1F3; -fx-background-radius: 10; -fx-padding: 2 10; -fx-font-size: 11px; -fx-font-weight: 700; }
+.athlete-meta-sub {
+    -fx-text-fill: #6B6F76;
+    -fx-font-size: 12px;
+}
+
+.status-badge-active {
+    -fx-text-fill: #34C759;
+    -fx-background-color: #E8F8EC;
+    -fx-background-radius: 10;
+    -fx-padding: 2 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+}
+
+.status-badge-inactive {
+    -fx-text-fill: #9AA0A6;
+    -fx-background-color: #F0F1F3;
+    -fx-background-radius: 10;
+    -fx-padding: 2 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+}
 
 .primary-button {
     -fx-background-color: #1C1E21; -fx-text-fill: white;
@@ -56,8 +94,16 @@
     -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 6, 0, 0, 2);
 }
 .session-history-row:hover { -fx-background-color: #F7F8FA; }
-.session-history-date  { -fx-font-weight: 700; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
-.session-history-stat  { -fx-text-fill: #6B6F76; -fx-font-size: 12px; -fx-min-width: 90; }
+.session-history-date  {
+    -fx-font-weight: 700;
+    -fx-text-fill: #1C1E21;
+    -fx-min-width: 140;
+}
+.session-history-stat  {
+    -fx-text-fill: #6B6F76;
+    -fx-font-size: 12px;
+    -fx-min-width: 90;
+}
 
 .session-history-row:selected-session {
     -fx-border-color: #4F8EF7;
@@ -72,24 +118,87 @@
     -fx-padding: 12 16;
     -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 6, 0, 0, 2);
 }
-.comparison-metric-name { -fx-font-weight: 600; -fx-text-fill: #1C1E21; -fx-min-width: 140; }
-.comparison-value { -fx-text-fill: #3A3D45; -fx-min-width: 70; -fx-alignment: center; }
+.comparison-metric-name {
+    -fx-font-weight: 600;
+    -fx-text-fill: #1C1E21;
+    -fx-min-width: 140;
+}
+.comparison-value {
+    -fx-text-fill: #3A3D45;
+    -fx-min-width: 70;
+    -fx-alignment: center;
+}
 .delta-up   { -fx-text-fill: #34C759; -fx-font-weight: 700; }
 .delta-down { -fx-text-fill: #FF5A5F; -fx-font-weight: 700; }
 .delta-flat { -fx-text-fill: #9AA0A6; }
 
-.side-panel { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 18; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3); }
-.side-panel-title { -fx-font-weight: 700; -fx-font-size: 14px; -fx-text-fill: #1C1E21; }
-.side-panel-label { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
-.side-panel-value { -fx-text-fill: #1C1E21; -fx-font-weight: 600; -fx-font-size: 13px; }
+.side-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3);
+}
 
-.pod-status-card { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 18; -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3); }
-.pod-status-title { -fx-font-weight: 700; -fx-text-fill: #34C759; }
-.pod-status-subtitle { -fx-font-size: 11; -fx-font-weight: 100; -fx-text-fill: #1C1E21;}
-.pod-import-subtitle { -fx-font-size: 12; -fx-font-weight: 700; -fx-text-fill: #34C759;}
-.pod-status-label { -fx-text-fill: #9AA0A6; -fx-font-size: 11px; }
-.pod-status-value { -fx-font-size: 13; -fx-text-fill: #1C1E21; -fx-font-weight: 600; }
-.pod-status-value-link { -fx-text-fill: #4F8EF7; -fx-font-weight: 600; }
+.side-panel-title {
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1C1E21;
+}
+
+.side-panel-label {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 13px;
+}
+
+.side-panel-value {
+    -fx-text-fill: #1C1E21;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+}
+
+.pod-status-card {
+    -fx-border-color: #edeeef;
+    -fx-border-width: thin;
+    -fx-border-radius: 3px;
+    -fx-background-color: white-smoke;
+    -fx-background-radius: 14;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3);
+}
+
+.pod-status-title {
+    -fx-font-weight: 700;
+    -fx-text-fill: #34C759;
+}
+
+.pod-status-subtitle {
+    -fx-font-size: 11;
+    -fx-font-weight: 100;
+    -fx-text-fill: #1C1E21;
+}
+
+.pod-import-subtitle {
+    -fx-font-size: 12;
+    -fx-font-weight: 700;
+    -fx-text-fill: #34C759;
+}
+
+.pod-status-label {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 11px;
+}
+
+.pod-status-value {
+    -fx-font-size: 13;
+    -fx-text-fill: #1C1E21;
+    -fx-font-weight: 600;
+}
+
+.pod-status-value-link {
+    -fx-text-fill: #4F8EF7;
+    -fx-font-weight: 600;
+}
+
 .pod-status-link { -fx-cursor: hand; }
 .status-dot-active { -fx-fill: #34C759; }
 
@@ -111,7 +220,7 @@
 .session-banner {
     -fx-background-color: white;
     -fx-background-radius: 14;
-    -fx-padding: 16 20;
+    -fx-padding: 10 10;
     -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3);
 }
 
@@ -132,7 +241,7 @@
     -fx-background-radius: 12;
     -fx-padding: 4 12;
     -fx-font-size: 12px;
-    -fx-font-weight: 600;
+    -fx-font-weight: 700;
 }
 
 .athlete-tabs {
@@ -191,5 +300,14 @@
 /* Masque le petit bouton menu "▾" qui apparait si les onglets
    debordent de la largeur disponible */
 .athlete-tabs > .tab-header-area > .control-buttons-tab {
+    -fx-background-color: transparent;
+}
+
+.athlete-details-scroll {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.athlete-details-scroll, .athlete-details-scroll > .viewport {
     -fx-background-color: transparent;
 }

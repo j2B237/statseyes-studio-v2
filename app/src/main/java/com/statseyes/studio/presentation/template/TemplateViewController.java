@@ -67,4 +67,11 @@ public class TemplateViewController {
                 AthleteDetailsViewController.class, athleteId
         );
     }
+
+    public void loadAnalyticsView(){
+        sectionNavigator.open(
+                contentContainer,
+                ApplicationConfiguration.ANALYTICS_PATH.getValue()
+        );
+    }
 }

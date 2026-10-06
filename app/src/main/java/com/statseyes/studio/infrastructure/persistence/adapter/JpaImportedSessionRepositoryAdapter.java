@@ -5,6 +5,7 @@ import com.statseyes.studio.application.port.ImportedSessionRepositoryPort;
 import com.statseyes.studio.domain.model.ImportedSession;
 import com.statseyes.studio.domain.model.PodSessionData;
 import com.statseyes.studio.domain.model.SessionMetrics;
+import com.statseyes.studio.domain.model.TeamAverageMetrics;
 import com.statseyes.studio.infrastructure.persistence.mapper.ImportedSessionMapper;
 import com.statseyes.studio.infrastructure.persistence.mapper.SessionMetricsMapper;
 import com.statseyes.studio.infrastructure.persistence.entity.GpsPointEntity;

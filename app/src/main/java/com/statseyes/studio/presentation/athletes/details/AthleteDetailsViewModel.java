@@ -4,10 +4,7 @@ import com.statseyes.studio.application.usecase.athlete.LoadAthleteDetailsUseCas
 import com.statseyes.studio.application.usecase.session.*;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
-import com.statseyes.studio.domain.model.Athlete;
-import com.statseyes.studio.domain.model.GpsPoint;
-import com.statseyes.studio.domain.model.ImportedSession;
-import com.statseyes.studio.domain.model.SessionComparison;
+import com.statseyes.studio.domain.model.*;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
 
@@ -36,6 +33,9 @@ public class AthleteDetailsViewModel {
     private final ObjectProperty<SessionComparison> comparison =
             new SimpleObjectProperty<>();
 
+    private final ObjectProperty<TeamAverageMetrics> teamAverage = new SimpleObjectProperty<>();
+    private final GetTeamAverageMetricsUseCase getTeamAverageMetricsUseCase;
+
     // =======================
     // INSTANCE VARIABLES
     // =======================
@@ -53,7 +53,7 @@ public class AthleteDetailsViewModel {
     // ===================
 
     public AthleteDetailsViewModel(
-            LoadAthleteDetailsUseCase loadAthleteDetailsUseCase,
+            GetTeamAverageMetricsUseCase getTeamAverageMetricsUseCase, LoadAthleteDetailsUseCase loadAthleteDetailsUseCase,
             GetLatestImportedSessionUseCase getLatestImportedSessionUseCase,
             GetSessionHeatmapPointsUseCase sessionHeatmapPointsUseCase,
             ListSessionsForAthleteUseCase listSessionsForAthleteUseCase,
@@ -62,6 +62,7 @@ public class AthleteDetailsViewModel {
             SessionAdapter sessionService,
             BackgroundTaskRunner backgroundTaskRunner
     ) {
+        this.getTeamAverageMetricsUseCase = getTeamAverageMetricsUseCase;
         this.loadAthleteDetailsUseCase = loadAthleteDetailsUseCase;
         this.getLatestImportedSessionUseCase = getLatestImportedSessionUseCase;
         this.listSessionsForAthleteUseCase = listSessionsForAthleteUseCase;
@@ -77,6 +78,7 @@ public class AthleteDetailsViewModel {
             () -> loadAthleteDetailsUseCase.execute(athleteId),
             result ->{
                 athlete.set(result); loadLatestSession(athleteId);
+                loadAverageTeam(result.teamId());
             },
             error ->{
                 importStatus.set("Erreur : " + error.getMessage());
@@ -96,6 +98,14 @@ public class AthleteDetailsViewModel {
         backgroundTaskRunner.run(
                 () -> listSessionsForAthleteUseCase.execute(athleteId),
                 sessionHistory::set,
+                error -> importStatus.set("Erreur : " + error.getMessage())
+        );
+    }
+    public void loadAverageTeam(Integer teamId){
+        if(teamId == null)return;
+        backgroundTaskRunner.run(
+                () -> getTeamAverageMetricsUseCase.execute(teamId),
+                teamAverage::set,
                 error -> importStatus.set("Erreur : " + error.getMessage())
         );
     }
@@ -161,6 +171,7 @@ public class AthleteDetailsViewModel {
     public ObjectProperty<SessionComparison> comparisonProperty(){
         return comparison;
     }
+    public ObjectProperty<TeamAverageMetrics> teamAverageProperty() { return teamAverage; }
 
     // ======================
     // PRIVATE API

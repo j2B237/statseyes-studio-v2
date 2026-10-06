@@ -96,7 +96,6 @@ public class StatsCard extends VBox {
     }
 
     public void setDelta(double percent) {
-
         deltaLabel.setManaged(true);
         deltaLabel.setVisible(true);
         deltaLabel.getStyleClass().removeAll("delta-up", "delta-down");
