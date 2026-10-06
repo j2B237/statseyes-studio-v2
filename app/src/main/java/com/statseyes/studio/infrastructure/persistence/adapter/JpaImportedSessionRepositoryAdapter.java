@@ -58,6 +58,11 @@ public class JpaImportedSessionRepositoryAdapter implements ImportedSessionRepos
                 .avgSpeedKmh(metrics.avgSpeedKmh())
                 .sprintCount(metrics.sprintCount())
                 .dominantCourseDeg(metrics.dominantCourseDegrees())
+                .durationSeconds(metrics.durationSeconds())
+                .distancePerMinuteM(metrics.distancePerMinuteM())
+                .accelerationCount(metrics.accelerationCount())
+                .decelerationCount(metrics.decelerationCount())
+                .directionChangeCount(metrics.directionChangeCount())
                 .accountId(accountId)
                 .athleteId(athleteId)
                 .build();

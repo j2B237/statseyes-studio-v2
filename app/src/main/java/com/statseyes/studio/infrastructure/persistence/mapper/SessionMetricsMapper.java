@@ -15,11 +15,11 @@ public class SessionMetricsMapper {
                 entity.getAvgSpeedKmh(),
                 entity.getSprintCount(),
                 entity.getDominantCourseDeg(),
-                0,
-                0,
-                0,
-                0,
-                0
+                entity.getDurationSeconds(),
+                entity.getDistancePerMinuteM(),
+                entity.getAccelerationCount(),
+                entity.getDecelerationCount(),
+                entity.getDirectionChangeCount()
         );
     }
 }

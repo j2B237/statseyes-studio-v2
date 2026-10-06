@@ -35,6 +35,11 @@ public class ImportedPodSessionEntity {
     @Column(name = "avg_speed_kmh")      private Double avgSpeedKmh;
     @Column(name = "sprint_count")       private Integer sprintCount;
     @Column(name = "dominant_course_deg") private Double dominantCourseDeg;
+    @Column(name = "duration_seconds")       private Long durationSeconds;
+    @Column(name = "distance_per_minute_m")  private Double distancePerMinuteM;
+    @Column(name = "acceleration_count")     private Integer accelerationCount;
+    @Column(name = "deceleration_count")     private Integer decelerationCount;
+    @Column(name = "direction_change_count") private Integer directionChangeCount;
 
     // Athlete/TrainingSession nullable pour l'instant assignation faite
     // plus tard depuis l'UI, pas au moment de l'import brut.
