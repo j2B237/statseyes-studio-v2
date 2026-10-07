@@ -158,9 +158,9 @@
 
 .pod-status-card {
     -fx-border-color: #edeeef;
-    -fx-border-width: thin;
+    -fx-border-width: 1;
     -fx-border-radius: 3px;
-    -fx-background-color: white-smoke;
+    -fx-background-color: whitesmoke;
     -fx-background-radius: 14;
     -fx-padding: 10;
     -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.06), 10, 0, 0, 3);

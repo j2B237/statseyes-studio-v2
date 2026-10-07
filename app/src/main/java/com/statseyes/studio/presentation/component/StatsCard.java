@@ -145,10 +145,6 @@ public class StatsCard extends VBox {
                 iconNode.setIconLiteral(glyph);
                 iconNode.setIconColor(accent);
             } catch (Exception e) {
-                // Litteral invalide/pas encore pose par le FXML -- on ignore
-                // silencieusement plutot que de faire planter la construction
-                // du composant. refreshVisuals() sera rappele correctement des
-                // que setIconGlyph(...) recevra la vraie valeur.
             }
         }
 

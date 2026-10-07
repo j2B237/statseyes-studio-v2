@@ -123,9 +123,10 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             (o, ov, nv) -> renderHeatmap(nv);
     private final ChangeListener<List<ImportedSession>> sessionHistoryListener =
             (o, ov, nv) -> {
-                sessionHistoryListView.setItems(FXCollections.observableArrayList(nv));
-                setComparisonChoices(nv);
-                renderPodStatus(nv);
+                List<ImportedSession> sessions = nv == null ? List.of() : nv;
+                sessionHistoryListView.setItems(FXCollections.observableArrayList(sessions));
+                setComparisonChoices(sessions);
+                renderPodStatus(sessions);
     };
     private final ChangeListener<SessionComparison> sessionComparisonListener =
             (o, ov, nv) -> renderComparison(nv);

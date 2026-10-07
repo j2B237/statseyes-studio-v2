@@ -19,6 +19,7 @@
                 </VBox>
             </HBox>
             
+            <!-- TODO : Les icônes sont a revoir -->
             <Button styleClass="nav-item, selected" text="🏠  Accueil" onAction="#onDashboardClicked"/>
             <Label fx:id="clubsLabel" styleClass="nav-item" text="🏢  Clubs" onMouseClicked="#handleSidebarClick"/>
             <Label fx:id="teamsLabel" styleClass="nav-item" text="👥  Équipes" onMouseClicked="#handleSidebarClick"/>
