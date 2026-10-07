@@ -28,7 +28,7 @@
             <ColumnConstraints percentWidth="50"/>
         </columnConstraints>
         <StatsCard fx:id="athletesCountCard" title="Athletes" iconGlyph="fas-user" accentColor="#4F8EF7" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <StatsCard fx:id="teamsCountCard" title="Equipes" iconGlyph="fas-users" accentColor="#34C759" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <StatsCard fx:id="teamsCountCard" title="Équipes" iconGlyph="fas-users" accentColor="#34C759" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <StatsCard fx:id="sessionsCountCard" title="Seances importees" iconGlyph="fas-download" accentColor="#FFB020" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <StatsCard fx:id="lastImportCard" title="Dernier import" iconGlyph="fas-clock" accentColor="#FF5A5F" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>

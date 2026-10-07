@@ -13,7 +13,7 @@
 .stats-card-value {
     -fx-text-fill: #1C1E21;
     -fx-font-weight: 700;
-    -fx-font-size: 26px;
+    -fx-font-size: 13px;
 }
 
 .stats-card-unit {
@@ -25,6 +25,3 @@
 .stats-card-delta { -fx-font-size: 11px; -fx-font-weight: 600; }
 .delta-up   { -fx-text-fill: #34C759; }
 .delta-down { -fx-text-fill: #FF5A5F; }
-
-.stats-card-value { -fx-font-size: 26px; -fx-font-weight: 700; -fx-text-fill: #1C1E21; }
-.stats-card-unit   { -fx-font-size: 13px; -fx-text-fill: #9AA0A6; -fx-padding: 0 0 3 4; }

@@ -76,9 +76,9 @@ public class StatsCard extends VBox {
         HBox valueRow = new HBox(valueLabel, unitLabel);
         valueRow.setAlignment(Pos.BASELINE_LEFT);
 
-        valueLabel.getStyleClass().add("stats-card-value");   // <- manquait aussi : jamais stylé
+        valueLabel.getStyleClass().add("stats-card-value");
         valueLabel.textProperty().bind(value);
-        unitLabel.getStyleClass().add("stats-card-unit");      // <- idem
+        unitLabel.getStyleClass().add("stats-card-unit");
         unitLabel.textProperty().bind(unit);
 
         deltaLabel.getStyleClass().add("stats-card-delta");

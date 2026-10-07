@@ -87,9 +87,19 @@ public class DashboardViewController implements ViewManagerAware {
 
         if (summary == null) return;
 
-        athletesCountCard.setValue(String.valueOf(summary.athleteCount()));
-        teamsCountCard.setValue(String.valueOf(summary.teamCount()));
-        sessionsCountCard.setValue(String.valueOf(summary.importedSessionCount()));
+        athletesCountCard.setValue(
+                String.format(summary.athleteCount() + " \nathlete" +
+                                (summary.athleteCount() > 1 ? "s" : ""))
+
+        );
+        teamsCountCard.setValue(
+                String.format(summary.teamCount() + " \néquipe" +
+                        (summary.teamCount() > 1 ? "s" : ""))
+        );
+        sessionsCountCard.setValue(String.format(
+                summary.importedSessionCount() + " \nsession" +
+                        (summary.importedSessionCount() > 1 ? "s importees" : " importee"))
+        );
 
         if (summary.lastImportedAt() == null) {
             lastImportCard.setNoData("Aucun");
@@ -100,6 +110,11 @@ public class DashboardViewController implements ViewManagerAware {
             lastImportCard.setUnit(summary.lastImportedAt().format(
                     DateTimeFormatter.ofPattern(ApplicationConfiguration.HOUR_FORMAT.getValue())
             ));
+            lastImportCard.setValue(
+                    lastImportCard.valueProperty().getValue() + " " +
+                    lastImportCard.unitProperty().getValue()  +
+                            " \ndate dernière session."
+            );
         }
     }
 }
