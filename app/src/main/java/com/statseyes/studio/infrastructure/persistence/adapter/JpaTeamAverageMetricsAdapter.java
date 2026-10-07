@@ -5,6 +5,7 @@ import com.statseyes.studio.domain.model.TeamAverageMetrics;
 import com.statseyes.studio.infrastructure.persistence.repository.ImportedPodSessionJpaRepository;
 
 import com.statseyes.studio.infrastructure.persistence.repository.TeamAverageProjection;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,15 @@ public class JpaTeamAverageMetricsAdapter implements TeamAverageMetricsPort{
 
 
     @Override
+    @Cacheable(
+            value = "team_avg_metrics",
+            key = "'teamId:' + #teamId"
+    )
     @Transactional(readOnly = true)
     public TeamAverageMetrics computeFromTeam(Integer teamId){
+
+        if (teamId == null)return new TeamAverageMetrics(0,0,0);
+
         TeamAverageProjection p = repository.computeTeamAverages(teamId);
 
         if(p ==null)return new TeamAverageMetrics(0,0, 0);

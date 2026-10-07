@@ -105,10 +105,20 @@ public class CacheConfig {
         );
 
         caches.add(
+                buildCache(
+                        CacheType.TEAM_AVG_METRICS.getName(),
+                        2,
+                        TimeUnit.HOURS,
+                        500
+                )
+        );
+
+        caches.add(
             buildWeightedCache(
                     CacheType.GPS_POINTS.getName(),
                     50_000)
         );
+
         
         manager.setCaches(caches);
 

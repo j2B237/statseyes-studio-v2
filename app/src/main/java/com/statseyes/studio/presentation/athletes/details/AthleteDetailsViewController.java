@@ -183,6 +183,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         System.out.println();
         cacheStatsManager.printStats(CacheType.GPS_POINTS);
         System.out.println();
+        cacheStatsManager.printStats(CacheType.TEAM_AVG_METRICS);
+        System.out.println();
     }
 
     // ===================

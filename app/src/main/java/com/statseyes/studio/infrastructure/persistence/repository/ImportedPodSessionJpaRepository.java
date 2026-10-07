@@ -32,5 +32,4 @@ public interface ImportedPodSessionJpaRepository extends JpaRepository<ImportedP
             """
     )
     TeamAverageProjection computeTeamAverages(@Param("teamId") Integer teamId);
-
 }
