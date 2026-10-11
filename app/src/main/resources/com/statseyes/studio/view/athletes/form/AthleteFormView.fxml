@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.statseyes.studio.presentation.athletes.form.AthleteFormViewController"
+            stylesheets="@/com/statseyes/studio/static/css/athlete/athlete-details.css"
+            styleClass="athlete-details-scroll" fitToWidth="true">
+    
+    <VBox spacing="20" style="-fx-padding: 24;">
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Button text="← Retour" onAction="#onCancel" styleClass="secondary-button"/>
+            <Label text="Nouvel athlète" styleClass="athlete-name"/>
+        </HBox>
+        
+        <VBox styleClass="side-panel" spacing="16" maxWidth="760">
+            <GridPane hgap="20" vgap="14">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Prénom *" styleClass="side-panel-label"/>
+                    <TextField fx:id="firstnameField"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Nom *" styleClass="side-panel-label"/>
+                    <TextField fx:id="lastnameField"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Date de naissance *" styleClass="side-panel-label"/>
+                    <DatePicker fx:id="birthdayPicker" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Sexe *" styleClass="side-panel-label"/>
+                    <ChoiceBox fx:id="genderChoice" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Équipe *" styleClass="side-panel-label"/>
+                    <ComboBox fx:id="teamCombo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Poste *" styleClass="side-panel-label"/>
+                    <ComboBox fx:id="positionCombo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label text="Taille (cm)" styleClass="side-panel-label"/>
+                    <TextField fx:id="heightField"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label text="Poids (kg)" styleClass="side-panel-label"/>
+                    <TextField fx:id="weightField"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                    <Label text="Numéro de maillot" styleClass="side-panel-label"/>
+                    <TextField fx:id="jerseyField"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Label text="Nationalité" styleClass="side-panel-label"/>
+                    <ComboBox fx:id="nationalityCombo" maxWidth="Infinity"/>
+                </VBox>
+            </GridPane>
+            
+            <Label fx:id="errorLabel" styleClass="form-error" wrapText="true" managed="false" visible="false"/>
+            <HBox spacing="12">
+                <Button fx:id="saveButton" text="Enregistrer l'athlète" onAction="#onSave" styleClass="primary-button"/>
+                <Button text="Annuler" onAction="#onCancel" styleClass="secondary-button"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

@@ -80,7 +80,7 @@ public class AthletesViewController {
 
     @FXML
     protected void onAddAthlete() {
-        // TODO : formulaire d'ajout, pas encore construit
+        templateViewController.loadAthleteFormView();
     }
 
     // ===============

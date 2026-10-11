@@ -40,6 +40,7 @@ public enum ApplicationConfiguration {
     TEAMS_PATH("/com/statseyes/studio/view/teams/TeamsView.fxml"),
     SESSIONS_PATH("/com/statseyes/studio/view/sessions/SessionsView.fxml"),
     ATHLETE_DETAILS_PATH("/com/statseyes/studio/view/athletes/AthleteDetailsView.fxml"),
+    ATHLETE_FORM_PATH ("/com/statseyes/studio/view/athletes/form/AthleteFormView.fxml"),
     ANALYTICS_PATH("/com/statseyes/studio/view/analytics/AnalyticsView.fxml");
 
     //  [END ENUM TYPE]

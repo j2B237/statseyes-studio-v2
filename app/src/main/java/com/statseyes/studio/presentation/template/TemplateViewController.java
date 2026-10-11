@@ -32,7 +32,6 @@ public class TemplateViewController {
     ){
         this.sectionNavigator = sectionNavigator;
     }
-
     public void initialize(){
         loadDashboardView();
     }
@@ -47,19 +46,22 @@ public class TemplateViewController {
                 contentContainer, ApplicationConfiguration.ATHLETES_PATH.getValue()
         );
     }
-
+    public void loadAthleteFormView() {
+        sectionNavigator.open(
+                contentContainer,
+                ApplicationConfiguration.ATHLETE_FORM_PATH.getValue()
+        );
+    }
     public void loadTeamsView(){
         sectionNavigator.open(
                 contentContainer, ApplicationConfiguration.TEAMS_PATH.getValue()
         );
     }
-
     public void loadSessionsView(){
         sectionNavigator.open(
                 contentContainer, ApplicationConfiguration.SESSIONS_PATH.getValue()
         );
     }
-
     public void loadAthleteDetailsView(Integer athleteId) {
         sectionNavigator.open(
                 contentContainer,
@@ -67,7 +69,6 @@ public class TemplateViewController {
                 AthleteDetailsViewController.class, athleteId
         );
     }
-
     public void loadAnalyticsView(){
         sectionNavigator.open(
                 contentContainer,

@@ -316,3 +316,9 @@
 .athlete-details-scroll, .athlete-details-scroll > .viewport {
     -fx-background-color: transparent;
 }
+
+.form-error {
+    -fx-text-fill: #FF5A5F;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
