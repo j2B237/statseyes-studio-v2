@@ -22,5 +22,6 @@ public record Athlete(
         Double maxSpeed,
         String nationalityCode,
         Integer jerseyNumber,
-        boolean active
+        boolean active,
+        boolean available
 ) {}

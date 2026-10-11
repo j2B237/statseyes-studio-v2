@@ -1,5 +1,6 @@
 package com.statseyes.studio.infrastructure.persistence.repository;
 
+import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.infrastructure.persistence.entity.AthleteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

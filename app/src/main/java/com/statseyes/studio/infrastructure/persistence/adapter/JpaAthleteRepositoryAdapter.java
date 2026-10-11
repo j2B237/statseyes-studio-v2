@@ -6,6 +6,7 @@ import com.statseyes.studio.infrastructure.persistence.entity.AthleteEntity;
 import com.statseyes.studio.infrastructure.persistence.mapper.AthleteMapper;
 import com.statseyes.studio.infrastructure.persistence.repository.AthleteJpaRepository;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.cache.annotation.Cacheable;

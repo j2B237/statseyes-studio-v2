@@ -272,7 +272,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
                 ) + ")"
         );
 
-        athleteHeightLabel.setText(athlete.height() != null ? String.format("%.2f m", athlete.height()) : "—");
+        athleteHeightLabel.setText(athlete.height() != null ? String.format("%.0f cm", athlete.height()) : "—");
         athleteWeightLabel.setText(athlete.weight() != null ? String.format("%.0f kg", athlete.weight()) : "—");
 
         if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {

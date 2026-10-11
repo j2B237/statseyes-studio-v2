@@ -31,7 +31,8 @@ public class AthleteMapper {
                 entity.getMaxSpeed(),
                 entity.getNationalityCode(),
                 entity.getJerseyNumber(),
-                entity.isActive()
+                entity.isActive(),
+                entity.isAvailable()
         );
     }
 

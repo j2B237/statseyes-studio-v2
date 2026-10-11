@@ -74,4 +74,8 @@ public class AthleteEntity {
     @Column(name = "active", nullable = false)
     private boolean active = true;
 
+    // Permet de positionner un athlete sur la liste
+    // des atheletes disponibles pour le mercato.
+    @Column(name = "available", nullable = false)
+    private boolean available = false;
 }
