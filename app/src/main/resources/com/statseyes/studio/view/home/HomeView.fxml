@@ -32,7 +32,7 @@
         <VBox spacing="20" style="-fx-padding: 24;">
             
             <HBox styleClass="home-topbar" spacing="16" alignment="CENTER_LEFT">
-                <TextField promptText="Rechercher un athlete, une equipe..." styleClass="home-search" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="searchTextfield" promptText="Rechercher un athlete" styleClass="home-search" HBox.hgrow="ALWAYS"/>
                 <Label text="🔔"/>
                 
                 <MenuButton fx:id="userMenuButton" styleClass="user-menu-button">

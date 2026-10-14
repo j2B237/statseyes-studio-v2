@@ -37,10 +37,11 @@ public enum ApplicationConfiguration {
     LOGIN_PATH("/com/statseyes/studio/view/login/LoginView.fxml"),
     DASHBOARD_PATH("/com/statseyes/studio/view/dashboard/DashboardView.fxml"),
     ATHLETES_PATH("/com/statseyes/studio/view/athletes/AthletesView.fxml"),
-    TEAMS_PATH("/com/statseyes/studio/view/teams/TeamsView.fxml"),
-    SESSIONS_PATH("/com/statseyes/studio/view/sessions/SessionsView.fxml"),
+    ATHLETE_SEARCH_PATH("/com/statseyes/studio/view/athletes/search/AthleteSearchView.fxml"),
     ATHLETE_DETAILS_PATH("/com/statseyes/studio/view/athletes/AthleteDetailsView.fxml"),
     ATHLETE_FORM_PATH ("/com/statseyes/studio/view/athletes/form/AthleteFormView.fxml"),
+    TEAMS_PATH("/com/statseyes/studio/view/teams/TeamsView.fxml"),
+    SESSIONS_PATH("/com/statseyes/studio/view/sessions/SessionsView.fxml"),
     ANALYTICS_PATH("/com/statseyes/studio/view/analytics/AnalyticsView.fxml");
 
     //  [END ENUM TYPE]

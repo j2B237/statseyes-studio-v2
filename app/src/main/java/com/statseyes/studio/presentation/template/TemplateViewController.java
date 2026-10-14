@@ -2,6 +2,7 @@ package com.statseyes.studio.presentation.template;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.presentation.athletes.details.AthleteDetailsViewController;
+import com.statseyes.studio.presentation.athletes.search.AthleteSearchViewController;
 import com.statseyes.studio.presentation.navigation.SectionNavigator;
 
 import javafx.fxml.FXML;
@@ -67,6 +68,14 @@ public class TemplateViewController {
                 contentContainer,
                 ApplicationConfiguration.ATHLETE_DETAILS_PATH.getValue(),
                 AthleteDetailsViewController.class, athleteId
+        );
+    }
+
+    public void loadAthleteSearchView(String token){
+        sectionNavigator.open(
+                contentContainer,
+                ApplicationConfiguration.ATHLETE_SEARCH_PATH.getValue(),
+                AthleteSearchViewController.class, token
         );
     }
     public void loadAnalyticsView(){
