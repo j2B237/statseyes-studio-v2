@@ -107,4 +107,20 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
                 .map(athleteMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "athletes", allEntries = true)
+    public Athlete updateTransferAvailability(
+            Integer athleteId, Integer accountId,
+            boolean available
+    ){
+        AthleteEntity e = repository.findByIdAndAccount_Id(athleteId, accountId)
+                .orElseThrow(() -> new DomainValidationException("Athlete introuvable"));
+
+        e.setAvailable(available);
+        e.setUpdatedAt(Instant.now());
+
+        return athleteMapper.toDomain(e);
+    }
 }

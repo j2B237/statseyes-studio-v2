@@ -11,5 +11,10 @@ public interface AthleteRepositoryPort {
     Athlete findById(Integer athleteId, Integer accountId);
     List<Athlete> findAllByAccount(Integer accountId);
     Athlete create(NewAthlete athlete, Integer AccountId);
+    Athlete updateTransferAvailability(
+            Integer athleteId,
+            Integer accountId,
+            boolean available
+    );
 
 }
