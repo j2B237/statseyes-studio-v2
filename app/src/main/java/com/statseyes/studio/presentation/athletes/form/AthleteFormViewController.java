@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import org.springframework.stereotype.Controller;
-import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -52,7 +51,8 @@ public class AthleteFormViewController {
             AthleteFormViewModel viewModel,
             TemplateViewController template
     ) {
-        this.viewModel = viewModel; this.template = template;
+        this.viewModel = viewModel;
+        this.template = template;
     }
 
     public void initialize() {

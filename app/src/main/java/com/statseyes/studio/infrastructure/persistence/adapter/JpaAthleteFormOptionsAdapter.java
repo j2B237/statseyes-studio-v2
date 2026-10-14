@@ -6,8 +6,6 @@ import com.statseyes.studio.domain.model.LookupOption;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
