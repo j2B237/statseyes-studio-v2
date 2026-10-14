@@ -16,3 +16,13 @@
 .athlete-list .list-cell:filled:selected {
     -fx-background-color: transparent;
 }
+
+filter-bar {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 12 16;
+    -fx-effect: dropshadow(gaussian, rgba(20,20,30,0.05), 8, 0, 0, 2);
+}
+.search-count { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
+.empty-state  { -fx-text-fill: #6B6F76; -fx-font-size: 14px; -fx-padding: 24 0; }
+.search-error { -fx-text-fill: #FF5A5F; -fx-font-size: 13px; -fx-font-weight: 600; }

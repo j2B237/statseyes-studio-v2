@@ -18,8 +18,8 @@ public class SearchAthleteUseCase {
         this.repository = repository;
     }
 
-    public FilterFormOptions execute(Integer accountId, String token){
-        return repository.search(accountId, token);
+    public FilterFormOptions execute(Integer accountId){
+        return repository.load(accountId);
     }
 
 }

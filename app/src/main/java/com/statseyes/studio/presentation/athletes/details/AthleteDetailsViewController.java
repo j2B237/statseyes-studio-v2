@@ -198,7 +198,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
     @FXML
     protected void onBack() {
-        templateViewController.loadAthletesView();
+        templateViewController.goBackToAthletes();
     }
 
     @FXML

@@ -2,16 +2,19 @@ package com.statseyes.studio.presentation.home;
 
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
+import com.statseyes.studio.presentation.athletes.search.AthleteSearchViewModel;
 import com.statseyes.studio.presentation.navigation.ViewManager;
 import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import javafx.util.Duration;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -31,24 +34,24 @@ public class HomeViewController implements ViewManagerAware {
     // INSTANCE VARIABLES
     // ==================
 
-    private final ChangeListener<String> searchListener =
-            (obs, oldValue, newValue) -> {
-              renderSearch(newValue);
-            };
+    private final PauseTransition searchDebounce = new PauseTransition(Duration.millis(250));
+
     private final SessionAdapter sessionAdapter;
     private final TemplateViewController templateViewController;
     private final HomeViewModel viewModel;
-
+    private final AthleteSearchViewModel searchViewModel;
     private ViewManager viewManager;
 
     public HomeViewController(
             HomeViewModel viewModel,
             SessionAdapter sessionAdapter,
-            TemplateViewController templateViewController
+            TemplateViewController templateViewController,
+            AthleteSearchViewModel searchViewModel
     ) {
         this.viewModel = viewModel;
         this.sessionAdapter = sessionAdapter;
         this.templateViewController = templateViewController;
+        this.searchViewModel = searchViewModel;
     }
 
     // ================
@@ -64,24 +67,24 @@ public class HomeViewController implements ViewManagerAware {
             userNameLabel.setText(user.firstname()+ " " + user.lastname());
         }
 
-        bindViewModel();
+        searchDebounce.setOnFinished(e -> runSearch());
+        searchTextfield.textProperty().addListener((o, ov, nv) -> searchDebounce.playFromStart());
+        searchTextfield.setOnAction(e -> { searchDebounce.stop(); runSearch(); });
+    }
+
+    private void runSearch() {
+        String text = searchTextfield.getText() == null ? "" : searchTextfield.getText().trim();
+        searchViewModel.queryProperty().set(text);
+        if (!text.isEmpty() && !templateViewController.isShowingSearch()) {
+            templateViewController.loadAthleteSearchView();
+        }
     }
 
     // ================
     // PRIVATE API
     // ================
 
-    private void bindViewModel(){
-        searchTextfield.textProperty().bindBidirectional(
-                viewModel.searchAthleteProperty());
 
-        viewModel.searchAthleteProperty().removeListener(searchListener);
-        viewModel.searchAthleteProperty().addListener(searchListener);
-    }
-
-    private void renderSearch(String value){
-        templateViewController.loadAthleteSearchView(value);
-    }
 
     // ================
     // PROTECTED API
