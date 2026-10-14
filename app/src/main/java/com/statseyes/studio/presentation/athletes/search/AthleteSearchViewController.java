@@ -36,6 +36,7 @@ public class AthleteSearchViewController implements ViewManagerAware, Navigable<
     private final AthleteSearchViewModel viewModel;
     private String searchToken = null;
 
+
     public AthleteSearchViewController(
             TemplateViewController template,
             AthleteSearchViewModel viewModel
