@@ -5,16 +5,12 @@ import com.statseyes.studio.domain.model.AthleteLookupOption;
 import com.statseyes.studio.domain.model.LookupFilterOption;
 import com.statseyes.studio.domain.model.TransferStatusFilter;
 import com.statseyes.studio.presentation.component.AthleteCard;
-import com.statseyes.studio.presentation.navigation.Navigable;
-import com.statseyes.studio.presentation.navigation.ViewManager;
-import com.statseyes.studio.presentation.navigation.ViewManagerAware;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -22,8 +18,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 
 @Controller
@@ -36,8 +30,7 @@ public class AthleteSearchViewController {
     @FXML private ChoiceBox<LookupFilterOption> teamFilterChoiceBox;
     @FXML private ChoiceBox<LookupFilterOption> positionFilterChoiceBox;
     @FXML private ChoiceBox<TransferStatusFilter> statusFilterChoiceBox;
-    @FXML
-    private ListView<AthleteLookupOption> athleteListView;
+    @FXML private ListView<AthleteLookupOption> athleteListView;
     @FXML private Label countLabel;
     @FXML private Label emptyLabel;
     @FXML private Label errorLabel;

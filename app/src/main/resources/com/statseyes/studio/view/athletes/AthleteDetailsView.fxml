@@ -29,6 +29,7 @@
             <VBox spacing="8" HBox.hgrow="ALWAYS">
                 <VBox spacing="12" alignment="CENTER_LEFT">
                     <Label fx:id="athleteNameLabel" styleClass="athlete-name" text="—"/>
+                    <ToggleButton fx:id="transferToggle" styleClass="transfer-toggle" onAction="#onToggleTransfer"/>
                     <Label fx:id="athleteStatusBadge" styleClass="status-badge-active" text="● Actif"/>
                 </VBox>
                 <HBox spacing="18" alignment="CENTER_LEFT">

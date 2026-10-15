@@ -26,3 +26,19 @@ filter-bar {
 .search-count { -fx-text-fill: #9AA0A6; -fx-font-size: 13px; }
 .empty-state  { -fx-text-fill: #6B6F76; -fx-font-size: 14px; -fx-padding: 24 0; }
 .search-error { -fx-text-fill: #FF5A5F; -fx-font-size: 13px; -fx-font-weight: 600; }
+
+
+.transfer-toggle {
+    -fx-background-color: white; -fx-text-fill: #1C1E21;
+    -fx-border-color: #E4E5EA; -fx-border-width: 1;
+    -fx-border-radius: 8; -fx-background-radius: 8;
+    -fx-padding: 5 12; -fx-font-size: 12px; -fx-font-weight: 600; -fx-cursor: hand;
+}
+.transfer-toggle:hover    { -fx-background-color: #F5F6F8; }
+.transfer-toggle:selected { -fx-background-color: #FFF1DC; -fx-border-color: #F2A33A; -fx-text-fill: #C76A00; }
+
+.athlete-card-transfer-badge {
+    -fx-background-color: #FFF1DC; -fx-text-fill: #C76A00;
+    -fx-background-radius: 10; -fx-padding: 2 10;
+    -fx-font-size: 11px; -fx-font-weight: 700;
+}

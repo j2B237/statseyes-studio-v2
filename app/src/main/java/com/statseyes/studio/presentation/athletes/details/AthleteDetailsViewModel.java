@@ -1,6 +1,7 @@
 package com.statseyes.studio.presentation.athletes.details;
 
 import com.statseyes.studio.application.usecase.athlete.LoadAthleteDetailsUseCase;
+import com.statseyes.studio.application.usecase.athlete.SetAthleteTransferAvailabilityUseCase;
 import com.statseyes.studio.application.usecase.session.*;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.exception.PodFileFormatException;
@@ -32,9 +33,10 @@ public class AthleteDetailsViewModel {
             new SimpleObjectProperty<>(List.of());
     private final ObjectProperty<SessionComparison> comparison =
             new SimpleObjectProperty<>();
-
     private final ObjectProperty<TeamAverageMetrics> teamAverage = new SimpleObjectProperty<>();
     private final GetTeamAverageMetricsUseCase getTeamAverageMetricsUseCase;
+
+    private final BooleanProperty transferSaving = new SimpleBooleanProperty(false);
 
     // =======================
     // INSTANCE VARIABLES
@@ -47,6 +49,7 @@ public class AthleteDetailsViewModel {
     private final CompareSessionsUseCase compareSessionsUseCase;
     private final SessionAdapter sessionService;
     private final BackgroundTaskRunner backgroundTaskRunner;
+    private final SetAthleteTransferAvailabilityUseCase setTransferAvailabilityUseCase;
 
     // ===================
     // PUBLIC API
@@ -60,7 +63,8 @@ public class AthleteDetailsViewModel {
             CompareSessionsUseCase compareSessionsUseCase,
             ImportSessionFromFileUseCase importPodFileUseCase,
             SessionAdapter sessionService,
-            BackgroundTaskRunner backgroundTaskRunner
+            BackgroundTaskRunner backgroundTaskRunner,
+            SetAthleteTransferAvailabilityUseCase setTransferAvailabilityUseCase
     ) {
         this.getTeamAverageMetricsUseCase = getTeamAverageMetricsUseCase;
         this.loadAthleteDetailsUseCase = loadAthleteDetailsUseCase;
@@ -71,6 +75,7 @@ public class AthleteDetailsViewModel {
         this.importPodFileUseCase = importPodFileUseCase;
         this.sessionService = sessionService;
         this.backgroundTaskRunner = backgroundTaskRunner;
+        this.setTransferAvailabilityUseCase = setTransferAvailabilityUseCase;
     }
 
     public void loadAthlete(Integer athleteId){
@@ -114,6 +119,29 @@ public class AthleteDetailsViewModel {
     public void selectSession(ImportedSession session) {
         forceset(latestSession,session);
         loadHeatmapPoints(session.id());
+    }
+
+    public void setTransferAvailability(boolean available) {
+        Athlete current = athlete.get();
+        if (current == null) return;
+
+        Integer accountId = sessionService.getCurrentUser().id();   // lu sur le thread FX
+
+        transferSaving.set(true);
+        backgroundTaskRunner.run(
+                () -> setTransferAvailabilityUseCase.execute(current.id(), accountId, available),
+                updated -> {
+                    transferSaving.set(false);
+                    forceset(athlete, updated);
+                    importStatus.set(available ? "Athlète ajouté à la liste des transferts."
+                            : "Athlète retiré de la liste des transferts.");
+                },
+                error -> {
+                    transferSaving.set(false);
+                    forceset(athlete, current);   // re-rendu avec l'ancien état : le bouton revient en arrière
+                    importStatus.set("Erreur : " + error.getMessage());
+                }
+        );
     }
 
     // Calcul pur, pas d'I/O -- pas besoin de BackgroundTaskRunner
@@ -170,7 +198,7 @@ public class AthleteDetailsViewModel {
         return comparison;
     }
     public ObjectProperty<TeamAverageMetrics> teamAverageProperty() { return teamAverage; }
-
+    public BooleanProperty transferSavingProperty() { return transferSaving; }
     // ======================
     // PRIVATE API
     // ======================

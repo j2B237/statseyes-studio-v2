@@ -91,6 +91,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private Label statDecelLabel;
     @FXML private Label statDirectionChangesLabel;
     @FXML private Label statDurationLabel;
+    @FXML private ToggleButton transferToggle;
 
     // ====================
     // INSTANCE VARIABLES
@@ -136,6 +137,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     private final ChangeListener<TeamAverageMetrics> teamAverageListener =
             (o, ov, nv) -> applyDeltas();
 
+    private final ChangeListener<Boolean> transferSavingListener =
+            (o, ov, nv) -> transferToggle.setDisable(nv);
+
     // ===================
     // PUBLIC API
     // ===================
@@ -157,6 +161,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     public void onNavigate(Integer athleteId) { this.pendingAthleteId = athleteId; }
 
     public void initialize() {
+
+        // Bloqué tant que l'athlète n'est pas chargé (évite d'agir sur l'athlète de la visite précédente)
+        transferToggle.setDisable(true);
 
         bindViewModel();
         resetCards();
@@ -215,6 +222,11 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         templateViewController.loadAnalyticsView();
     }
 
+    @FXML
+    protected void onToggleTransfer() {
+        viewModel.setTransferAvailability(
+                transferToggle.isSelected());
+    }
     // ===================
     // PRIVATE API
     // ===================
@@ -284,6 +296,12 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
                             true)
             );
         }
+
+        transferToggle.setSelected(athlete.available());   // ne déclenche pas onAction
+        transferToggle.setText(
+                athlete.available() ? "Sur la liste des transferts" : "Mettre sur la liste des transferts"
+        );
+        transferToggle.setDisable(false);
     }
 
     private void renderSession(ImportedSession session) {
@@ -458,6 +476,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         viewModel.teamAverageProperty().removeListener(teamAverageListener);
         viewModel.teamAverageProperty().addListener(teamAverageListener);
+
+        viewModel.transferSavingProperty().removeListener(transferSavingListener);
+        viewModel.transferSavingProperty().addListener(transferSavingListener);
     }
 
 

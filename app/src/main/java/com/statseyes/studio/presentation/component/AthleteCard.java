@@ -36,7 +36,7 @@ public class AthleteCard extends HBox {
     private final Label nameLabel = new Label();
     private final Text teamText = new Text();
     private final Text positionText = new Text();
-
+    private final Label transferBadge = new Label("Transfert");
     private Runnable onViewDetails;
 
     // ===================
@@ -67,7 +67,14 @@ public class AthleteCard extends HBox {
         detailsButton.setOnAction(e -> { if (onViewDetails != null) onViewDetails.run(); });
 
         TextFlow subtitleFlow = new TextFlow(teamText, new Text(" · "), positionText);
-        VBox textArea = new VBox(4, nameLabel, subtitleFlow);
+
+        transferBadge.getStyleClass().add("athlete-card-transfer-badge");
+        transferBadge.setManaged(false);
+        transferBadge.setVisible(false);
+
+        HBox nameRow = new HBox(8, nameLabel, transferBadge);
+        nameRow.setAlignment(Pos.CENTER_LEFT);
+        VBox textArea = new VBox(4, nameRow, subtitleFlow);
 
         textArea.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(textArea, Priority.ALWAYS);
@@ -84,6 +91,11 @@ public class AthleteCard extends HBox {
     public void setPositionName(String v) { positionName.set(v == null ? "Sans poste" : v); }
     public void setPhotoUrl(String v)     { photoUrl.set(v); }
     public void setOnViewDetails(Runnable callback) { this.onViewDetails = callback; }
+
+    public void setTransferAvailable(boolean available) {
+        transferBadge.setVisible(available);
+        transferBadge.setManaged(available);
+    }
 
     // ================
     // PRIVATE API
