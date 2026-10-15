@@ -12,9 +12,7 @@ import com.statseyes.studio.domain.service.SessionMetricsCalculator;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.List;
-
 @Component
 public class ImportSessionFromFileUseCase {
 
@@ -32,28 +30,18 @@ public class ImportSessionFromFileUseCase {
 
     }
 
-    public List<ImportedSession> execute(
+    public ImportedSession execute(
             InputStream binaryStream,
             String sourceLabel,
             Integer accountId,
             Integer athleteId
     ){
-        List<PodSessionData> sessions = listSessionsInFile(binaryStream);
+        PodSessionData last = podFileImportPort.parseLastSession(binaryStream)
+                .orElseThrow(() -> new PodFileFormatException("Aucune session exploitable"));
 
-        List<PodSessionData> meaningFulSessions = sessions.stream()
-                .filter(s -> s.samples().size() >= 2)  // sous 2 points, aucune metrique calculable
-                .toList();
+        SessionMetrics metrics = metricsCalculator.compute(last.samples());
+        return importedSessionRepository.save(last, metrics, sourceLabel, accountId, athleteId);
 
-        if(meaningFulSessions.isEmpty()){
-            throw new PodFileFormatException("Aucune session trouvée dans ce flux.");
-        }
-
-        return meaningFulSessions.stream()
-                .map(session -> {
-                    SessionMetrics metrics = computeMetrics(session);
-                    return importedSessionRepository.save(session, metrics, sourceLabel, accountId, athleteId);
-                })
-                .toList();
     }
 
     public List<PodSessionData> listSessionsInFile(InputStream binaryStream) {

@@ -172,12 +172,11 @@ public class AthleteDetailsViewModel {
                         return importPodFileUseCase.execute(in, "dump.bin", accountId, athleteId);
                     }
                 },
-                sessions -> {
+                session -> {
                     importing.set(false);
-                    importStatus.set(sessions.size() + " session(s) importee(s)");
-                    if (!sessions.isEmpty()) {
-                        latestSession.set(sessions.getLast());
-                    }
+                    importStatus.set("Derniere session importee");
+                    latestSession.set(session);
+                    loadSessionHistory(athleteId);
                 },
                 error -> {
                     importing.set(false);
