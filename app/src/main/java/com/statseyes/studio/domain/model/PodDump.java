@@ -1,4 +1,4 @@
-package com.statseyes.studio.application.port;
+package com.statseyes.studio.domain.model;
 
 import java.io.Closeable;
 import java.io.IOException;
