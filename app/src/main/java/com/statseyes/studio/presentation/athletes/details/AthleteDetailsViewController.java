@@ -3,6 +3,7 @@ package com.statseyes.studio.presentation.athletes.details;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.*;
 import com.statseyes.studio.infrastructure.cache.CacheType;
+import com.statseyes.studio.presentation.athletes.importing.PodImportDialog;
 import com.statseyes.studio.presentation.component.ComparisonRow;
 import com.statseyes.studio.presentation.component.HeatmapCanvas;
 import com.statseyes.studio.presentation.navigation.Navigable;
@@ -26,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import javafx.util.StringConverter;
 import org.springframework.stereotype.Controller;
 
@@ -102,6 +104,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     private final TemplateViewController templateViewController;
     private final AthleteDetailsViewModel viewModel;
     private final CacheStatsManager cacheStatsManager;
+    private final PodImportDialog podDialog;
+
     private ViewManager viewManager;
     private Integer pendingAthleteId;
 
@@ -147,11 +151,13 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     public AthleteDetailsViewController(
             AthleteDetailsViewModel viewModel,
             TemplateViewController templateViewController,
-            CacheStatsManager cacheStatsManager
+            CacheStatsManager cacheStatsManager,
+            PodImportDialog podDialog
     ){
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
         this.cacheStatsManager = cacheStatsManager;
+        this.podDialog = podDialog;
     }
 
     @Override
@@ -198,9 +204,19 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // PROTECTED API
     // ===================
 
+    /*
     @FXML
     protected void onImportDump(ActionEvent event){
         viewModel.importDumpForCurrentAthlete();
+    }*/
+
+    @FXML
+    protected void onImportDump(ActionEvent event) {
+        Athlete athlete = viewModel.athleteProperty().get();
+        if (athlete == null) return;
+        Window owner = importButton.getScene().getWindow();
+        podDialog.show(owner, athlete.id(),
+                session -> viewModel.onSessionImported(session, athlete.id()));
     }
 
     @FXML

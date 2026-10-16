@@ -1,6 +1,7 @@
 package com.statseyes.studio.infrastructure.pod;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortTimeoutException;
 import com.statseyes.studio.application.port.PodDevicePort;
 
 import com.statseyes.studio.domain.model.PodDevice;
@@ -149,16 +150,28 @@ public class SerialPodDeviceAdapter implements PodDevicePort {
     private static final class PortInputStream extends FilterInputStream {
         private final SerialPort port;
 
-        PortInputStream(InputStream in, SerialPort port) {
-            super(in);
-            this.port = port;
+        PortInputStream(InputStream in, SerialPort port) { super(in); this.port = port; }
+
+        @Override public int read() throws IOException {
+            try {
+                return super.read();
+            } catch (SerialPortTimeoutException e) {
+                throw timeout(e);
+            }
         }
 
         @Override public int read(byte[] b, int off, int len) throws IOException {
-            int n = super.read(b, off, len);
-            if (n == 0 && len > 0)
-                throw new IOException("Le pod n'envoie plus de données (délai de 5 s dépassé).");
-            return n;
+            try {
+                int n = super.read(b, off, len);
+                if (n == 0 && len > 0) throw timeout(null);
+                return n;
+            } catch (SerialPortTimeoutException e) {
+                throw timeout(e);
+            }
+        }
+
+        private static IOException timeout(Exception cause) {
+            return new IOException("Le pod n'envoie plus de données (aucune réponse pendant 5 s).", cause);
         }
 
         @Override public void close() { port.closePort(); }

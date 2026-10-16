@@ -185,6 +185,12 @@ public class AthleteDetailsViewModel {
         );
     }
 
+    public void onSessionImported(ImportedSession session, Integer athleteId) {
+        importStatus.set("Dernière session importée.");
+        latestSession.set(session);       // met à jour les cartes et la carte de chaleur
+        loadSessionHistory(athleteId);    // l'historique et « Comparer » voient la nouvelle séance
+    }
+
     public ObjectProperty<Athlete> athleteProperty() { return athlete; }
     public ObjectProperty<ImportedSession> latestSessionProperty() { return latestSession; }
     public StringProperty importStatusProperty() { return importStatus; }
