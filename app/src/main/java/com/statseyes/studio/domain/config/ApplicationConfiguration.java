@@ -2,37 +2,51 @@ package com.statseyes.studio.domain.config;
 
 public enum ApplicationConfiguration {
 
-    //  [ENUM TYPE]
+      ///////////////////
+     //  [ENUM TYPE]  //
+    ///////////////////
 
-    // ================
-    // WINDOW PARAMS
-    // =================
+      // ================  //
+     //  WINDOW PARAMS    //
+    // ================= //
+
     TITLE("StatsEyes-Studio"),
-    // =============
-    // TIME FORMAT
-    // =============
+
+      // ============= //
+     //  TIME FORMAT  //
+    //  ============ //
+
     DAY_FORMAT("dd/MM"),
     HOUR_FORMAT("HH:mm"),
     SESSION_LABEL_FORMAT("dd/MM/yyyy HH:mm"),
-    // ==============
-    // METRICS UNIT
-    // ==============
+
+      // ===============  //
+     //   METRICS UNIT   //
+    // ================ //
+
     DISTANCE_UNIT("km"),
     SPEED_UNIT("km/h"),
     DIRECTION_UNIT("°"),
-    // =================
-    // FILE SYSTEM PATH
-    // ================
+
+      // ================= //
+     //  FILE SYSTEM PATH //
+    //  ================ //
+
     USER_HOME("user.home"),
-    UPLOAD_SUBDIR(".statseyes/uploads/clubs"),
+    UPLOAD_SUBDIR(".statseyes/uploads/"),
+    CLUB_UPLOAD_DIR("/clubs/"),
     DUMP_RESOURCE_PATH("/com/statseyes/studio/data/dump.bin"),
-    // ==========
-    // CSS PATH
-    // ==========
+
+      // ========== //
+     //  CSS PATH  //
+    // ========== //
+
     CSS_PATH("/com/statseyes/studio/static/css/"),
-    // ================
-    // FXML VIEWS PATH
-    // ================
+
+      // ================= //
+     //  FXML VIEWS PATH  //
+    // ================= //
+
     HOME_PATH("/com/statseyes/studio/view/home/HomeView.fxml"),
     LOGIN_PATH("/com/statseyes/studio/view/login/LoginView.fxml"),
     DASHBOARD_PATH("/com/statseyes/studio/view/dashboard/DashboardView.fxml"),
@@ -44,7 +58,9 @@ public enum ApplicationConfiguration {
     SESSIONS_PATH("/com/statseyes/studio/view/sessions/SessionsView.fxml"),
     ANALYTICS_PATH("/com/statseyes/studio/view/analytics/AnalyticsView.fxml");
 
-    //  [END ENUM TYPE]
+      ///////////////////////
+     //  [END ENUM TYPE]  //
+    ////////////////////////
 
     private final String value;
 

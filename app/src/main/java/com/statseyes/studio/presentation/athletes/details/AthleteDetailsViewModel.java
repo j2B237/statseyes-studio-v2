@@ -244,7 +244,7 @@ public class AthleteDetailsViewModel {
      * @param value
      * @param <T>
      */
-    private <T> void forceset(ObjectProperty<T> property, T value){
+    private <T> void forceset (ObjectProperty<T> property, T value){
         property.set(null);
         property.set(value);
     }
