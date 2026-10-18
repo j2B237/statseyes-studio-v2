@@ -12,18 +12,26 @@ import java.time.Period;
 
 @Component
 public class CreateAthleteUseCase {
-    // ====================
+
+    // ===================
     // INSTANCE VARIABLES
     // ===================
 
+
+    // ==============
+    // SPRING BEAN
+    // ==============
+
     private final AthleteRepositoryPort repository;
 
-    public CreateAthleteUseCase(AthleteRepositoryPort repository){
+    public CreateAthleteUseCase(
+            AthleteRepositoryPort repository
+    ){
         this.repository = repository;
     }
 
 
-    public Athlete execute(NewAthlete in, Integer accountId){
+    public Athlete execute(NewAthlete in, Integer accountId) {
 
         // Store empty string or remove every space if present
         String first = in.firstname() == null ? "" : in.firstname().trim();
@@ -61,10 +69,11 @@ public class CreateAthleteUseCase {
             throw new DomainValidationException("Numéro de maillot entre 0 et 99.");
 
         return repository.create(
-                new NewAthlete(
-                        first, last, in.birthday(), in.gender(), in.teamId(),
-                        in.positionId(), in.heightCm(), in.weightKg(),
-                        in.jerseyNumber(), in.nationalityCode()
-                ), accountId);
+                    new NewAthlete(
+                            first, last, in.birthday(), in.gender(), in.teamId(),
+                            in.positionId(), in.heightCm(), in.weightKg(),
+                            in.jerseyNumber(), in.nationalityCode(), in.imageUrl()
+                    ), accountId);
+
     }
 }

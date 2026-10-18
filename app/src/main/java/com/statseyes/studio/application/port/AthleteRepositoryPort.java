@@ -17,4 +17,6 @@ public interface AthleteRepositoryPort {
             boolean available
     );
 
+    void updateImageURL(Integer athleteId, Integer accountId, String filename);
+
 }

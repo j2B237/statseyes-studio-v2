@@ -89,7 +89,7 @@ public class ImageService {
     // PRIVATE API
     // =================
 
-    private String getFileExtension(Path sourceFile) throws IOException {
+    private String getFileExtension(Path sourceFile) {
         String originalName = sourceFile.getFileName().toString();
         String extension = "";
 

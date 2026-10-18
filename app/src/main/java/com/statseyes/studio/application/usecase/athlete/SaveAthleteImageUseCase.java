@@ -25,7 +25,6 @@ public class SaveAthleteImageUseCase {
 
     private final SessionAdapter session;
     private final ImageService imageService;
-    private final AthleteRepositoryPort repository;
 
     // =============
     // PUBLIC API
@@ -33,22 +32,19 @@ public class SaveAthleteImageUseCase {
 
     public SaveAthleteImageUseCase(
             ImageService imageService,
-            AthleteRepositoryPort repository,
             SessionAdapter session
     ){
         this.imageService = imageService;
-        this.repository = repository;
         this.session = session;
     }
 
-    public String execute(Integer athleteId, Path filename) throws IOException {
+    public String execute( Path filename ) throws IOException {
 
         AuthenticatedUser account = session.getCurrentUser();
         if(account == null) {
             throw new DomainValidationException("Utilisateur inconnu.");
         }
 
-        Athlete a = repository.findById(athleteId, account.id());
-        return imageService.saveAthleteImage(filename, a.id());
+        return imageService.saveAthleteImage(filename, account.id());
     }
 }

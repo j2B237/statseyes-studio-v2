@@ -2,6 +2,7 @@ package com.statseyes.studio.presentation.athletes.form;
 
 import com.statseyes.studio.application.usecase.athlete.CreateAthleteUseCase;
 import com.statseyes.studio.application.usecase.athlete.LoadAthleteFormOptionsUseCase;
+import com.statseyes.studio.application.usecase.athlete.SaveAthleteImageUseCase;
 import com.statseyes.studio.domain.exception.DomainValidationException;
 import com.statseyes.studio.domain.model.LookupOption;
 import com.statseyes.studio.domain.model.NewAthlete;
@@ -14,7 +15,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -22,6 +22,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 
 @Component
 public class AthleteFormViewModel {
@@ -42,6 +44,8 @@ public class AthleteFormViewModel {
     // INSTANCE VARIABLES
     // ======================
 
+    Path athleteImagePath;
+
     @Setter
     private Window window;
 
@@ -52,6 +56,7 @@ public class AthleteFormViewModel {
     private final LoadAthleteFormOptionsUseCase loadOptions;
     private final BackgroundTaskRunner runner;
     private final CreateAthleteUseCase createAthlete;
+    private final SaveAthleteImageUseCase saveImageUsecase;
     private final SessionAdapter session;
 
     // ========================
@@ -62,11 +67,13 @@ public class AthleteFormViewModel {
         LoadAthleteFormOptionsUseCase loadOptions,
         BackgroundTaskRunner runner,
         CreateAthleteUseCase createAthlete,
+        SaveAthleteImageUseCase saveImageUsecase,
         SessionAdapter session
     ){
         this.loadOptions = loadOptions;
         this.runner = runner;
         this.createAthlete = createAthlete;
+        this.saveImageUsecase = saveImageUsecase;
         this.session = session;
     }
 
@@ -88,10 +95,13 @@ public class AthleteFormViewModel {
     }
 
     public void create(AthleteFormInput in, Runnable onSuccess){
-        errorMessage.set(null);
 
+        errorMessage.set(null);
         NewAthlete athlete;
+
         try {
+
+            String imageUrl = saveImageUsecase.execute(athleteImagePath);
             athlete = new NewAthlete(
                     in.firstname(), in.lastname(), in.birthday(),
                     "Féminin".equals(in.gender()) ? 'F' : "Masculin".equals(in.gender()) ?
@@ -100,11 +110,14 @@ public class AthleteFormViewModel {
                     in.position() == null ? null : in.position().id(),
                     number(in.height(), "Taille"), number(in.weight(), "Poids"),
                     integer(in.jersey()),
-                    in.nationalityCode()
+                    in.nationalityCode(),
+                    imageUrl
             );
         } catch (DomainValidationException e){
             errorMessage.set(e.getMessage());
             return;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         Integer accountId = session.getCurrentUser().id();
@@ -114,9 +127,6 @@ public class AthleteFormViewModel {
                 () -> createAthlete.execute(athlete, accountId),
                 created -> {
                     saving.set(false);
-                    // TODO: ICI APPELLER SaveAthleteUseCase pour enregistrer ImageUrl
-                    // pour l'athlete cree avant de charger la vue athleteDetails
-
                     onSuccess.run();},
                 e -> {
                     saving.set(false);
@@ -140,20 +150,11 @@ public class AthleteFormViewModel {
 
         if (file != null) {
             try {
-                /*Integer clubId = (clubToBeCached != null && clubToBeCached.getId() != null)
-                        ? clubToBeCached.getId()
-                        : 0;
-
-                String filename = logoUploaderService.saveLogo(file.toPath(), clubId);
-                Image image = new Image(logoUploaderService.getLogoUrl(filename));
-                imageView.set(image);
-
-                if (clubToBeCached != null) {
-                    clubToBeCached.setLogo_url(filename);
-                }*/
                 imageValueProperty().set(file.toString());
+                athleteImagePath = file.toPath();
+
             } catch (Exception e) {
-                throw new RuntimeException("Erreur lors du chargement du logo", e);
+                errorMessage.set(e.getMessage());
             }
         }
     }

@@ -2,7 +2,9 @@ package com.statseyes.studio.infrastructure.persistence.repository;
 
 import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.infrastructure.persistence.entity.AthleteEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,6 +31,18 @@ public interface AthleteJpaRepository extends JpaRepository<AthleteEntity, Integ
             Integer Id,
             Integer teamId,
             Integer positionId
+    );
+
+    @Modifying
+    @Transactional
+    @Query(
+            "UPDATE AthleteEntity a SET a.imageUrl = :imageUrl WHERE " +
+            "a.id = :athleteId AND a.account.id = :accountId"
+    )
+    void updateImageURL(
+            @Param("athleteId") Integer athleteId,
+            @Param("accountId") Integer accountId,
+            @Param("imageUrl") String imageUrl
     );
 
     Optional<AthleteEntity> findByIdAndAccount_Id(

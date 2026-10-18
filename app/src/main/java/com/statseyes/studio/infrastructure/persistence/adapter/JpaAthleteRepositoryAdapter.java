@@ -12,6 +12,8 @@ import com.statseyes.studio.infrastructure.persistence.mapper.AthleteMapper;
 import com.statseyes.studio.infrastructure.persistence.repository.AthleteJpaRepository;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.cache.annotation.Cacheable;
@@ -122,5 +124,13 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
         e.setUpdatedAt(Instant.now());
 
         return athleteMapper.toDomain(e);
+    }
+
+    @Override
+    @Modifying
+    @Transactional
+    @CacheEvict(value = "athletes", allEntries = true)
+    public void updateImageURL(Integer athleteId, Integer accountId, String filename) {
+        repository.updateImageURL(athleteId, accountId, filename);
     }
 }

@@ -12,6 +12,7 @@ public record NewAthlete(
         Double heightCm,
         Double weightKg,
         Integer jerseyNumber,
-        String nationalityCode
+        String nationalityCode,
+        String imageUrl
 ) {
 }
