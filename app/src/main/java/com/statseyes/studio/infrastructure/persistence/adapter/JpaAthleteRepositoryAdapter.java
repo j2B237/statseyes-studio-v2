@@ -60,7 +60,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
                 .setParameter("a", accountId)
                 .getSingleResult();
 
-        if(owned == 0) throw new DomainValidationException("Equipe est invalide");
+        if(owned == 0) throw new DomainValidationException("Équipe est invalide");
 
         AthleteEntity e = new AthleteEntity();
 

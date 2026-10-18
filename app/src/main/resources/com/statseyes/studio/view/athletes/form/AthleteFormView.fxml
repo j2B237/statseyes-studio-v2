@@ -8,13 +8,15 @@
             styleClass="athlete-details-scroll" fitToWidth="true">
     
     <VBox spacing="20" style="-fx-padding: 24;">
+        
         <HBox spacing="16" alignment="CENTER_LEFT">
             <Button text="← Retour" onAction="#onCancel" styleClass="secondary-button"/>
             <Label text="Nouvel athlète" styleClass="athlete-name"/>
         </HBox>
         
         <HBox spacing="16" alignment="CENTER_LEFT">
-            <Button text="Telecharger photo" onAction="#onImageDownload" styleClass="secondary-button"/>
+            <Button text="Télécharger photo" onAction="#onImageDownload" styleClass="secondary-button"/>
+            <Label fx:id="imageUrl" text="" styleClass="side-panel-label"/>
         </HBox>
         
         <VBox styleClass="side-panel" spacing="16" maxWidth="760">

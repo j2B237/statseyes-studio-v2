@@ -29,7 +29,12 @@ public class AthleteFormViewController {
     @FXML private ComboBox<LookupOption> teamCombo, positionCombo;
     @FXML private ComboBox<String> nationalityCombo;
     @FXML private Label errorLabel;
+    @FXML private Label imageUrl;
     @FXML private Button saveButton;
+
+    // ====================
+    // INSTANCE VARIABLES
+    // ====================
 
     private final AthleteFormViewModel viewModel;
     private final TemplateViewController template;
@@ -47,6 +52,15 @@ public class AthleteFormViewController {
     private final ChangeListener<Boolean> savingListener =
             (o, ov, nv) ->
                     saveButton.setDisable(nv);
+
+    private final ChangeListener<String> imageValueListener =
+            (obs, ov, nv) -> {
+                imageUrl.textProperty().set(Objects.requireNonNullElse(nv, ""));
+            };
+
+    // =================
+    // PUBLIC API
+    // =================
 
     public AthleteFormViewController(
             AthleteFormViewModel viewModel,
@@ -88,9 +102,20 @@ public class AthleteFormViewController {
         viewModel.savingProperty().removeListener(savingListener);
         viewModel.savingProperty().addListener(savingListener);
         errorListener.changed(null, null, null);
+        viewModel.imageValueProperty().removeListener(imageValueListener);
+        viewModel.imageValueProperty().addListener(imageValueListener);
 
         viewModel.load();
     }
+
+    // ==============
+    // PRIVATE API
+    // ==============
+
+
+    // ================
+    // PROTECTED API
+    // ================
 
     @FXML protected void onSave() {
         viewModel.create(
@@ -110,9 +135,12 @@ public class AthleteFormViewController {
         );   // la liste se recharge, cache déjà vidé
     }
 
+
     @FXML protected void onCancel() { template.loadAthletesView(); }
 
 
     @FXML protected void onImageDownload(ActionEvent event) {
+        viewModel.setWindow(this.saveButton.getScene().getWindow());
+        viewModel.openDownloadDialog();
     }
 }

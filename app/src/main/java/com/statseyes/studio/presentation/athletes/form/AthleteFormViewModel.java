@@ -14,7 +14,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+
+import lombok.Setter;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 @Component
 public class AthleteFormViewModel {
@@ -29,6 +36,14 @@ public class AthleteFormViewModel {
             FXCollections.observableArrayList();
     private final StringProperty errorMessage = new SimpleStringProperty();
     private final BooleanProperty saving = new SimpleBooleanProperty();
+    private final StringProperty imageValue = new SimpleStringProperty();
+
+    // ======================
+    // INSTANCE VARIABLES
+    // ======================
+
+    @Setter
+    private Window window;
 
     // ========================
     // SPRING BEANS
@@ -97,7 +112,12 @@ public class AthleteFormViewModel {
 
         runner.run(
                 () -> createAthlete.execute(athlete, accountId),
-                created -> {saving.set(false); onSuccess.run();},
+                created -> {
+                    saving.set(false);
+                    // TODO: ICI APPELLER SaveAthleteUseCase pour enregistrer ImageUrl
+                    // pour l'athlete cree avant de charger la vue athleteDetails
+
+                    onSuccess.run();},
                 e -> {
                     saving.set(false);
                     errorMessage.set(
@@ -106,11 +126,43 @@ public class AthleteFormViewModel {
                 }
         );
     }
+    public void openDownloadDialog(){
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"),
+                new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+        );
+
+        File file = fileChooser.showOpenDialog(window);
+
+        if (file != null) {
+            try {
+                /*Integer clubId = (clubToBeCached != null && clubToBeCached.getId() != null)
+                        ? clubToBeCached.getId()
+                        : 0;
+
+                String filename = logoUploaderService.saveLogo(file.toPath(), clubId);
+                Image image = new Image(logoUploaderService.getLogoUrl(filename));
+                imageView.set(image);
+
+                if (clubToBeCached != null) {
+                    clubToBeCached.setLogo_url(filename);
+                }*/
+                imageValueProperty().set(file.toString());
+            } catch (Exception e) {
+                throw new RuntimeException("Erreur lors du chargement du logo", e);
+            }
+        }
+    }
 
     public ObservableList<LookupOption> teams() { return teams; }
     public ObservableList<LookupOption> positions() { return positions; }
     public StringProperty errorMessageProperty() { return errorMessage; }
     public BooleanProperty savingProperty() { return saving; }
+    public StringProperty imageValueProperty(){return imageValue;}
 
     // ==============
     // PRIVATE API
@@ -129,4 +181,6 @@ public class AthleteFormViewModel {
         try { return Integer.parseInt(s.trim()); }
         catch (NumberFormatException e) { throw new DomainValidationException("Numéro de maillot invalide."); }
     }
+
+
 }

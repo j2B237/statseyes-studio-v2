@@ -1,8 +1,9 @@
 package com.statseyes.studio.application.usecase.club;
 
+import com.statseyes.studio.domain.config.Resource_Type;
 import com.statseyes.studio.domain.model.ClubSummary;
 import com.statseyes.studio.application.port.ClubRepositoryPort;
-import com.statseyes.studio.application.port.LogoResolvePort;
+import com.statseyes.studio.application.port.ImageResolvePort;
 
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class GetClubLogoUseCase {
     // ====================
 
     private final ClubRepositoryPort clubRepositoryPort;
-    private final LogoResolvePort logoResolvePort;
+    private final ImageResolvePort imageResolvePort;
 
     // ===================
     // PUBLIC API
@@ -24,15 +25,15 @@ public class GetClubLogoUseCase {
 
     public GetClubLogoUseCase(
             ClubRepositoryPort clubRepositoryPort,
-            LogoResolvePort logoResolvePort
+            ImageResolvePort imageResolvePort
     ){
         this.clubRepositoryPort = clubRepositoryPort;
-        this.logoResolvePort = logoResolvePort;
+        this.imageResolvePort = imageResolvePort;
     }
 
     public Optional<String> execute(Integer accountId){
         return clubRepositoryPort.findByAccountId(accountId)
                 .map(ClubSummary::logoFilename)
-                .flatMap(logoResolvePort::resolveUrl);
+                .flatMap(f -> imageResolvePort.resolveUrl(f, Resource_Type.CLUB));
     }
 }
