@@ -74,6 +74,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
         e.setWeight(n.weightKg());
         e.setJerseyNumber(n.jerseyNumber());
         e.setNationalityCode(n.nationalityCode());
+        e.setImageUrl(n.imageUrl());
         e.setActive(true);
         e.setAvailable(false);
         e.setAccount(em.getReference(AccountEntity.class, accountId));

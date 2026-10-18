@@ -1,6 +1,7 @@
 package com.statseyes.studio.presentation.athletes.search;
 
 
+import com.statseyes.studio.application.usecase.athlete.GetAthleteImageUseCase;
 import com.statseyes.studio.domain.model.AthleteLookupOption;
 import com.statseyes.studio.domain.model.LookupFilterOption;
 import com.statseyes.studio.domain.model.TransferStatusFilter;
@@ -41,14 +42,17 @@ public class AthleteSearchViewController {
 
     private final TemplateViewController template;
     private final AthleteSearchViewModel viewModel;
+    private final GetAthleteImageUseCase athleteImageUseCase;
 
 
     public AthleteSearchViewController(
             TemplateViewController template,
-            AthleteSearchViewModel viewModel
+            AthleteSearchViewModel viewModel,
+            GetAthleteImageUseCase athleteImageUseCase
     ) {
         this.template = template;
         this.viewModel = viewModel;
+        this.athleteImageUseCase = athleteImageUseCase;
     }
 
     // ================
@@ -141,7 +145,9 @@ public class AthleteSearchViewController {
                 card.setAthleteName(athlete.firstname() + " " + athlete.lastname());
                 card.setTeamName(athlete.teamName());
                 card.setPositionName(athlete.positionName());
-                card.setPhotoUrl(athlete.imageUrl());
+                card.setPhotoUrl(
+                        athleteImageUseCase.execute(athlete.imageUrl()).orElse(null)
+                );
 
                 setGraphic(card);
             }

@@ -1,6 +1,8 @@
 package com.statseyes.studio.presentation.athletes.listing;
 
+import com.statseyes.studio.application.usecase.athlete.GetAthleteImageUseCase;
 import com.statseyes.studio.application.usecase.athlete.ListAthletesUseCase;
+import com.statseyes.studio.application.usecase.athlete.SaveAthleteImageUseCase;
 import com.statseyes.studio.domain.model.Athlete;
 import com.statseyes.studio.infrastructure.security.SessionAdapter;
 import com.statseyes.studio.presentation.concurrent.BackgroundTaskRunner;
@@ -19,6 +21,7 @@ public class AthletesViewModel {
     private final StringProperty errorMessage = new SimpleStringProperty();
 
     private final ListAthletesUseCase listAthletesUseCase;
+
     private final SessionAdapter sessionAdapter;
     private final BackgroundTaskRunner backgroundTaskRunner;
 

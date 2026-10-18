@@ -1,7 +1,11 @@
 package com.statseyes.studio.presentation.athletes.listing;
 
+import com.statseyes.studio.application.usecase.athlete.GetAthleteImageUseCase;
+import com.statseyes.studio.domain.config.Resource_Type;
 import com.statseyes.studio.domain.model.Athlete;
+import com.statseyes.studio.domain.service.ImageService;
 import com.statseyes.studio.infrastructure.cache.CacheType;
+import com.statseyes.studio.infrastructure.persistence.adapter.ImageServiceAdapter;
 import com.statseyes.studio.presentation.component.AthleteCard;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
@@ -24,9 +28,11 @@ public class AthletesViewController {
 
     private final AthletesViewModel viewModel;
     private final TemplateViewController templateViewController;
+    private final GetAthleteImageUseCase athleteImageUseCase;
     private final CacheStatsManager cacheStatsManager;
 
-    private final ChangeListener<String> errorListener = (obs, oldValue, newValue) -> {
+    private final ChangeListener<String> errorListener =
+            (obs, oldValue, newValue) -> {
         boolean hasError = newValue != null && !newValue.isBlank();
         errorLabel.setText(newValue);
         errorLabel.setVisible(hasError);
@@ -37,11 +43,13 @@ public class AthletesViewController {
     public AthletesViewController(
             AthletesViewModel viewModel,
             TemplateViewController templateViewController,
-            CacheStatsManager cacheStatsManager
+            CacheStatsManager cacheStatsManager,
+            GetAthleteImageUseCase athleteImageUseCase
     ) {
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
         this.cacheStatsManager = cacheStatsManager;
+        this.athleteImageUseCase = athleteImageUseCase;
     }
 
     public void initialize() {
@@ -60,13 +68,17 @@ public class AthletesViewController {
 
             @Override
             protected void updateItem(Athlete athlete, boolean empty) {
+
                 super.updateItem(athlete, empty);
+
                 if (empty || athlete == null) { setGraphic(null); return; }
 
                 card.setAthleteName(athlete.firstname() + " " + athlete.lastname());
                 card.setTeamName(athlete.teamName());
                 card.setPositionName(athlete.positionName());
-                card.setPhotoUrl(athlete.imageUrl());
+                card.setPhotoUrl(
+                    athleteImageUseCase.execute(athlete.imageUrl()).orElse(null)
+                );
 
                 setGraphic(card);
             }

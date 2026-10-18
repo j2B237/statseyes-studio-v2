@@ -1,8 +1,10 @@
 package com.statseyes.studio.presentation.athletes.details;
 
+import com.statseyes.studio.application.usecase.athlete.GetAthleteImageUseCase;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.*;
 import com.statseyes.studio.infrastructure.cache.CacheType;
+import com.statseyes.studio.infrastructure.persistence.adapter.ImageServiceAdapter;
 import com.statseyes.studio.presentation.athletes.importing.PodImportDialog;
 import com.statseyes.studio.presentation.component.ComparisonRow;
 import com.statseyes.studio.presentation.component.HeatmapCanvas;
@@ -36,6 +38,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 public class AthleteDetailsViewController implements ViewManagerAware, Navigable<Integer> {
@@ -105,6 +108,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     private final AthleteDetailsViewModel viewModel;
     private final CacheStatsManager cacheStatsManager;
     private final PodImportDialog podDialog;
+    private final GetAthleteImageUseCase athleteImageUseCase;
 
     private ViewManager viewManager;
     private Integer pendingAthleteId;
@@ -152,12 +156,14 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             AthleteDetailsViewModel viewModel,
             TemplateViewController templateViewController,
             CacheStatsManager cacheStatsManager,
-            PodImportDialog podDialog
+            PodImportDialog podDialog,
+            GetAthleteImageUseCase athleteImageUseCase
     ){
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
         this.cacheStatsManager = cacheStatsManager;
         this.podDialog = podDialog;
+        this.athleteImageUseCase = athleteImageUseCase;
     }
 
     @Override
@@ -306,7 +312,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {
             athletePhotoView.setImage(
                     new Image(
-                            athlete.imageUrl(),
+                            Objects.requireNonNull(
+                                    athleteImageUseCase.execute(athlete.imageUrl())
+                                            .orElse(null)),
                             110, 110,
                             false, true,
                             true)
