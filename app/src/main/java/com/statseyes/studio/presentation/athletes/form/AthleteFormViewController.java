@@ -4,6 +4,7 @@ import com.statseyes.studio.domain.model.LookupOption;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
@@ -110,4 +111,8 @@ public class AthleteFormViewController {
     }
 
     @FXML protected void onCancel() { template.loadAthletesView(); }
+
+
+    @FXML protected void onImageDownload(ActionEvent event) {
+    }
 }

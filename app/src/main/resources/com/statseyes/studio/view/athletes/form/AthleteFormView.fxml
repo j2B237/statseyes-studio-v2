@@ -13,6 +13,10 @@
             <Label text="Nouvel athlète" styleClass="athlete-name"/>
         </HBox>
         
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <Button text="Telecharger photo" onAction="#onImageDownload" styleClass="secondary-button"/>
+        </HBox>
+        
         <VBox styleClass="side-panel" spacing="16" maxWidth="760">
             <GridPane hgap="20" vgap="14">
                 <columnConstraints>
