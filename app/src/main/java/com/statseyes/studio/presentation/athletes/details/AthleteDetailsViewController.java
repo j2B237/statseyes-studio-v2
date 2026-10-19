@@ -310,6 +310,10 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         athleteWeightLabel.setText(athlete.weight() != null ? String.format("%.0f kg", athlete.weight()) : "—");
 
         if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {
+            System.out.println("From Athlete details: " +  Objects.requireNonNull(
+                    athleteImageUseCase.execute(athlete.imageUrl())
+                            .orElse(null)));
+
             athletePhotoView.setImage(
                     new Image(
                             Objects.requireNonNull(

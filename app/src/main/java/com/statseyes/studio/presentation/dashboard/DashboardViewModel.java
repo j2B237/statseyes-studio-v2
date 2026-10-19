@@ -58,24 +58,26 @@ public class DashboardViewModel {
     }
 
     public void loadClubLogo(){
+
         AuthenticatedUser user = sessionService.getCurrentUser();
-        if(user == null)return;
+
+        if(user == null) return;
 
         Integer accountId = user.id();
-
         backgroundTaskRunner.run(
                 () -> Objects.requireNonNull(logoUseCase.execute(accountId).orElse(null)),
                 url -> {
+                    System.out.println(url);
                     clubLogoUrl.set(url);
                     clubLogo.set(new Image(
                             Objects.requireNonNull(clubLogoUrl.get()),
                                     true));
-                    },
+                },
                 error -> {/* Pas grave, on remplace par un fond noir*/}
         );
     }
 
-    public void load(){
+    public void load() {
         // Lu sur le thread FX
         AuthenticatedUser user = sessionService.getCurrentUser();
 
@@ -85,7 +87,6 @@ public class DashboardViewModel {
         }
 
         Integer accountId = user.id();
-
         loading.set(true);
         errorMessage.set(null);
 

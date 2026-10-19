@@ -13,10 +13,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
+@Slf4j
 @Controller
 public class DashboardViewController implements ViewManagerAware {
 
@@ -32,7 +35,11 @@ public class DashboardViewController implements ViewManagerAware {
     private ViewManager viewManager;
 
     private final ChangeListener<AccountSummary> summaryListener =
-            (obs, oldValue, newValue) -> render(newValue);
+            (obs, oldValue, newValue) ->
+                    render(newValue);
+
+    private final ChangeListener<Image> imageListener =
+            (obs, ov, nv) -> renderLogo(nv);
 
     public DashboardViewController(
             DashboardViewModel viewModel,
@@ -75,9 +82,12 @@ public class DashboardViewController implements ViewManagerAware {
 
         viewModel.summaryProperty().removeListener(summaryListener);
         viewModel.summaryProperty().addListener(summaryListener);
-        clubLogoBackground.imageProperty().bindBidirectional(
+        viewModel.clubLogoProperty().removeListener(imageListener);
+        viewModel.clubLogoProperty().addListener(imageListener);
+
+        /*clubLogoBackground.imageProperty().bindBidirectional(
                 viewModel.clubLogoProperty()
-        );
+        );*/
         clubNameLabel.textProperty().bindBidirectional(
                 viewModel.clubNameProperty()
         );
@@ -90,12 +100,13 @@ public class DashboardViewController implements ViewManagerAware {
         athletesCountCard.setValue(
                 String.format(summary.athleteCount() + " \nathlete" +
                                 (summary.athleteCount() > 1 ? "s" : ""))
-
         );
+
         teamsCountCard.setValue(
                 String.format(summary.teamCount() + " \néquipe" +
                         (summary.teamCount() > 1 ? "s" : ""))
         );
+
         sessionsCountCard.setValue(String.format(
                 summary.importedSessionCount() + " \nsession" +
                         (summary.importedSessionCount() > 1 ? "s importees" : " importee"))
@@ -116,5 +127,10 @@ public class DashboardViewController implements ViewManagerAware {
                             " \ndate dernière session."
             );
         }
+    }
+
+    private void renderLogo(Image image) {
+        if(image == null) return;
+        clubLogoBackground.setImage(image);
     }
 }
