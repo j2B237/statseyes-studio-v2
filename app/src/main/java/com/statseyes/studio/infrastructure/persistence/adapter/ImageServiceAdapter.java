@@ -24,7 +24,6 @@ public class ImageServiceAdapter implements ImageResolvePort {
         this.imageService = imageService;
     }
 
-
     @Override
     public Optional<String> resolveUrl(String filename, Resource_Type dir) {
         if(filename == null || filename.isBlank())return Optional.empty();
