@@ -19,8 +19,7 @@
         
         <Button text="← Retour aux athletes" onAction="#onBack" styleClass="secondary-button"/>
         
-        <HBox fx:id="availabilityBanner" styleClass="availability-banner" alignment="CENTER_LEFT"
-              managed="${availabilityBanner.visible}">
+        <HBox fx:id="availabilityBanner" styleClass="availability-banner" alignment="CENTER_LEFT">
             <Label fx:id="bannerLabel" styleClass="availability-banner-text" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             <Hyperlink text="Modifier" styleClass="availability-banner-link" onAction="#onEditAvailability"/>
         </HBox>
@@ -38,7 +37,7 @@
                     <Label fx:id="athleteJerseyLabel" styleClass="athlete-meta"/>
                 </HBox>
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Label fx:id="athleteFlagLabel" styleClass="athlete-meta"/>
+                    <Label fx:id="athleteFlagLabel" styleClass="country-code"/>
                     <Label fx:id="athleteNationalityLabel" styleClass="athlete-meta"/>
                     <Label fx:id="athleteTeamLabel" styleClass="athlete-meta"/>
                 </HBox>
@@ -50,8 +49,6 @@
                 <Label fx:id="statusBadge" styleClass="status-badge"/>
                 <ToggleButton fx:id="transferToggle" styleClass="transfer-toggle" onAction="#onToggleTransfer"/>
             </VBox>
-            
-            <Region HBox.hgrow="ALWAYS"/>
             
             <VBox styleClass="pod-status-card" spacing="10">
                 <VBox spacing="10" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
@@ -141,16 +138,37 @@
                         
                         <VBox spacing="4" HBox.hgrow="ALWAYS">
                             <Label text="Disponibilité" styleClass="section-title"/>
-                            <HBox styleClass="kv-row"><Label text="Statut" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="profileStatusBadge" styleClass="status-badge"/></HBox>
-                            <HBox styleClass="kv-row"><Label text="Motif" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="reasonLabel" styleClass="kv-value"/></HBox>
-                            <HBox styleClass="kv-row"><Label text="Depuis le" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="sinceLabel" styleClass="kv-value"/></HBox>
-                            <HBox styleClass="kv-row"><Label text="Retour prévu" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="returnLabel" styleClass="kv-value"/></HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Statut" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="profileStatusBadge" styleClass="status-badge"/>
+                            </HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Motif" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="reasonLabel" styleClass="kv-value"/>
+                            </HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Depuis le" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="sinceLabel" styleClass="kv-value"/>
+                            </HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Retour prévu" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="returnLabel" styleClass="kv-value"/>
+                            </HBox>
                             <Button text="Modifier la disponibilité" styleClass="secondary-button" onAction="#onEditAvailability"/>
                             
                             <Label text="Informations personnelles" styleClass="section-title" style="-fx-padding: 18 0 0 0;"/>
-                            <HBox styleClass="kv-row"><Label text="Date de naissance" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="profileBirthLabel" styleClass="kv-value"/></HBox>
-                            <HBox styleClass="kv-row"><Label text="Nationalité" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="profileNationalityLabel" styleClass="kv-value"/></HBox>
-                            <HBox styleClass="kv-row"><Label text="Équipe" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Label fx:id="profileTeamLabel" styleClass="kv-value"/></HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Date de naissance" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="profileBirthLabel" styleClass="kv-value"/>
+                            </HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Nationalité" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="profileNationalityLabel" styleClass="kv-value"/>
+                            </HBox>
+                            <HBox styleClass="kv-row">
+                                <Label text="Équipe" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Label fx:id="profileTeamLabel" styleClass="kv-value"/>
+                            </HBox>
                         </VBox>
                     </HBox>
                 </Tab>

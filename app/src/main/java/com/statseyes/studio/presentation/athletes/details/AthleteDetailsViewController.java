@@ -4,8 +4,10 @@ import com.statseyes.studio.application.usecase.athlete.GetAthleteImageUseCase;
 import com.statseyes.studio.domain.config.ApplicationConfiguration;
 import com.statseyes.studio.domain.model.*;
 import com.statseyes.studio.infrastructure.cache.CacheType;
-import com.statseyes.studio.infrastructure.persistence.adapter.ImageServiceAdapter;
+import com.statseyes.studio.presentation.athletes.profile.AvailabilityDialog;
+
 import com.statseyes.studio.presentation.athletes.importing.PodImportDialog;
+import com.statseyes.studio.presentation.athletes.profile.AthleteProfileViewModel;
 import com.statseyes.studio.presentation.component.ComparisonRow;
 import com.statseyes.studio.presentation.component.HeatmapCanvas;
 import com.statseyes.studio.presentation.navigation.Navigable;
@@ -15,8 +17,10 @@ import com.statseyes.studio.presentation.component.StatsCard;
 import com.statseyes.studio.presentation.template.TemplateViewController;
 import com.statseyes.studio.infrastructure.cache.CacheStatsManager;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,11 +30,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
@@ -40,6 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+@Slf4j
 @Controller
 public class AthleteDetailsViewController implements ViewManagerAware, Navigable<Integer> {
 
@@ -48,7 +58,6 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // ===================
 
     @FXML private Label athleteNameLabel;
-    @FXML private Label athleteSubtitleLabel;
     @FXML private Label importStatusLabel;
     @FXML private Button importButton;
 
@@ -61,19 +70,19 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     @FXML private ListView<ImportedSession> sessionHistoryListView;
 
     // Informations visibles sur la carte du joueur
-    @FXML private Label profileTeamLabel;
-    @FXML private Label profilePositionLabel;
-    @FXML private Label profileAgeLabel;
     @FXML private ImageView athletePhotoView;
-    @FXML private Label athleteStatusBadge;
     @FXML private Label athleteFlagLabel;
     @FXML private Label athleteNationalityLabel;
-    @FXML private Label athletePositionLabel;
     @FXML private Label athleteTeamLabel;
     @FXML private Label athleteJerseyLabel;
-    @FXML private Label athleteAgeLabel;
-    @FXML private Label athleteHeightLabel;
-    @FXML private Label athleteWeightLabel;
+
+    @FXML private HBox availabilityBanner;
+    @FXML private Label bannerLabel, physicalLine, statusBadge, profileStatusBadge;
+    @FXML private Label reasonLabel, sinceLabel, returnLabel;
+    @FXML private Label profileTeamLabel, profileBirthLabel, profileNationalityLabel;
+    @FXML private FlowPane positionsPane, secondaryPane;
+    @FXML private ToggleButton footLeft, footRight, footBoth;
+    @FXML private ComboBox<String> mainPositionCombo, addSecondaryCombo;
 
     // Informations concernant le Pod
     @FXML private Label lastImportDateLabel;
@@ -102,6 +111,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     // INSTANCE VARIABLES
     // ===================
 
+    private static final boolean DEMO_PROFILE_DATA = true;
+
     private static final DateTimeFormatter BANNER_DATE_FORMAT =
             DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH);
     private final TemplateViewController templateViewController;
@@ -110,6 +121,8 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     private final PodImportDialog podDialog;
     private final GetAthleteImageUseCase athleteImageUseCase;
 
+    private final AthleteProfileViewModel profileViewModel;
+    private ToggleGroup footGroup;
     private ViewManager viewManager;
     private Integer pendingAthleteId;
 
@@ -147,6 +160,23 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
     private final ChangeListener<Boolean> transferSavingListener =
             (o, ov, nv) -> transferToggle.setDisable(nv);
+    private final ChangeListener<DominantFoot> footListener =
+            (obs, ov, nv) -> {
+                selectFoot (nv);
+                renderPhysicalLine();
+    };
+
+    private final ListChangeListener<String> secondaryListener = c -> {
+        renderSecondaryChips();
+        renderPositionChips();
+    };
+    private final ChangeListener<String> mainPositionListener =
+            (o, a, b) -> renderPositionChips();
+    private final ChangeListener<String> statusStyleListener =
+            (o, old, now) -> {
+                swapStatusClass(statusBadge, old, now);
+                swapStatusClass(profileStatusBadge, old, now);
+    };
 
     // ===================
     // PUBLIC API
@@ -157,13 +187,15 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             TemplateViewController templateViewController,
             CacheStatsManager cacheStatsManager,
             PodImportDialog podDialog,
-            GetAthleteImageUseCase athleteImageUseCase
+            GetAthleteImageUseCase athleteImageUseCase,
+            AthleteProfileViewModel profileViewModel
     ){
         this.viewModel = viewModel;
         this.templateViewController = templateViewController;
         this.cacheStatsManager = cacheStatsManager;
         this.podDialog = podDialog;
         this.athleteImageUseCase = athleteImageUseCase;
+        this.profileViewModel = profileViewModel;
     }
 
     @Override
@@ -179,8 +211,9 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         bindViewModel();
         resetCards();
-        resetProfile();
-
+        profileViewModel.reset();
+        bindProfile();
+        
         heatmapCanvas.clear();
         sessionHistoryListView.setCellFactory(list -> new SessionHistoryRowCell());
 
@@ -243,12 +276,18 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
     protected void onViewAnalytics(MouseEvent event){
         templateViewController.loadAnalyticsView();
     }
-
     @FXML
     protected void onToggleTransfer() {
         viewModel.setTransferAvailability(
                 transferToggle.isSelected());
     }
+    @FXML
+    protected void onEditAvailability(ActionEvent event){
+        AvailabilityDialog.show(profileViewModel, athleteNameLabel.getText(),athleteNameLabel.getScene().getWindow());
+    }
+    @FXML
+    protected void onSaveProfile(){}
+
     // ===================
     // PRIVATE API
     // ===================
@@ -261,11 +300,6 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         directionCard.setNoData("--");
     }
 
-    private void resetProfile() {
-        profileTeamLabel.setText("Équipe : —");
-        profilePositionLabel.setText("Poste : —");
-        profileAgeLabel.setText("Âge : —");
-    }
     private void renderPodStatus(List<ImportedSession> sessions){
         if( sessions == null || sessions.isEmpty()){
             lastImportDateLabel.setText("Aucun import");
@@ -283,31 +317,23 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         );
     }
     private void renderAthlete(Athlete athlete) {
+
         if (athlete == null) return;
         athleteNameLabel.setText(athlete.firstname() + " " + athlete.lastname());
-
-        athleteStatusBadge.setText(athlete.active() ? "● Actif" : "● Inactif");
-        athleteStatusBadge.getStyleClass().setAll(
-                athlete.active() ? "status-badge-active" : "status-badge-inactive"
-        );
 
         athleteFlagLabel.setText(flagEmoji(athlete.nationalityCode()));
         athleteNationalityLabel.setText(athlete.nationalityCode() != null
                 ? new Locale("", athlete.nationalityCode()).getDisplayCountry(Locale.FRENCH) : "—");
 
-        athletePositionLabel.setText(athlete.positionName() != null ? athlete.positionName() : "—");
+        String code = athlete.nationalityCode();
+        boolean hasCode = code != null && !code.isBlank();
+
+        athleteFlagLabel.setText(hasCode ? code.toUpperCase() : "");
+        athleteFlagLabel.setVisible(hasCode);
+        athleteFlagLabel.setManaged(hasCode);
+
         athleteTeamLabel.setText(athlete.teamName() != null ? athlete.teamName() : "—");
         athleteJerseyLabel.setText(athlete.jerseyNumber() != null ? "N° " + athlete.jerseyNumber() : "—");
-
-        long age = Period.between(athlete.birthday(), LocalDate.now()).getYears();
-        athleteAgeLabel.setText(
-                age + " ans (" + athlete.birthday().format(
-                        DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH)
-                ) + ")"
-        );
-
-        athleteHeightLabel.setText(athlete.height() != null ? String.format("%.0f cm", athlete.height()) : "—");
-        athleteWeightLabel.setText(athlete.weight() != null ? String.format("%.0f kg", athlete.weight()) : "—");
 
         if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {
             System.out.println("From Athlete details: " +  Objects.requireNonNull(
@@ -325,10 +351,10 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             );
         }
 
-        transferToggle.setSelected(athlete.available());   // ne déclenche pas onAction
-        transferToggle.setText(
-                athlete.available() ? "Sur la liste des transferts" : "Mettre sur la liste des transferts"
-        );
+        boolean onList = athlete.available();
+        transferToggle.setSelected(onList);   // ne déclenche pas onAction
+        transferToggle.setText(onList ? "Sur la liste des transferts" : "Mettre sur la liste des transferts");
+        transferToggle.setGraphic(new FontIcon(onList ? "fas-check" : "fas-plus"));
         transferToggle.setDisable(false);
     }
 
@@ -377,11 +403,68 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
 
         if (athlete == null) return;
 
-        profileTeamLabel.setText("Équipe : " + (athlete.teamName() != null ? athlete.teamName() : "Aucune"));
-        profilePositionLabel.setText("Poste : " + (athlete.positionName() != null ? athlete.positionName() : "Aucun"));
+        profileViewModel.mainPositionProperty().set(athlete.positionName() != null ? athlete.positionName() : "");
+        profileBirthLabel.setText(athlete.birthday().format(BANNER_DATE_FORMAT));
+        profileNationalityLabel.setText(athleteNationalityLabel.getText());
+        profileTeamLabel.setText(athlete.teamName() != null ? athlete.teamName() : "Aucune");
 
-        long age = java.time.Period.between(athlete.birthday(), java.time.LocalDate.now()).getYears();
-        profileAgeLabel.setText("Âge : " + age + " ans");
+        if (DEMO_PROFILE_DATA) {
+            profileViewModel.secondaryPositionsProperty().setAll("Ailier droit", "Attaquant");
+            profileViewModel.setAvailability(new Availability(AvailabilityStatus.INJURED, "Blessure à la cuisse",
+                    LocalDate.now().minusDays(14), LocalDate.now().plusDays(20)));
+            log.info("Disponibilité appliquée : {}", profileViewModel.availabilityProperty().get());
+        }
+
+        renderPhysicalLine();
+        renderPositionChips();
+
+    }
+
+    private void renderPositionChips(){
+        positionsPane.getChildren().clear();
+        String main = profileViewModel.mainPositionProperty().get();
+        if (main != null && !main.isBlank()) {
+            Label l = new Label(main);
+            l.getStyleClass().add("chip-main");
+            positionsPane.getChildren().add(l);
+        }
+        for (String p : profileViewModel.secondaryPositionsProperty()) {
+            Label l = new Label(p);
+            l.getStyleClass().add("chip");
+            positionsPane.getChildren().add(l);
+        }
+    }
+    private void renderSecondaryChips() {
+
+        secondaryPane.getChildren().clear();
+        for (String p : profileViewModel.secondaryPositionsProperty()) {
+
+            Label name = new Label(p);
+            Button remove = new Button(); remove.setGraphic(new FontIcon("fas-times"));
+            remove.getStyleClass().add("chip-remove");
+
+            remove.setOnAction(e -> profileViewModel.secondaryPositionsProperty().remove(p));
+            HBox chip = new HBox(6, name, remove); chip.getStyleClass().add("chip");
+            secondaryPane.getChildren().add(chip);
+        }
+    }
+    private void renderPhysicalLine() {
+        Athlete a = viewModel.athleteProperty().get();
+
+        if(a == null) {physicalLine.setText("");return;};
+        long age = Period.between(a.birthday(), LocalDate.now()).getYears();
+
+        String foot = switch (profileViewModel.dominantFootProperty().get()){
+           case DominantFoot.LEFT   -> "Gauche";
+           case DominantFoot.RIGHT  -> "Droit";
+           case DominantFoot.BOTH   -> "Les deux";
+        };
+
+        physicalLine.setText(age + " ans , " +
+                (a.height() != null ? String.format("%.0f cm", a.height()) : "-") + ", " +
+                (a.weight() != null ? String.format("%.0f Kg", a.weight()) : "-") +
+                ", Pied fort : " + foot
+        );
     }
 
     private void renderHeatmap(List<GpsPoint> points){
@@ -476,6 +559,15 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         sessionBChoice.setItems(FXCollections.observableArrayList(sessions));
     }
 
+    private void swapStatusClass(Label l, String old, String now) {
+        if (old != null) l.getStyleClass().remove(old);
+        if (now != null && !l.getStyleClass().contains(now)) l.getStyleClass().add(now);
+    }
+    private void selectFoot(DominantFoot f) {
+        if (f == null) return;
+        for (Toggle t : footGroup.getToggles()) if (t.getUserData() == f) t.setSelected(true);
+    }
+
     private void bindViewModel(){
 
         viewModel.athleteProperty().removeListener(athleteListener);
@@ -509,7 +601,66 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         viewModel.transferSavingProperty().addListener(transferSavingListener);
     }
 
+    private void bindProfile() {
 
+        availabilityBanner.visibleProperty().bind(profileViewModel.bannerVisibleProperty());
+        availabilityBanner.managedProperty().bind(availabilityBanner.visibleProperty());
+        bannerLabel.textProperty().bind(profileViewModel.bannerTextProperty());
+        reasonLabel.textProperty().bind(profileViewModel.reasonTextProperty());
+        sinceLabel.textProperty().bind(profileViewModel.sinceTextProperty());
+        returnLabel.textProperty().bind(profileViewModel.returnTextProperty());
+        statusBadge.textProperty().bind(profileViewModel.statusLabelProperty().map(s -> "● " + s));
+        profileStatusBadge.textProperty().bind(profileViewModel.statusLabelProperty().map(s -> "● " + s));
+
+        profileViewModel.statusStyleProperty().removeListener(statusStyleListener);
+        profileViewModel.statusStyleProperty().addListener(statusStyleListener);
+        swapStatusClass(statusBadge, null, profileViewModel.statusStyleProperty().get());
+        swapStatusClass(profileStatusBadge, null, profileViewModel.statusStyleProperty().get());
+
+        footGroup = new ToggleGroup();
+        footLeft.setToggleGroup(footGroup);
+        footRight.setToggleGroup(footGroup);
+        footBoth.setToggleGroup(footGroup);
+        footLeft.setUserData(DominantFoot.LEFT);
+        footRight.setUserData(DominantFoot.RIGHT);
+        footBoth.setUserData(DominantFoot.BOTH);
+        footGroup.selectedToggleProperty().addListener((ob, ov, nv) -> {
+            if (nv != null) profileViewModel.dominantFootProperty().set((DominantFoot) nv.getUserData());
+            else if (ov != null) ov.setSelected(true);          // jamais de désélection totale
+        });
+        profileViewModel.dominantFootProperty().removeListener(footListener);
+        profileViewModel.dominantFootProperty().addListener(footListener);
+        selectFoot(profileViewModel.dominantFootProperty().get());   // état initial
+
+        profileViewModel.secondaryPositionsProperty().removeListener(secondaryListener);
+        profileViewModel.secondaryPositionsProperty().addListener(secondaryListener);
+        profileViewModel.mainPositionProperty().removeListener(mainPositionListener);
+        profileViewModel.mainPositionProperty().addListener(mainPositionListener);
+
+        List<String> positions = List.of("Gardien", "Défenseur central", "Latéral", "Milieu défensif",
+                "Milieu offensif", "Ailier droit", "Ailier gauche", "Attaquant");
+        mainPositionCombo.setItems(FXCollections.observableArrayList(positions));
+        addSecondaryCombo.setItems(FXCollections.observableArrayList(positions));
+        mainPositionCombo.valueProperty().bindBidirectional(profileViewModel.mainPositionProperty());
+
+        addSecondaryCombo.setOnAction(e -> {
+            String p = addSecondaryCombo.getValue();
+            if (p == null) return;
+            if (!p.equals(profileViewModel.mainPositionProperty().get())
+                    && !profileViewModel.secondaryPositionsProperty().contains(p)) {
+                profileViewModel.secondaryPositionsProperty().add(p);
+            }
+            Platform.runLater(() -> addSecondaryCombo.setValue(null));
+        });
+
+        renderSecondaryChips();
+        renderPositionChips();
+    }
+    ///////////////////////////////////
+    ///
+    /// PRIVATE INNER CLASSES
+    ///
+    ///////////////////////////////////
     private final class SessionHistoryRowCell extends ListCell<ImportedSession> {
 
         // ==================

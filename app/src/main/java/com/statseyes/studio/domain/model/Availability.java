@@ -18,7 +18,7 @@ public record Availability(
      *  calculée à la lecture, sans planificateur
      * */
     public Availability effectiveOn (LocalDate today) {
-        if ( status != AvailabilityStatus.AVAILABLE && expectedReturn != null && today.isBefore(expectedReturn)) {
+        if ( status != AvailabilityStatus.AVAILABLE && expectedReturn != null && !today.isBefore(expectedReturn)) {
             return available();
         }
         return this;
