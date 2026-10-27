@@ -1,24 +1,49 @@
 package com.statseyes.studio.infrastructure.persistence.entity;
 
+import com.statseyes.studio.domain.model.AvailabilityStatus;
+import com.statseyes.studio.infrastructure.persistence.id.UuidV7;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.UUID;
 
+@Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "athletes")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AthleteEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Column(name= "uuid", nullable = false, updatable = false, unique = true)
+    private UUID uuid;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "availability_status", nullable = false, length = 12)
+    @Builder.Default
+    private AvailabilityStatus availabilityStatus = AvailabilityStatus.AVAILABLE;
+
+    @Column(name = "availability_reason")
+    private String availabilityReason;
+
+    @Column(name = "availability_since")
+    private LocalDate availabilitySince;
+
+    @Column(name = "availability_expected_return")
+    private LocalDate availabilityExpectedReturn;
 
     @Column(name = "firstname", nullable = false, length = 150)
     private String firstname;
@@ -39,6 +64,13 @@ public class AthleteEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "account_id", nullable = false)
     private AccountEntity account;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "athlete_secondary_position",
+                joinColumns = @JoinColumn(name = "athlete_id"),
+                inverseJoinColumns = @JoinColumn(name = "position_id"))
+    @Builder.Default
+    private Set<PositionEntity> secondaryPositions = new LinkedHashSet<>();
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at", nullable = false)
@@ -78,4 +110,9 @@ public class AthleteEntity {
     // des atheletes disponibles pour le mercato.
     @Column(name = "available", nullable = false)
     private boolean available = false;
+
+    @PrePersist
+    void ensureUuid() {
+        if (uuid == null) uuid = UuidV7.generate();
+    }
 }

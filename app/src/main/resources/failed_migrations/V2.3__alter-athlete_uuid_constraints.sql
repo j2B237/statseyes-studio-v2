@@ -1,0 +1,1 @@
+ALTER TABLE athletes MODIFY COLUMN uuid CHAR(36) NULL;
