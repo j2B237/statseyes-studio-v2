@@ -102,6 +102,7 @@
         
         <!-- ONGLETS ET PANNEAUX LATÉRAUX -->
         <HBox spacing="20">
+            
             <TabPane styleClass="athlete-tabs" HBox.hgrow="ALWAYS">
                 <Tab text="Carte de chaleur" closable="false">
                     <VBox style="-fx-padding: 16;">
@@ -136,7 +137,7 @@
                             <HBox alignment="CENTER_RIGHT"><Button text="Enregistrer" styleClass="primary-button" onAction="#onSaveProfile"/></HBox>
                         </VBox>
                         
-                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="side-panel">
                             <Label text="Disponibilité" styleClass="section-title"/>
                             <HBox styleClass="kv-row">
                                 <Label text="Statut" styleClass="kv-key" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
@@ -185,7 +186,12 @@
                 </Tab>
             </TabPane>
             
-            <VBox spacing="20" prefWidth="280" minWidth="280">
+            <VBox spacing="20" prefWidth="400" minWidth="400" VBox.vgrow="ALWAYS">
+                
+                <VBox prefHeight="50" VBox.vgrow="ALWAYS">
+                    <!-- Just for adding spacing -->
+                </VBox>
+                
                 <!-- Informations de la séance -->
                 <VBox styleClass="side-panel" spacing="12">
                     <Label text="Informations de la séance" styleClass="side-panel-title"/>
