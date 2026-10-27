@@ -11,9 +11,9 @@ import java.util.Set;
 @Component
 public class UpdateAthleteProfileUseCase {
 
-    //////////////////////////////
-    ///  CLASS VARIABLES      ///
-    ////////////////////////////
+    /////////////////////////
+    ///  CLASS VARIABLES ///
+    ///////////////////////
 
     private final AthleteProfilePort port;
 

@@ -1,12 +1,15 @@
 package com.statseyes.studio.infrastructure.persistence.entity;
 
 import com.statseyes.studio.domain.model.AvailabilityStatus;
+import com.statseyes.studio.domain.model.DominantFoot;
 import com.statseyes.studio.infrastructure.persistence.id.UuidV7;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -28,8 +31,13 @@ public class AthleteEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name= "uuid", nullable = false, updatable = false, unique = true)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "uuid", nullable = false, updatable = false, unique = true, length = 36)
     private UUID uuid;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dominant_foot", nullable = false, length = 5)
+    private DominantFoot dominantFoot = DominantFoot.RIGHT;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "availability_status", nullable = false, length = 12)
@@ -115,4 +123,5 @@ public class AthleteEntity {
     void ensureUuid() {
         if (uuid == null) uuid = UuidV7.generate();
     }
+
 }

@@ -85,7 +85,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
         e.setUpdatedAt(now);
         e.setCreatedAt(now);
 
-        return athleteMapper.toDomain(
+        return athleteMapper.toDomainWithProfile(
                 repository.save(e)
         );
     }
@@ -98,7 +98,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
     @Transactional(readOnly = true)
     public Athlete findById(Integer athleteId, Integer accountId) {
         Optional<AthleteEntity> result = repository.findByIdAndAccount_Id(athleteId, accountId);
-        return result.map(athleteMapper::toDomain).orElse(null);
+        return result.map(athleteMapper::toDomainWithProfile).orElse(null);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
     public List<Athlete> findAllByAccount(Integer accountId) {
         return repository.findAllByAccount_IdOrderByFirstnameAscWithTeamAndPosition(accountId)
                 .stream()
-                .map(athleteMapper::toDomain)
+                .map(athleteMapper::toDomainWithProfile)
                 .toList();
     }
 
@@ -124,7 +124,7 @@ public class JpaAthleteRepositoryAdapter implements AthleteRepositoryPort {
         e.setAvailable(available);
         e.setUpdatedAt(Instant.now());
 
-        return athleteMapper.toDomain(e);
+        return athleteMapper.toDomainWithProfile(e);
     }
 
     @Override

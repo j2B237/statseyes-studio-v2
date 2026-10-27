@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public class UpdateAthleteAvailabilityUseCase() {
+public class UpdateAthleteAvailabilityUseCase {
 
      /////////////////////////
     /// CLASS VARIABLES  ////
