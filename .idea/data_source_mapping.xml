@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/app/src/main/resources/failed_migrations/V2.1__athlete_uuid_column.sql" value="b0d9d9ad-53d8-45c2-aafb-0ee5eff295bc" />
+    <file url="file://$PROJECT_DIR$/app/src/main/resources/failed_migrations/V2.2__athlete_uuid_constraints.sql" value="b0d9d9ad-53d8-45c2-aafb-0ee5eff295bc" />
+  </component>
+</project>
