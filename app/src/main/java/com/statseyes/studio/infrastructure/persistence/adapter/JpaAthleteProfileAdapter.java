@@ -39,6 +39,10 @@ public class JpaAthleteProfileAdapter implements AthleteProfilePort {
     }
 
     @Override
+    @Cacheable(
+            value = "athletes",
+            key = "'account:' + #accountId + ':athlete:' + #athleteId"
+    )
     @Transactional
     public Athlete updateProfile(Integer athleteId, Integer accountId, DominantFoot foot,
                           Integer mainPositionId, Set<Integer> secondaryPositionIds
@@ -54,6 +58,10 @@ public class JpaAthleteProfileAdapter implements AthleteProfilePort {
     }
 
     @Override
+    @Cacheable(
+            value = "athletes",
+            key = "'account:' + #accountId + ':athlete:' + #athleteId"
+    )
     @Transactional
     public Athlete updateAvailability(Integer athleteId, Integer accountId, Availability a){
 

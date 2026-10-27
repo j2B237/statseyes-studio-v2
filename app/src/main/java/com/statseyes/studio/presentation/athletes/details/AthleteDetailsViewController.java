@@ -336,10 +336,6 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
         athleteJerseyLabel.setText(athlete.jerseyNumber() != null ? "N° " + athlete.jerseyNumber() : "—");
 
         if (athlete.imageUrl() != null && !athlete.imageUrl().isBlank()) {
-            System.out.println("From Athlete details: " +  Objects.requireNonNull(
-                    athleteImageUseCase.execute(athlete.imageUrl())
-                            .orElse(null)));
-
             athletePhotoView.setImage(
                     new Image(
                             Objects.requireNonNull(
@@ -412,7 +408,7 @@ public class AthleteDetailsViewController implements ViewManagerAware, Navigable
             profileViewModel.secondaryPositionsProperty().setAll("Ailier droit", "Attaquant");
             profileViewModel.setAvailability(new Availability(AvailabilityStatus.INJURED, "Blessure à la cuisse",
                     LocalDate.now().minusDays(14), LocalDate.now().plusDays(20)));
-            log.info("Disponibilité appliquée : {}", profileViewModel.availabilityProperty().get());
+            //log.info("Disponibilité appliquée : {}", profileViewModel.availabilityProperty().get());
         }
 
         renderPhysicalLine();
