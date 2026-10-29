@@ -100,6 +100,10 @@ public class AthleteFormViewModel {
         NewAthlete athlete;
 
         try {
+            if (athleteImagePath == null){
+                errorMessage.set("Veuillez sélectionner une photo pour ce joueur");
+                return;
+            }
 
             String imageUrl = saveImageUsecase.execute(athleteImagePath);
             athlete = new NewAthlete(
