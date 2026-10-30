@@ -37,6 +37,7 @@ public class AthleteEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dominant_foot", nullable = false, length = 5)
+    @Builder.Default
     private DominantFoot dominantFoot = DominantFoot.RIGHT;
 
     @Enumerated(EnumType.STRING)
@@ -112,11 +113,13 @@ public class AthleteEntity {
     private Integer jerseyNumber;
 
     @Column(name = "active", nullable = false)
+    @Builder.Default
     private boolean active = true;
 
     // Permet de positionner un athlete sur la liste
     // des atheletes disponibles pour le mercato.
     @Column(name = "available", nullable = false)
+    @Builder.Default
     private boolean available = false;
 
     @PrePersist
